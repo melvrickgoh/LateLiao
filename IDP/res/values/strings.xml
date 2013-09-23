@@ -9,6 +9,10 @@
     <string name="title_section3">333</string>
     <string name="action_search"></string>
     <string name="janan">test</string>
+    <string name="test1">My Events</string>
+    <string name="test2">Add Event</string>
+    <string name="test3">Profile of you</string>
+    
     <color name="teal">#7FFFD4</color>
 
 </resources>

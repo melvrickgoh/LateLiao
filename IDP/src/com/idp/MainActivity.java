@@ -1,23 +1,37 @@
 package com.idp;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -39,7 +53,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	
 	private static EventViewAdapter eventViewAdapter;
-    private ListView listView;
+    private ListView eventView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +95,23 @@ public class MainActivity extends FragmentActivity implements
 					.setTabListener(this));
 		}
 		
-		 String[] adobe_products = getResources().getStringArray(R.array.adobe_products);
-         
-	        // Binding resources Array to ListAdapter
-	        this.setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.label, adobe_products));
+		 String[] events = getResources().getStringArray(R.array.events);
+
 	         
 	}
+	
+	
+
+	
+	//Helper method to determine if Internet connection is available.
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	} 
+	
+	
 	
 	// For each tab, get the corresponding icon to be added to each tab.
 	private Drawable getPageIcon(int i) {
@@ -191,18 +216,17 @@ public class MainActivity extends FragmentActivity implements
 
 			TextView dummyTextView;
 			
+			
 			switch(getArguments().getInt(ARG_SECTION_NUMBER)) {
 				case 1:
-					rootView = inflater.inflate(R.layout.fragment_main_event_list,
-							container, false); 
+					rootView = inflater.inflate(R.layout.fragment_main_dummy,
+							container, false);
+					dummyTextView = (TextView) rootView
+							.findViewById(R.id.section_label);
 					
-					eventViewAdapter = new EventViewAdapter(getActivity().getBaseContext());
-	                    ListView listView = (ListView) rootView.findViewById(R.id.eventListView);
-	                    for (int i=0;i<20;i++)
-	                    {
-	                    	eventViewAdapter.add("this Index : "+i);
-	                    }
-	                    return listView;
+					dummyTextView.setText(R.string.test1);
+					
+					
 				case 2:
 					//Add activity layout
 					rootView = inflater.inflate(R.layout.fragment_main_dummy,
@@ -210,8 +234,7 @@ public class MainActivity extends FragmentActivity implements
 					dummyTextView = (TextView) rootView
 							.findViewById(R.id.section_label);
 					
-					dummyTextView.setText(Integer.toString(getArguments().getInt(
-							ARG_SECTION_NUMBER)));
+					dummyTextView.setText(R.string.test2);
 				case 3:
 					//Profile layout
 					rootView = inflater.inflate(R.layout.fragment_main_dummy,
@@ -219,8 +242,7 @@ public class MainActivity extends FragmentActivity implements
 					dummyTextView = (TextView) rootView
 							.findViewById(R.id.section_label);
 					
-					dummyTextView.setText(Integer.toString(getArguments().getInt(
-							ARG_SECTION_NUMBER)));
+					dummyTextView.setText(R.string.test3);
 				default:
 					rootView = inflater.inflate(R.layout.fragment_main_dummy,
 							container, false);
