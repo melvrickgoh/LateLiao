@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="events">
+        <item>Poker night</item>
+        <item>Dota night</item>
+        <item>Movie night</item>
+        <item>Fireworks night</item>
+        <item>Barbeque night</item>
+        <item>Drinking night</item>
+        <item>Cuddle night</item>
+        <item>Work night</item>
+        <item>Morning night</item>
+    </string-array>
+</resources>

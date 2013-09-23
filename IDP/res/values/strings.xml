@@ -7,6 +7,7 @@
     <string name="title_section2">222</string>
     <string name="title_section3">333</string>
     <string name="action_search"></string>
+    <string name="janan">test</string>
     <color name="teal">#7FFFD4</color>
 
 </resources>
