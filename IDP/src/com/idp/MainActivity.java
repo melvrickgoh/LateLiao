@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity implements
@@ -34,6 +36,10 @@ public class MainActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
+	
+	private static EventViewAdapter eventViewAdapter;
+    private ListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,12 @@ public class MainActivity extends FragmentActivity implements
 					.setIcon(getPageIcon(i))
 					.setTabListener(this));
 		}
+		
+		 String[] adobe_products = getResources().getStringArray(R.array.adobe_products);
+         
+	        // Binding resources Array to ListAdapter
+	        this.setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.label, adobe_products));
+	         
 	}
 	
 	// For each tab, get the corresponding icon to be added to each tab.
@@ -181,12 +193,16 @@ public class MainActivity extends FragmentActivity implements
 			
 			switch(getArguments().getInt(ARG_SECTION_NUMBER)) {
 				case 1:
-					rootView = inflater.inflate(R.layout.fragment_main_dummy,
+					rootView = inflater.inflate(R.layout.fragment_main_event_list,
 							container, false); 
-					dummyTextView = (TextView) rootView
-							.findViewById(R.id.section_label);
 					
-					dummyTextView.setText(R.string.janan);
+					eventViewAdapter = new EventViewAdapter(getActivity().getBaseContext());
+	                    ListView listView = (ListView) rootView.findViewById(R.id.eventListView);
+	                    for (int i=0;i<20;i++)
+	                    {
+	                    	eventViewAdapter.add("this Index : "+i);
+	                    }
+	                    return listView;
 				case 2:
 					//Add activity layout
 					rootView = inflater.inflate(R.layout.fragment_main_dummy,
