@@ -29,6 +29,7 @@
             android:name="com.idp.AddActivity"
             android:label="@string/add_activity" >
             <intent-filter>
+                <!--What does this count as?-->
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
