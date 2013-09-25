@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LateLiao</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_section1">111</string>
+    <string name="title_section2">222</string>
+    <string name="title_section3">333</string>
+    <string name="action_search"></string>
+    <color name="teal">#7FFFD4</color>
+
+</resources>
