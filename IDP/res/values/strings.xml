@@ -9,6 +9,12 @@
     <string name="title_section3">333</string>
     <string name="action_search"></string>
     <string name="janan">test</string>
+    <string name="add_activity_form_eventName">Event Name</string>
+    <string name="add_activity_form_activityDate">Activity Date</string>
+    <string name="add_activity_form_activityTime">Activity Time</string>
+    <string name="add_activity_form_activityLocation">Activity Location</string>
+    <string name="add_activity_form_friends">Friends</string>
+    <string name="add_activity_form_submit">Run</string>
     <color name="teal">#7FFFD4</color>
 
 </resources>

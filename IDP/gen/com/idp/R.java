@@ -9,12 +9,19 @@ package com.idp;
 
 public final class R {
     public static final class array {
-        public static final int events=0x7f060000;
+        public static final int events=0x7f070000;
     }
     public static final class attr {
     }
     public static final class color {
-        public static final int teal=0x7f070000;
+        public static final int aqua=0x7f040004;
+        public static final int black=0x7f040003;
+        public static final int lime=0x7f040005;
+        public static final int mandarin=0x7f040006;
+        public static final int maroon=0x7f040002;
+        public static final int palePink=0x7f040001;
+        public static final int teal=0x7f040007;
+        public static final int white=0x7f040000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -23,48 +30,88 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
+        public static final int activity_horizontal_margin=0x7f060000;
+        public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
         public static final int app_background=0x7f020000;
-        public static final int ic_action_overflow=0x7f020001;
-        public static final int ic_action_search=0x7f020002;
-        public static final int ic_action_user=0x7f020003;
-        public static final int ic_collections_go_to_today=0x7f020004;
-        public static final int ic_content_new_event=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
+        public static final int custom_button=0x7f020001;
+        public static final int ic_action_overflow=0x7f020002;
+        public static final int ic_action_search=0x7f020003;
+        public static final int ic_action_user=0x7f020004;
+        public static final int ic_collections_go_to_today=0x7f020005;
+        public static final int ic_content_new_event=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
     }
     public static final class id {
-        public static final int action_search=0x7f0a0006;
-        public static final int action_settings=0x7f0a0005;
-        public static final int datePicker1=0x7f0a0003;
-        public static final int editText1=0x7f0a0002;
+        public static final int action_search=0x7f0a000e;
+        public static final int action_settings=0x7f0a000d;
+        public static final int addActivitySubmit=0x7f0a0007;
+        public static final int buttonSelectDate=0x7f0a0003;
+        public static final int buttonSelectFriends=0x7f0a0006;
+        public static final int buttonSelectLocation=0x7f0a0005;
+        public static final int buttonSelectTime=0x7f0a0004;
+        public static final int eventListView=0x7f0a000c;
+        public static final int eventName=0x7f0a0002;
+        public static final int event_about=0x7f0a000b;
+        public static final int event_image=0x7f0a0009;
+        public static final int event_name=0x7f0a000a;
         public static final int pager=0x7f0a0000;
+        public static final int progress=0x7f0a0008;
         public static final int section_label=0x7f0a0001;
-        public static final int timePicker1=0x7f0a0004;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int fragment_main_dummy=0x7f030001;
-        public static final int fragment_main_event_add=0x7f030002;
-        public static final int fragment_main_event_list=0x7f030003;
-        public static final int fragment_main_profile=0x7f030004;
+        /** 
+    Layout alias to replace the single-pane version of the layout with a
+    two-pane version on Large screens.
+
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    
+
+    Layout alias to replace the single-pane version of the layout with a
+    two-pane version on Large screens.
+
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    
+
+    Layout alias to replace the single-pane version of the layout with a
+    two-pane version on Large screens.
+
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    
+         */
+        public static final int fragment_item=0x7f030007;
+        public static final int fragment_item_grid=0x7f030001;
+        public static final int fragment_item_list=0x7f030002;
+        public static final int fragment_main_dummy=0x7f030003;
+        public static final int fragment_main_event_add=0x7f030004;
+        public static final int fragment_main_event_list=0x7f030005;
+        public static final int fragment_main_profile=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f090000;
     }
     public static final class string {
-        public static final int action_search=0x7f040008;
-        public static final int action_settings=0x7f040004;
-        public static final int add_activity=0x7f040003;
-        public static final int app_name=0x7f040002;
-        public static final int dialog_activity_date=0x7f040000;
-        public static final int dialog_activity_time=0x7f040001;
-        public static final int janan=0x7f040009;
-        public static final int title_section1=0x7f040005;
-        public static final int title_section2=0x7f040006;
-        public static final int title_section3=0x7f040007;
+        public static final int action_search=0x7f050008;
+        public static final int action_settings=0x7f050004;
+        public static final int add_activity=0x7f050003;
+        public static final int add_activity_form_activityDate=0x7f05000b;
+        public static final int add_activity_form_activityLocation=0x7f05000d;
+        public static final int add_activity_form_activityTime=0x7f05000c;
+        public static final int add_activity_form_eventName=0x7f05000a;
+        public static final int add_activity_form_friends=0x7f05000e;
+        public static final int add_activity_form_submit=0x7f05000f;
+        public static final int app_name=0x7f050002;
+        public static final int dialog_activity_date=0x7f050000;
+        public static final int dialog_activity_time=0x7f050001;
+        public static final int janan=0x7f050009;
+        public static final int title_section1=0x7f050005;
+        public static final int title_section2=0x7f050006;
+        public static final int title_section3=0x7f050007;
     }
     public static final class style {
         /** 

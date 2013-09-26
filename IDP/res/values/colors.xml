@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+    <color name="white">#fff</color>
+    <color name="palePink">#fcf</color>
+    <color name="maroon">#600</color>
+    <color name="black">#000</color>
+    <color name="aqua">#0CC</color>
+    <color name="lime">#0C0</color>
+    <color name="mandarin">#F00</color>
+    
+</resources>

@@ -8,25 +8,62 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/eventName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Event Name"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
+        android:hint="@string/add_activity_form_eventName"
+        android:layout_marginTop="1dp" />
 
-    <DatePicker
-        android:id="@+id/datePicker1"
+    <Button
+        android:id="@+id/buttonSelectDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Event Date"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp" />
+        android:layout_marginTop="10dp"
+        android:drawable="@color/white"
+        android:ems="10"
+        android:gravity="left|center_vertical"
+        android:hint="@string/add_activity_form_activityDate"
+        style="?android:attr/borderlessButtonStyle" />
 
-    <TimePicker
-        android:id="@+id/timePicker1"
-        android:layout_width="288dp"
-        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/buttonSelectTime"
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="left|center_vertical"
+        android:hint="@string/add_activity_form_activityTime"
+        style="?android:attr/borderlessButtonStyle" />
     
+    <Button
+        android:id="@+id/buttonSelectLocation"
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="left|center_vertical"
+        android:hint="@string/add_activity_form_activityLocation"
+        android:background="@drawable/custom_button" />
+    
+    <Button
+        android:id="@+id/buttonSelectFriends"
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="left|center_vertical"
+        android:hint="@string/add_activity_form_friends"
+        style="?android:attr/borderlessButtonStyle" />
+
+    <Button
+        android:id="@+id/addActivitySubmit"
+        android:layout_marginTop="100dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center|center_vertical"
+        android:hint="@string/add_activity_form_submit"
+        style="?android:attr/borderlessButtonStyle" />
+
 </LinearLayout>
