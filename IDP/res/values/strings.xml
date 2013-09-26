@@ -15,6 +15,9 @@
     <string name="add_activity_form_activityLocation">Activity Location</string>
     <string name="add_activity_form_friends">Friends</string>
     <string name="add_activity_form_submit">Run</string>
+    <string name="test1">My Events</string>
+    <string name="test2">Add Event</string>
+    <string name="test3">Profile of you</string>
     <color name="teal">#7FFFD4</color>
 
 </resources>
