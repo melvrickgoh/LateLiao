@@ -24,6 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+=======
+        
+        <activity 
+            android:name="com.idp.AddActivity"
+            android:label="@string/add_activity" >
+            <intent-filter>
+                
+            </intent-filter>
+        </activity>
+>>>>>>> ac2fa1bfbec3cbaba174f545a1682701b5e46c69
     </application>
 
 </manifest>
