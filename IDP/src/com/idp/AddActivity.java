@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,10 +24,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-public class AddActivity extends Fragment {
+public class AddActivity extends Fragment implements OnDateSetListener{
 	
 	/*
 	 * Inserting my own code for managing the form input data
@@ -39,18 +43,6 @@ public class AddActivity extends Fragment {
 	public int year,month,day,hour,minute;
 	//Initial variables showing/setting the date and time when the Time and Date picker dialogs 1st appear
 	private int mYear,mMonth,mDay,mHour,mMinute;
-	
-	// Register  DatePickerDialog listener
-    private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-       // the callback received when the user "sets" the Date in the DatePickerDialog
-       public void onDateSet(DatePicker view, int yearSelected, int monthOfYear, int dayOfMonth) {
-          year = yearSelected;
-          month = monthOfYear;
-          day = dayOfMonth;
-          // Set the Selected Date in Select date Button
-          buttonDate.setText(day+"/"+month+"/"+year);
-       }
-    };
     
     // Register  TimePickerDialog listener                 
     private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -74,23 +66,23 @@ public class AddActivity extends Fragment {
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View v = inflater.inflate(R.layout.add_activity_fragment_container, container, false);
+		FrameLayout fLayout = (FrameLayout) inflater.inflate(R.layout.add_activity_fragment_container, container, false);
 		//Listening to the different click inputs
+		LinearLayout linearMainForm = (LinearLayout) fLayout.findViewById(R.id.AddActivity_MainPage);
 		
 		//Get references of buttons
-		buttonDate = (Button) findViewById(R.id.buttonSelectDate);
-		buttonTime = (Button) findViewById(R.id.buttonSelectTime);
-		buttonSubmit = (Button) findViewById(R.id.addActivitySubmit);
-		buttonSelectLocation = (Button) findViewById(R.id.buttonSelectLocation);
-		buttonSelectFriends = (Button) findViewById(R.id.buttonSelectFriends);
+		buttonDate = (Button) linearMainForm.findViewById(R.id.buttonSelectDate);
+		buttonTime = (Button) linearMainForm.findViewById(R.id.buttonSelectTime);
+		buttonSubmit = (Button) linearMainForm.findViewById(R.id.addActivitySubmit);
+		buttonSelectLocation = (Button) linearMainForm.findViewById(R.id.buttonSelectLocation);
+		buttonSelectFriends = (Button) linearMainForm.findViewById(R.id.buttonSelectFriends);
 		
 		//Set Click Listener on DateButton
 		buttonDate.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				// Show the Date Picker Dialog
-				showDialog(DATE_DIALOG_ID);
+				((FragmentActivity) getActivity()).showDialog(DATE_DIALOG_ID);
 			}
 		});
 		
@@ -100,7 +92,7 @@ public class AddActivity extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// Show the Time Picker Dialog
-				showDialog(TIME_DIALOG_ID);
+				((FragmentActivity) getActivity()).showDialog(TIME_DIALOG_ID);
 			}
 		});
 		
@@ -134,17 +126,16 @@ public class AddActivity extends Fragment {
 				
 			}
 		});
+		
+		return fLayout;
 	}
-	
-	//Method automatically gets Called when you call the showDialog() method
-	protected Dialog onCreateDialog(int id){
-		switch(id){
-			case DATE_DIALOG_ID:
-				return new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);
-			case TIME_DIALOG_ID:
-				return new TimePickerDialog(this,mTimeSetListener,mHour,mMinute,false);
-		}
-		return null;
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+		
+        // Set the Selected Date in Select date Button
+        buttonDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
 	}
 
 }

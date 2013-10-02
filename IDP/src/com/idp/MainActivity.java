@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity implements
 	}
 	
 	
-
+	
 	
 	//Helper method to determine if Internet connection is available.
 	private boolean isNetworkAvailable() {
@@ -227,16 +227,10 @@ public class MainActivity extends FragmentActivity implements
 					
 					
 				case 2:
-					Intent intent = new Intent (this.getActivity().getBaseContext(), AddActivity.class);
-					
-					this.startActivity(intent);
-					//Add activity layout
-					/*rootView = inflater.inflate(R.layout.fragment_main_dummy,
+					//Add activity framelayout
+					rootView = inflater.inflate(R.layout.add_activity_fragment_container,
 							container, false);
-					dummyTextView = (TextView) rootView
-							.findViewById(R.id.section_label);
-					
-					dummyTextView.setText(R.string.test2);*/
+					//Set ur data here
 				case 3:
 					//Profile layout
 					rootView = inflater.inflate(R.layout.fragment_main_dummy,
