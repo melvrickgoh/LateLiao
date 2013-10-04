@@ -69,24 +69,8 @@ public class UserActivity extends ActionBarActivity  {
 	 final private String COUNT = "count";
 	 
 		
-	 	//to populate the list view of assignments
-	 	String[] events = new String[] {
-	        "Assignment 01",
-	        "Assignment 02",
-	        "Assignment 03",
-	        "Assignment 04",
-	        "Assignment 05",
-	      
-	    };
-	 
-	    // Array of booleans to store toggle button status
-	    public boolean[] status = {
-	        true,
-	        false,
-	        false,
-	        false,
-	        false,
-	    };
+	 //Populate list view of assignments
+	 	ArrayList events = getListData();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,44 +83,39 @@ public class UserActivity extends ActionBarActivity  {
 		
 		/** Restore from the previous state if exists */
         if(savedInstanceState!=null){
-            status = savedInstanceState.getBooleanArray("status");
+            //status = savedInstanceState.getBooleanArray("status");
         }
         
         /* to create list view for assignments*/
-        ListView lvAssignments = (ListView) findViewById(R.id.lv);
+        final ListView lvAssignments = (ListView) findViewById(R.id.lv);
+        lvAssignments.setAdapter(new CustomListAdapter(this,events));
         
         /*to create the listener var that does the function when the assignments are clicked*/
         OnItemClickListener itemClickListener = new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> lv, View item, int position, long id) {
+            	
+            	Object o = lvAssignments.getItemAtPosition(position);
+            	Event event = (Event) o;
+            	Toast.makeText(UserActivity.this," " + event.getEventName() + " ",Toast.LENGTH_LONG);
+                /*ListView lView = (ListView) lv;
  
-                ListView lView = (ListView) lv;
- 
-                SimpleAdapter adapter = (SimpleAdapter) lView.getAdapter();
- 
-                HashMap<String,Object> hm = (HashMap) adapter.getItem(position);
+                SimpleAdapter adapter = (SimpleAdapter) lView.getAdapter();*/
+            	CustomListAdapter adapter = (CustomListAdapter) lvAssignments.getAdapter();
+                
+            	Event eventItem = (Event) adapter.getItem(position);
  
                 /** The clicked Item in the ListView */
-                RelativeLayout rLayout = (RelativeLayout) item;
+                //RelativeLayout rLayout = (RelativeLayout) item;
  
                 /** Getting the toggle button corresponding to the clicked item */
-                ToggleButton tgl = (ToggleButton) rLayout.getChildAt(1);
- 
-                String strStatus = "";
-                if(tgl.isChecked()){
-                    tgl.setChecked(false);
-                    strStatus = "Off";
-                    status[position]=false;
-                }else{
-                    tgl.setChecked(true);
-                    strStatus = "On";
-                    status[position]=true;
-                }
+
+                
                 /*pop up box to show that the respective assignment is clicked*/
-                Toast.makeText(getBaseContext(), (String) hm.get("txt") + " : " + strStatus, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), (String) hm.get("txt") + " : " + strStatus, Toast.LENGTH_SHORT).show();
                 /*to send to the next activity*/
                 Intent intent = new Intent(getApplicationContext(),MapActivity.class);
-                intent.putExtra("country", (String)hm.get("txt"));
+                intent.putExtra("country", (String)eventItem.getEventName());
                 startActivity(intent);
             }
         };
@@ -146,29 +125,7 @@ public class UserActivity extends ActionBarActivity  {
  
        
         // Each row in the list stores country name and its status. populate the list with the items
-        List<HashMap<String,Object>> aList = new ArrayList<HashMap<String,Object>>();
- 
-        //the number of items to be populate must match here or there will be indexoutofbound error
-        for(int i=0;i<5;i++){
-            HashMap<String, Object> hm = new HashMap<String,Object>();
-            hm.put("txt", events[i]);
-            hm.put("stat",status[i]);
-            aList.add(hm);
-        }
- 
-        // Keys used in Hashmap
-        String[] there = {"txt","stat" };
- 
-        // Ids of views in listview_layout
-        int[] here = { R.id.tv_item, R.id.tgl_status};
- 
-        // Instantiating an adapter to store each items
-        // R.layout.listview_layout defines the layout of each item
-        SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), aList, R.layout.assignments, there, here);
-        
-        /*set the list to an adapter to mointor any clicks*/
-        lvAssignments.setAdapter(adapter);
-        
+        //List<HashMap<String,Object>> aList = new ArrayList<HashMap<String,Object>>();        
         
         /*here onwards will be for the sidebar*/
         // Getting an array of country names
@@ -237,7 +194,8 @@ public class UserActivity extends ActionBarActivity  {
 	    	   		
 	    	   	}
 	    	   	else if (position == 1) {
-	    	   		
+	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	                startActivity(intent);
 	    	   		//do something
 	    	   	} else {	
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
@@ -281,7 +239,7 @@ public class UserActivity extends ActionBarActivity  {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBooleanArray("status", status);
+        //outState.putBooleanArray("status", status);
     }
 
 		
@@ -297,7 +255,17 @@ public class UserActivity extends ActionBarActivity  {
 		
 	}
 	
-	
+	private ArrayList getListData(){
+		ArrayList events = new ArrayList();
+
+		events.add(new Event("IDP Meeting","18 0ct","0800",new Location("SIS GSR 2.1",1.29757,103.84944)));
+		events.add(new Event("IDP Lesson","18 0ct","1200",new Location("SIS SR 3.4",1.29757,103.84944)));
+		events.add(new Event("Dinner with GF","18 0ct","1900",new Location("313 @ Somerset",1.3021,103.8383)));
+		events.add(new Event("Chinatown Brugge","18 0ct","2300",new Location("William's Cafe",1.28216,103.8448)));
+		events.add(new Event("The Swansong Feast","13 Nov","0800",new Location("Big Steps",1.29757,103.84944)));
+		
+		return events;
+	}
 	
 	private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this
@@ -414,13 +382,5 @@ public class UserActivity extends ActionBarActivity  {
 		 getSupportActionBar().setTitle(mOptions[mPosition]);
 		 }
 
-	
-	 
-	 
-		
-		  
 		 
-		 
-  
-
 }
