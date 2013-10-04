@@ -32,6 +32,7 @@
     <dimen name="count">10dp</dimen>
 
     <string name="title_activity_notification">NotificationActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
     <color name="white">#FFFFFF</color>
     <color name="loginbutton">#A9E2F3</color>
     <string-array name="array01"></string-array>
