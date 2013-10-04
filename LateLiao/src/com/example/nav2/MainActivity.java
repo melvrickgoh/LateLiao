@@ -146,6 +146,7 @@ public class MainActivity<MotionEvent> extends Activity {
 	    	
 	    	// testing without json. auto login
             if(uName.getText().toString().equals("abc"))  {
+            	if (pw.getText().toString().equals("abc")) {
 	    	//if( returnResult != null) 
             		//do something if it is "BYE"
             		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
