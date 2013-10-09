@@ -1,5 +1,15 @@
 package com.idp;
 
+<<<<<<< HEAD
+import java.util.Locale;
+
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+=======
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -14,24 +24,31 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+>>>>>>> ac2fa1bfbec3cbaba174f545a1682701b5e46c69
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+<<<<<<< HEAD
+=======
 import android.util.Log;
+>>>>>>> ac2fa1bfbec3cbaba174f545a1682701b5e46c69
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
+<<<<<<< HEAD
+import android.widget.TextView;
+=======
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+>>>>>>> ac2fa1bfbec3cbaba174f545a1682701b5e46c69
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -50,10 +67,13 @@ public class MainActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+<<<<<<< HEAD
+=======
 	
 	
 	private static EventViewAdapter eventViewAdapter;
     private ListView eventView;
+>>>>>>> ac2fa1bfbec3cbaba174f545a1682701b5e46c69
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +114,10 @@ public class MainActivity extends FragmentActivity implements
 					.setIcon(getPageIcon(i))
 					.setTabListener(this));
 		}
+<<<<<<< HEAD
+	}
+	
+=======
 		
 		 String[] events = getResources().getStringArray(R.array.events);
 
@@ -101,7 +125,7 @@ public class MainActivity extends FragmentActivity implements
 	}
 	
 	
-
+	
 	
 	//Helper method to determine if Internet connection is available.
 	private boolean isNetworkAvailable() {
@@ -113,6 +137,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	
 	
+>>>>>>> ac2fa1bfbec3cbaba174f545a1682701b5e46c69
 	// For each tab, get the corresponding icon to be added to each tab.
 	private Drawable getPageIcon(int i) {
 		switch(i) {
@@ -212,6 +237,14 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+<<<<<<< HEAD
+			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
+					container, false);
+			TextView dummyTextView = (TextView) rootView
+					.findViewById(R.id.section_label);
+			dummyTextView.setText(Integer.toString(getArguments().getInt(
+					ARG_SECTION_NUMBER)));
+=======
 			View rootView;
 
 			TextView dummyTextView;
@@ -228,13 +261,10 @@ public class MainActivity extends FragmentActivity implements
 					
 					
 				case 2:
-					//Add activity layout
-					rootView = inflater.inflate(R.layout.fragment_main_dummy,
+					//Add activity framelayout
+					rootView = inflater.inflate(R.layout.add_activity_fragment_container,
 							container, false);
-					dummyTextView = (TextView) rootView
-							.findViewById(R.id.section_label);
-					
-					dummyTextView.setText(R.string.test2);
+					//Set ur data here
 				case 3:
 					//Profile layout
 					rootView = inflater.inflate(R.layout.fragment_main_dummy,
@@ -253,6 +283,7 @@ public class MainActivity extends FragmentActivity implements
 							ARG_SECTION_NUMBER)));
 			}
 			
+>>>>>>> ac2fa1bfbec3cbaba174f545a1682701b5e46c69
 			return rootView;
 		}
 	}

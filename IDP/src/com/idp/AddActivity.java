@@ -4,6 +4,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import android.app.DatePickerDialog;
+<<<<<<< HEAD
+=======
+import android.app.DatePickerDialog.OnDateSetListener;
+>>>>>>> f8c64759d41247a532f2148e334d6f0e0aa9c8b8
 import android.app.TimePickerDialog;
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -12,6 +16,10 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+<<<<<<< HEAD
+=======
+import android.support.v4.app.DialogFragment;
+>>>>>>> f8c64759d41247a532f2148e334d6f0e0aa9c8b8
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+<<<<<<< HEAD
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -42,6 +51,14 @@ public class AddActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+=======
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+public class AddActivity extends Fragment implements OnDateSetListener{
+>>>>>>> f8c64759d41247a532f2148e334d6f0e0aa9c8b8
 	
 	/*
 	 * Inserting my own code for managing the form input data
@@ -55,6 +72,7 @@ public class AddActivity extends FragmentActivity implements
 	public int year,month,day,hour,minute;
 	//Initial variables showing/setting the date and time when the Time and Date picker dialogs 1st appear
 	private int mYear,mMonth,mDay,mHour,mMinute;
+<<<<<<< HEAD
 	
 	// Register  DatePickerDialog listener
     private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -67,6 +85,8 @@ public class AddActivity extends FragmentActivity implements
           buttonDate.setText(day+"/"+month+"/"+year);
        }
     };
+=======
+>>>>>>> f8c64759d41247a532f2148e334d6f0e0aa9c8b8
     
     // Register  TimePickerDialog listener                 
     private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -88,6 +108,7 @@ public class AddActivity extends FragmentActivity implements
 		mMinute = c.get(Calendar.MINUTE);
 	}
 	
+<<<<<<< HEAD
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,6 +132,27 @@ public class AddActivity extends FragmentActivity implements
 			public void onClick(View v) {
 				// Show the Date Picker Dialog
 				showDialog(DATE_DIALOG_ID);
+=======
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		FrameLayout fLayout = (FrameLayout) inflater.inflate(R.layout.add_activity_fragment_container, container, false);
+		//Listening to the different click inputs
+		LinearLayout linearMainForm = (LinearLayout) fLayout.findViewById(R.id.AddActivity_MainPage);
+		
+		//Get references of buttons
+		buttonDate = (Button) linearMainForm.findViewById(R.id.buttonSelectDate);
+		buttonTime = (Button) linearMainForm.findViewById(R.id.buttonSelectTime);
+		buttonSubmit = (Button) linearMainForm.findViewById(R.id.addActivitySubmit);
+		buttonSelectLocation = (Button) linearMainForm.findViewById(R.id.buttonSelectLocation);
+		buttonSelectFriends = (Button) linearMainForm.findViewById(R.id.buttonSelectFriends);
+		
+		//Set Click Listener on DateButton
+		buttonDate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Show the Date Picker Dialog
+				((FragmentActivity) getActivity()).showDialog(DATE_DIALOG_ID);
+>>>>>>> f8c64759d41247a532f2148e334d6f0e0aa9c8b8
 			}
 		});
 		
@@ -120,7 +162,11 @@ public class AddActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				// Show the Time Picker Dialog
+<<<<<<< HEAD
 				showDialog(TIME_DIALOG_ID);
+=======
+				((FragmentActivity) getActivity()).showDialog(TIME_DIALOG_ID);
+>>>>>>> f8c64759d41247a532f2148e334d6f0e0aa9c8b8
 			}
 		});
 		
@@ -154,6 +200,7 @@ public class AddActivity extends FragmentActivity implements
 				
 			}
 		});
+<<<<<<< HEAD
 	}
 	
 	//Method automatically gets Called when you call the showDialog() method
@@ -341,3 +388,18 @@ public class AddActivity extends FragmentActivity implements
 	}
 
 }
+=======
+		
+		return fLayout;
+	}
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+		
+        // Set the Selected Date in Select date Button
+        buttonDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+	}
+
+}
+>>>>>>> f8c64759d41247a532f2148e334d6f0e0aa9c8b8
