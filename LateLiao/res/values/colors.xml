@@ -13,5 +13,6 @@
     <color name="custom">#68e4d7</color>
     <color name="black_overlay">#66000000</color>
     <color name="black">#000000</color>
+    <color name="dark_knight">#302e2f</color>
 
 </resources>

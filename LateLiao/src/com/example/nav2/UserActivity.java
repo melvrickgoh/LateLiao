@@ -49,8 +49,8 @@ public class UserActivity extends ActionBarActivity  {
 	 
 	 // Array of integers points to images stored in /res/drawable-ldpi/
 	 int[] mLogos = new int[]{
-	R.drawable.notification,
-	R.drawable.validation,
+	R.drawable.user,
+	R.drawable.add_event,
 	R.drawable.logout
 	 };
 	 
@@ -87,32 +87,6 @@ public class UserActivity extends ActionBarActivity  {
 	        false,
 	        false,
 	    };
-	/*String[] countries = new String[] {
-	        "India",
-	        "Pakistan",
-	        "Sri Lanka",
-	        "China",
-	        "Bangladesh",
-	        "Nepal",
-	        "Afghanistan",
-	        "North Korea",
-	        "South Korea",
-	        "Japan"
-	    };
-	 
-	    // Array of booleans to store toggle button status
-	    public boolean[] status = {
-	        true,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false,
-	        false
-	    };*/
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -243,7 +217,7 @@ public class UserActivity extends ActionBarActivity  {
         
 	       //** Called when a drawer is opened *//*
 	        public void onDrawerOpened(View drawerView) {
-	        	getSupportActionBar().setTitle("SideBar");
+	        	getSupportActionBar().setTitle("");
 	        supportInvalidateOptionsMenu();
 	        }
         };
