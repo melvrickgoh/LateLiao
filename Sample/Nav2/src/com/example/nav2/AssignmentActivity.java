@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.support.v7.appcompat.R;
 
 public class AssignmentActivity extends Activity {
 

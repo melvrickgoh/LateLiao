@@ -1,0 +1,40 @@
+<html>
+<body>
+<div id="result"></div>
+<script>
+var latitude, longitude, accuracy;
+
+function setGeolocation() {
+    var geolocation = window.navigator.geolocation.watchPosition( 
+        function ( position ) {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            accuracy = position.coords.accuracy;
+            document.getElementById( 'result' ).innerHTML += 
+                  'lat: ' + latitude + ', '
+                + 'lng: ' + longitude + ', '
+                + 'accuracy: ' + accuracy + '<br />';
+        }, function () { 
+            /*error*/ 
+        }, {
+            maximumAge: 250, 
+            enableHighAccuracy: true
+        } 
+    );
+    window.setTimeout( function () {
+            window.navigator.geolocation.clearWatch( geolocation ) 
+        }, 
+        5000 //stop checking after 5 seconds
+    );
+};
+
+setGeolocation();
+
+window.setTimeout( function () {
+        setGeolocation();
+    }, 
+    30000 //check every 30 seconds
+);
+</script>
+</body>
+</html>

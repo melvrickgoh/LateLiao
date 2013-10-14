@@ -11,13 +11,13 @@ import java.net.URL;
 
 //delete this if you want the other http client to run
 
+
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.apache.http.client.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -40,6 +40,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v7.appcompat.R;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;

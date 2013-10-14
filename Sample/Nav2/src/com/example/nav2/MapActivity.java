@@ -29,7 +29,7 @@ import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-
+import android.support.v7.appcompat.R;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.app.ActionBar.Tab;

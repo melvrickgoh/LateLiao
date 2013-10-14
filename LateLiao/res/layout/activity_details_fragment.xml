@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mapsub"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapSubActivity" >
+
+    <TextView
+        android:id="@+id/region"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="30dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:text="Region"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/enddate"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/region"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="30dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:text="End Date"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/startdate"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/date"
+        android:paddingBottom="30dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:text="Start Date"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:typeface="monospace" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/enddate"
+        android:layout_alignBottom="@+id/enddate"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/enddate"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/EditText01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/region"
+        android:layout_alignBottom="@+id/region"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/region"
+        android:ems="9" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/EditText02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/startdate"
+        android:layout_alignBottom="@+id/startdate"
+        android:layout_alignLeft="@+id/EditText03"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="62dp"
+        android:paddingBottom="30dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:text="Date"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/EditText03"
+        android:layout_alignBottom="@+id/EditText03"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="30dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:text="Assignment"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:typeface="monospace" />
+
+    <EditText
+        android:id="@+id/EditText03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/date"
+        android:layout_toRightOf="@+id/enddate"
+        android:ems="10" />
+   
+</RelativeLayout>

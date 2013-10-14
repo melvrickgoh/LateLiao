@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.support.v7.appcompat.R;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;

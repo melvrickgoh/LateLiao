@@ -2,6 +2,7 @@ package com.example.nav2;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.appcompat.R;
 import android.view.Menu;
 
 public class NotificationActivity extends Activity {

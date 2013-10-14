@@ -2,8 +2,6 @@ package com.example.nav2;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 
 
  

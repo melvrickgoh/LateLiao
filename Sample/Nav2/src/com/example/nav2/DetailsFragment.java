@@ -3,6 +3,7 @@ package com.example.nav2;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
+import android.support.v7.appcompat.R;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
