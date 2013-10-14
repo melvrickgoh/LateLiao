@@ -797,7 +797,7 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f060002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f07000f;
+        public static final int abc_search_url_text_holo=0x7f070011;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
@@ -807,8 +807,10 @@ containing a value of this type.
         public static final int blue25=0x7f070008;
         public static final int custom=0x7f07000c;
         public static final int grey05=0x7f070009;
+        public static final int loginbutton=0x7f070010;
         public static final int orange4=0x7f070005;
         public static final int orange5=0x7f070006;
+        public static final int white=0x7f07000f;
         public static final int white1=0x7f07000a;
         public static final int white2=0x7f07000b;
         public static final int yellow1=0x7f070003;
@@ -1003,13 +1005,17 @@ containing a value of this type.
         public static final int home_icon=0x7f02005f;
         public static final int hometitle=0x7f020060;
         public static final int ic_launcher=0x7f020061;
-        public static final int login=0x7f020062;
-        public static final int logo=0x7f020063;
-        public static final int logout=0x7f020064;
-        public static final int notification=0x7f020065;
-        public static final int sidebar=0x7f020066;
-        public static final int username=0x7f020067;
-        public static final int validation=0x7f020068;
+        public static final int lateliaoicon=0x7f020062;
+        public static final int login=0x7f020063;
+        public static final int loginpage1=0x7f020064;
+        public static final int loginpage2=0x7f020065;
+        public static final int loginpage3=0x7f020066;
+        public static final int logo=0x7f020067;
+        public static final int logout=0x7f020068;
+        public static final int notification=0x7f020069;
+        public static final int sidebar=0x7f02006a;
+        public static final int username=0x7f02006b;
+        public static final int validation=0x7f02006c;
     }
     public static final class id {
         public static final int EditText01=0x7f050048;
@@ -1069,7 +1075,7 @@ containing a value of this type.
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050027;
         public static final int loginScreen=0x7f05004f;
-        public static final int logo=0x7f050050;
+        public static final int loginpage=0x7f050050;
         public static final int lv=0x7f05005a;
         public static final int mapsub=0x7f050042;
         public static final int mapview=0x7f050056;
