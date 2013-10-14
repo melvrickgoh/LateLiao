@@ -1,9 +1,8 @@
 #################
 ## Eclipse
 #################
-
+.gitignore
 *.pydevproject
-.project
 .metadata
 bin/
 tmp/
