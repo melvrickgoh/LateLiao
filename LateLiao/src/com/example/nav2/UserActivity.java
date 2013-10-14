@@ -70,7 +70,7 @@ public class UserActivity extends ActionBarActivity  {
 	 
 		
 	 	//to populate the list view of assignments
-	 	String[] countries = new String[] {
+	 	String[] events = new String[] {
 	        "Assignment 01",
 	        "Assignment 02",
 	        "Assignment 03",
@@ -151,7 +151,7 @@ public class UserActivity extends ActionBarActivity  {
         //the number of items to be populate must match here or there will be indexoutofbound error
         for(int i=0;i<5;i++){
             HashMap<String, Object> hm = new HashMap<String,Object>();
-            hm.put("txt", countries[i]);
+            hm.put("txt", events[i]);
             hm.put("stat",status[i]);
             aList.add(hm);
         }
