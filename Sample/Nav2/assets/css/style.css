@@ -1,0 +1,32 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00b7ff;
+}
+
+#menubar_frame {
+	position:absolute;
+	left:0;
+	top:0;
+	height:100%;
+	width: 15%;
+	background: url("../images/background.png") repeat;
+	z-index:10;
+}
+#map {
+	position: absolute;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+ }
+
+#navlogo {
+	background: url("../images/App Logo_board.png") no-repeat left top transparent;
+	height:50px;
+	width:154px;
+	margin:25px;
+}
