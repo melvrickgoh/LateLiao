@@ -7,4 +7,5 @@ RemoteSystemsTempFiles/
 LateLiao/bin/
 LateLiao/gen/
 .class
-Sample/Nav2/bin
+LateLiao/project.properties
+Sample/Nav2/bin/
