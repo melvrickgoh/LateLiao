@@ -4,4 +4,5 @@ IDP/bin/
 IDP/res/
 IDP/ic_launcher-web.png
 RemoteSystemsTempFiles/
-LateLiao/bin/
+LateLiao/bin/classes/com/example/nav2/
+.class
