@@ -163,7 +163,7 @@ public class MapActivity extends ActionBarActivity {
         public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
         
     	   	if (position == 0) {
-    	   		Intent intent = new Intent(getApplicationContext(),NotificationActivity.class);
+    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(intent);
     	   		
     	   	}

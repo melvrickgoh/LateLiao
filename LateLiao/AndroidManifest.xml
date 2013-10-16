@@ -42,13 +42,18 @@
                 android:value="com.example.nav2.UserActivity" />
         </activity>
         <activity
+            android:name="com.example.nav2.ProfileActivity"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
             android:name="com.example.nav2.NotificationActivity"
             android:label="@string/title_activity_notification" >
         </activity>
         <activity
             android:name="com.example.nav2.MapActivity"
             android:label="Map"
-            android:theme="@style/CustomActionBarTheme" >
+            android:theme="@style/FullscreenTheme" >
         </activity>
         <activity
             android:name="com.example.nav2.AddEvent"
