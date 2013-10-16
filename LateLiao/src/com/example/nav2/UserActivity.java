@@ -3,7 +3,6 @@ package com.example.nav2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -49,9 +48,9 @@ public class UserActivity extends ActionBarActivity  {
 	 
 	 // Array of integers points to images stored in /res/drawable-ldpi/
 	 int[] mLogos = new int[]{
-	R.drawable.user,
-	R.drawable.add_event,
-	R.drawable.logout
+		R.drawable.user,
+		R.drawable.add_event,
+		R.drawable.logout
 	 };
 	 
 	// Array of strings to initial counts
@@ -64,10 +63,9 @@ public class UserActivity extends ActionBarActivity  {
 	 private LinearLayout mDrawer ;
 	 private List<HashMap<String,String>> mList ;
 	 private SimpleAdapter mAdapter;
-	 final private String COUNTRY = "country";
-	 final private String FLAG = "flag";
-	 final private String COUNT = "count";
-	 
+	 final private String IMAGEICON = "imageicon";
+	 final private String TABNAME = "tabname";
+	 //final private String COUNT = "count";
 		
 	 //Populate list view of assignments
 	 	ArrayList events = getListData();
@@ -98,9 +96,7 @@ public class UserActivity extends ActionBarActivity  {
             	Object o = lvAssignments.getItemAtPosition(position);
             	Event event = (Event) o;
             	Toast.makeText(UserActivity.this," " + event.getEventName() + " ",Toast.LENGTH_LONG);
-                /*ListView lView = (ListView) lv;
- 
-                SimpleAdapter adapter = (SimpleAdapter) lView.getAdapter();*/
+
             	CustomListAdapter adapter = (CustomListAdapter) lvAssignments.getAdapter();
                 
             	Event eventItem = (Event) adapter.getItem(position);
@@ -144,17 +140,16 @@ public class UserActivity extends ActionBarActivity  {
         mList = new ArrayList<HashMap<String,String>>();
         for(int i=0;i<3;i++){
 	        HashMap<String, String> hm = new HashMap<String,String>();
-	        hm.put(COUNTRY, mOptions[i]);
-	        hm.put(COUNT, mCount[i]);
-	        hm.put(FLAG, Integer.toString(mLogos[i]) );
+	        hm.put(TABNAME, mOptions[i]);
+	        hm.put(IMAGEICON, Integer.toString(mLogos[i]) );
 	        mList.add(hm);
         }
         
-       // Keys used in Hashmap
-        String[] from = { FLAG,COUNTRY,COUNT };
+        // Keys used in Hashmap
+        String[] from = { IMAGEICON,TABNAME };
         
        // Ids of views in listview_layout
-        int[] to = { R.id.flag , R.id.country , R.id.count};
+        int[] to = { R.id.imageicon , R.id.tabname};
         
        // Instantiating an adapter to store each items
         // R.layout.drawer_layout defines the layout of each item
@@ -257,12 +252,18 @@ public class UserActivity extends ActionBarActivity  {
 	
 	private ArrayList getListData(){
 		ArrayList events = new ArrayList();
-
-		events.add(new Event("IDP Meeting","18 0ct","0800",new Location("SIS GSR 2.1",1.29757,103.84944)));
-		events.add(new Event("IDP Lesson","18 0ct","1200",new Location("SIS SR 3.4",1.29757,103.84944)));
-		events.add(new Event("Dinner with GF","18 0ct","1900",new Location("313 @ Somerset",1.3021,103.8383)));
-		events.add(new Event("Chinatown Brugge","18 0ct","2300",new Location("William's Cafe",1.28216,103.8448)));
-		events.add(new Event("The Swansong Feast","13 Nov","0800",new Location("Big Steps",1.29757,103.84944)));
+		ArrayList<String> dummyAttendees = new ArrayList<String>();
+		dummyAttendees.add("Leon Lee");
+		dummyAttendees.add("Melvrick Goh");
+		dummyAttendees.add("Janan Tan");
+		dummyAttendees.add("Wyner Lim");
+		dummyAttendees.add("Ben Gan");
+		
+		events.add(new Event("IDP Meeting","18 0ct","0800", dummyAttendees, new Location("SIS GSR 2.1",1.29757,103.84944)));
+		events.add(new Event("IDP Lesson","18 0ct","1200", dummyAttendees, new Location("SIS SR 3.4",1.29757,103.84944)));
+		events.add(new Event("Dinner with GF","18 0ct","1900", dummyAttendees, new Location("313 @ Somerset",1.3021,103.8383)));
+		events.add(new Event("Chinatown Brugge","18 0ct","2300", dummyAttendees, new Location("William's Cafe",1.28216,103.8448)));
+		events.add(new Event("The Swansong Feast","13 Nov","0800", dummyAttendees, new Location("Big Steps",1.29757,103.84944)));
 		
 		return events;
 	}
@@ -312,7 +313,7 @@ public class UserActivity extends ActionBarActivity  {
 	 mDrawerToggle.syncState();
 	 
 	 }
-	 
+	 /*
 	 public void clearCountOnClick(int position) {
 		 HashMap<String, String> item = mList.get(position);
 		 String count = item.get(COUNT);
@@ -338,7 +339,7 @@ public class UserActivity extends ActionBarActivity  {
 		 item.put(COUNT, count);
 		 mAdapter.notifyDataSetChanged();
 	}
-		 
+		 */
 		 public void showFragment(int position){
 		 
 		 //Currently selected country

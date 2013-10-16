@@ -1,8 +1,6 @@
 package com.example.nav2;
 
 
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,9 +45,9 @@ public class MapActivity extends ActionBarActivity {
 	 
 	 // Array of integers points to images stored in /res/drawable-ldpi/
 	 int[] mLogos = new int[]{
-	R.drawable.notification,
-	R.drawable.validation,
-	R.drawable.logout
+		 R.drawable.user,
+		R.drawable.add_event,
+		R.drawable.logout
 	 };
 	 
 	// Array of strings to initial counts
@@ -62,9 +60,9 @@ public class MapActivity extends ActionBarActivity {
 	 private LinearLayout mDrawer ;
 	 private List<HashMap<String,String>> mList ;
 	 private SimpleAdapter mAdapter;
-	 final private String COUNTRY = "country";
-	 final private String FLAG = "flag";
-	 final private String COUNT = "count";
+	 final private String IMAGEICON = "imageicon";
+	 final private String TABNAME = "tabname";
+	 //final private String COUNT = "count";
 	
 	 /**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -121,17 +119,16 @@ public class MapActivity extends ActionBarActivity {
     mList = new ArrayList<HashMap<String,String>>();
     for(int i=0;i<3;i++){
         HashMap<String, String> hm = new HashMap<String,String>();
-        hm.put(COUNTRY, mOptions[i]);
-        hm.put(COUNT, mCount[i]);
-        hm.put(FLAG, Integer.toString(mLogos[i]) );
+        hm.put(TABNAME, mOptions[i]);
+        hm.put(IMAGEICON, Integer.toString(mLogos[i]) );
         mList.add(hm);
     }
     
    // Keys used in Hashmap
-    String[] from = { FLAG,COUNTRY,COUNT };
+    String[] from = { IMAGEICON, TABNAME };
     
    // Ids of views in listview_layout
-    int[] to = { R.id.flag , R.id.country , R.id.count};
+    int[] to = { R.id.imageicon , R.id.tabname };
     
    // Instantiating an adapter to store each items
     // R.layout.drawer_layout defines the layout of each item
@@ -171,8 +168,9 @@ public class MapActivity extends ActionBarActivity {
     	   		
     	   	}
     	   	else if (position == 1) {
-    	   		
-    	   		//do something
+    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+                startActivity(intent);
+                
     	   	} else {	
     	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
 	        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -277,6 +275,7 @@ public class MapActivity extends ActionBarActivity {
 	 
 	 }
 	 
+	 /*
 	 public void clearCountOnClick(int position) {
 		 HashMap<String, String> item = mList.get(position);
 		 String count = item.get(COUNT);
@@ -302,7 +301,7 @@ public class MapActivity extends ActionBarActivity {
 		 item.put(COUNT, count);
 		 mAdapter.notifyDataSetChanged();
 	}
-		 
+		 */
 		 public void showFragment(int position){
 		 
 		 //Currently selected country

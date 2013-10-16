@@ -1,5 +1,7 @@
 package com.example.nav2;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,6 +10,7 @@ public class Event implements Parcelable {
 	private String eventName;
 	private String eventDate;
 	private String eventTime;
+	private ArrayList<String> eventAttendees;
 	private Location eventLocation;
 	
 	public Event(Parcel p){
@@ -15,18 +18,26 @@ public class Event implements Parcelable {
 		eventName = values.getString("eventName");
 		eventDate = values.getString("eventDate");
 		eventTime = values.getString("eventTime");
+		eventAttendees = values.getStringArrayList("eventAttendees");
 		eventLocation = new Location(values.getString("locationName"),values.getDouble("locationLatitude"),values.getDouble("locationLongitude"));
 	}
 	
-	public Event(String eventName, String eventDate, String eventTime,
+	public Event(String eventName, String eventDate, String eventTime, ArrayList<String> eventAttendees,
 			Location eventLocation) {
 		super();
 		this.eventName = eventName;
 		this.eventDate = eventDate;
 		this.eventTime = eventTime;
+		this.eventAttendees = eventAttendees;
 		this.eventLocation = eventLocation;
 	}
 	
+	public ArrayList<String> getEventAttendees() {
+		return eventAttendees;
+	}
+	public void setEventAttendees(ArrayList<String> eventAttendees) {
+		this.eventAttendees = eventAttendees;
+	}
 	public String getEventName() {
 		return eventName;
 	}
@@ -75,6 +86,7 @@ public class Event implements Parcelable {
 		values.putString("eventName",eventName);
 		values.putString("eventDate", eventDate);
 		values.putString("eventTime", eventTime);
+		values.putStringArrayList("eventAttendees", eventAttendees);
 		values.putString("locationName", eventLocation.getLocationName());
 		values.putDouble("locationLatitude", eventLocation.getLatitude());
 		values.putDouble("locationLogitude", eventLocation.getLongitude());
