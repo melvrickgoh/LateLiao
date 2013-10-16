@@ -67,8 +67,8 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		@Override
 		public void onClick(View v) {
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			DialogFragment timeFragment = new TimeDialogFragment(AddEvent.this);
-			timeFragment.show(ft, "time_dialog");
+			DialogFragment friendsFragment = new FriendsDialogFragment(AddEvent.this);
+			friendsFragment.show(ft, "friends_dialog");
 		}
 		
 	};
