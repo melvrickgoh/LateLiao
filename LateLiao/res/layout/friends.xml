@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    
+    <ImageView
+        android:id="@+id/user_photo"
+        android:layout_alignParentLeft="true"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:adjustViewBounds="true"
+        android:gravity="center_vertical"
+        android:scaleType="centerCrop"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:src="@drawable/wyner" />
+    
+    <TextView
+        android:id="@+id/username"
+        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        android:layout_toRightOf="@id/user_photo"
+        android:layout_alignParentRight="true"
+        
+        android:text="Username"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:textSize="30sp"
+        
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp" />
+ 
+    <TextView
+        android:id="@+id/user_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        android:layout_below="@id/username"
+        android:layout_toRightOf="@id/user_photo"
+        
+        android:text="Level ZZZ"
+        
+        android:textColor="#343434"
+        android:textSize="12sp"
+        android:paddingLeft="10dp" />
+
+</RelativeLayout>
