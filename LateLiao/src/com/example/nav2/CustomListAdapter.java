@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import entity.Event;
 
 public class CustomListAdapter extends BaseAdapter {
 	
@@ -57,7 +56,7 @@ public class CustomListAdapter extends BaseAdapter {
         holder.eventDateView.setText(((Event) listData.get(position)).getEventDate());
         holder.eventTitleView.setText(((Event) listData.get(position)).getEventName());
         holder.eventTimeView.setText("@ " + ((Event) listData.get(position)).getEventTime());
-        holder.eventLocationView.setText(((Event) listData.get(position)).getEventLocation());
+        holder.eventLocationView.setText(((Event) listData.get(position)).getEventLocationName());
         
         holder.eventDateView.setTypeface(agencyRegTF);
         holder.eventTitleView.setTypeface(agencyBoldTF);

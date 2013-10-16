@@ -17,14 +17,19 @@
     <string name="title_details">Details</string>
     <string name="title_maps">Map</string>
     <string name="title_activity_details_fragment">DetailsFragment</string>
+	<string name="add_activity_form_eventName">Event Name</string>
+    <string name="add_activity_form_activityDate">Activity Date</string>
+    <string name="add_activity_form_activityTime">Activity Time</string>
+    <string name="add_activity_form_activityLocation">Activity Location</string>
+    <string name="add_activity_form_friends">Friends</string>
+    <string name="add_activity_form_submit">Run</string>
     
-
     <string-array name="options">
         <item>Janan</item>
         <item>Add Activity</item>
         <item>Logout</item>
     </string-array>
-    
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="hello">Hello</string>
@@ -32,8 +37,12 @@
     <dimen name="count">10dp</dimen>
 
     <string name="title_activity_notification">NotificationActivity</string>
+
     <color name="white">#FFFFFF</color>
     <color name="loginbutton">#A9E2F3</color>
+
     <string-array name="array01"></string-array>
+
+    <string name="title_activity_add_event">AddEvent</string>
 
 </resources>

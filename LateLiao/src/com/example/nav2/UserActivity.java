@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import entity.Event;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -126,28 +125,7 @@ public class UserActivity extends ActionBarActivity  {
  
        
         // Each row in the list stores country name and its status. populate the list with the items
-        //List<HashMap<String,Object>> aList = new ArrayList<HashMap<String,Object>>();
- 
-        //the number of items to be populate must match here or there will be indexoutofbound error
-        /*for(int i=0;i<5;i++){
-            HashMap<String, Object> hm = new HashMap<String,Object>();
-            hm.put("txt", events[i]);
-            hm.put("stat",status[i]);
-            aList.add(hm);
-        }*/
- 
-        // Keys used in Hashmap
-        //String[] there = {"txt","stat" };
- 
-        // Ids of views in listview_layout
- 
-        // Instantiating an adapter to store each items
-        // R.layout.listview_layout defines the layout of each item
-        //SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), aList, R.layout.assignments, there, here);
-        
-        /*set the list to an adapter to mointor any clicks*/
-        //lvAssignments.setAdapter(adapter);
-        
+        //List<HashMap<String,Object>> aList = new ArrayList<HashMap<String,Object>>();        
         
         /*here onwards will be for the sidebar*/
         // Getting an array of country names
@@ -216,7 +194,8 @@ public class UserActivity extends ActionBarActivity  {
 	    	   		
 	    	   	}
 	    	   	else if (position == 1) {
-	    	   		
+	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	                startActivity(intent);
 	    	   		//do something
 	    	   	} else {	
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
@@ -279,11 +258,11 @@ public class UserActivity extends ActionBarActivity  {
 	private ArrayList getListData(){
 		ArrayList events = new ArrayList();
 
-		events.add(new Event("IDP Meeting","18 0ct","0800","SIS GSR 2.1"));
-		events.add(new Event("IDP Lesson","18 0ct","1200","SIS SR 3.4"));
-		events.add(new Event("Dinner with GF","18 0ct","1900","313 @ Somerset"));
-		events.add(new Event("Chinatown Brugge","18 0ct","2300","William's Cafe"));
-		events.add(new Event("The Swansong Feast","13 Nov","0800","Big Steps"));
+		events.add(new Event("IDP Meeting","18 0ct","0800",new Location("SIS GSR 2.1",1.29757,103.84944)));
+		events.add(new Event("IDP Lesson","18 0ct","1200",new Location("SIS SR 3.4",1.29757,103.84944)));
+		events.add(new Event("Dinner with GF","18 0ct","1900",new Location("313 @ Somerset",1.3021,103.8383)));
+		events.add(new Event("Chinatown Brugge","18 0ct","2300",new Location("William's Cafe",1.28216,103.8448)));
+		events.add(new Event("The Swansong Feast","13 Nov","0800",new Location("Big Steps",1.29757,103.84944)));
 		
 		return events;
 	}
