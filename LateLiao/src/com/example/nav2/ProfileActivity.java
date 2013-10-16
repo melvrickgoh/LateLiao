@@ -51,10 +51,10 @@ public class ProfileActivity extends ActionBarActivity {
 	 private LinearLayout mDrawer ;
 	 private List<HashMap<String,String>> mList ;
 	 private SimpleAdapter mAdapter;
-	 final private String COUNTRY = "country";
-	 final private String FLAG = "flag";
-	 final private String COUNT = "count";
-	
+
+	 final private String IMAGEICON = "imageicon";
+	 final private String TABNAME = "tabname";
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,21 +77,22 @@ public class ProfileActivity extends ActionBarActivity {
         // Getting a reference to the sidebar drawer ( Title + ListView )
         mDrawer = ( LinearLayout) findViewById(R.id.drawer);
         
+
         // Each row in the list stores country name, count and flag
         mList = new ArrayList<HashMap<String,String>>();
         for(int i=0;i<3;i++){
 	        HashMap<String, String> hm = new HashMap<String,String>();
-	        hm.put(COUNTRY, mOptions[i]);
-	        hm.put(COUNT, mCount[i]);
-	        hm.put(FLAG, Integer.toString(mLogos[i]) );
+	        hm.put(TABNAME, mOptions[i]);
+	        hm.put(IMAGEICON, Integer.toString(mLogos[i]) );
 	        mList.add(hm);
         }
         
-       // Keys used in Hashmap
-        String[] from = { FLAG,COUNTRY,COUNT };
+
+        // Keys used in Hashmap
+        String[] from = { IMAGEICON,TABNAME };
         
        // Ids of views in listview_layout
-        int[] to = { R.id.flag , R.id.country , R.id.count};
+        int[] to = { R.id.imageicon , R.id.tabname};
         
        // Instantiating an adapter to store each items
         // R.layout.drawer_layout defines the layout of each item
@@ -112,7 +113,7 @@ public class ProfileActivity extends ActionBarActivity {
 	       //** Called when a drawer is opened *//*
 	        public void onDrawerOpened(View drawerView) {
 	        	getSupportActionBar().setTitle("");
-	        	supportInvalidateOptionsMenu();
+	        supportInvalidateOptionsMenu();
 	        }
         };
         
@@ -131,7 +132,8 @@ public class ProfileActivity extends ActionBarActivity {
 	    	   		
 	    	   	}
 	    	   	else if (position == 1) {
-	    	   		
+	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	                startActivity(intent);
 	    	   		//do something
 	    	   	} else {	
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
@@ -166,7 +168,6 @@ public class ProfileActivity extends ActionBarActivity {
 	        	 mDrawerLayout.openDrawer(mDrawer);
 	        }
 	    });*/
-        
 		
 	}
 
