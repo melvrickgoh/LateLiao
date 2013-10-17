@@ -53,7 +53,7 @@
         <activity
             android:name="com.example.nav2.MapActivity"
             android:label="Map"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
             android:name="com.example.nav2.AddEvent"

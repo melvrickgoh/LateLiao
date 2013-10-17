@@ -1,16 +1,12 @@
 package com.example.nav2;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,20 +20,24 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.support.v7.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
-
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
-	
+
 @SuppressLint("NewApi")
 public class MapActivity extends ActionBarActivity {
+	//public static Context appContext;
 	
-	 int mPosition = -1;
+	 //int mPosition = -1;
 	 String mTitle = "";
 	 
 	 // Array of strings storing country names
@@ -51,8 +51,8 @@ public class MapActivity extends ActionBarActivity {
 	 };
 	 
 	// Array of strings to initial counts
-	 String[] mCount = new String[]{
-	 "4", "", "" };
+	 //String[] mCount = new String[]{
+	 //"4", "", "" };
 	 
 	 private DrawerLayout mDrawerLayout;
 	 private ListView mDrawerList;
@@ -69,9 +69,6 @@ public class MapActivity extends ActionBarActivity {
 	 * current tab position.
 	 */
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
-	
-	 Fragment detailsFragment = new DetailsFragment();
-	 Fragment mapFragment = new MapFragment();
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +93,11 @@ public class MapActivity extends ActionBarActivity {
 		//actionBar.addTab(Tab2); 
 		
 		actionBar.addTab(actionBar.newTab().setText(R.string.title_maps)
-				.setTabListener( new TabListener(mapFragment)));
+				.setTabListener( new TabListener<MapFragment>(this, "Map", MapFragment.class)));
 				
 		//For each of the sections in the app, add a tab to the action bar.
 	actionBar.addTab(actionBar.newTab().setText(R.string.title_details)
-		.setTabListener( new TabListener(detailsFragment)));
+		.setTabListener( new TabListener<DetailsFragment>(this, "Details", DetailsFragment.class)));
 	
 	 /*here onwards will be for the sidebar*/
     // Getting an array of country names
@@ -142,14 +139,13 @@ public class MapActivity extends ActionBarActivity {
     
         //** Called when drawer is closed *//*
         public void onDrawerClosed(View view) {
-	        highlightSelectedCountry();
 	        supportInvalidateOptionsMenu();
         }
     
        //** Called when a drawer is opened *//*
         public void onDrawerOpened(View drawerView) {
         	getSupportActionBar().setTitle("SideBar");
-        supportInvalidateOptionsMenu();
+        	supportInvalidateOptionsMenu();
         }
     };
     
@@ -162,20 +158,20 @@ public class MapActivity extends ActionBarActivity {
        @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
         
-    	   	if (position == 0) {
-    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
-                startActivity(intent);
-    	   		
-    	   	}
-    	   	else if (position == 1) {
-    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
-                startActivity(intent);
-                
-    	   	} else {	
-    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-	        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-    	   	}
+    	   if (position == 0) {
+	   	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+	               startActivity(intent);
+	   	   		
+	   	   	}
+	   	   	else if (position == 1) {
+	   	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	               startActivity(intent);
+	   	   		//do something
+	   	   	} else {	
+	   	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	               startActivity(intent);
+	   	   	}
 	        // Increment hit count of the drawer list item
 	        /*incrementHitCount(position);
 	        
@@ -189,6 +185,7 @@ public class MapActivity extends ActionBarActivity {
 	        mDrawerLayout.closeDrawer(mDrawer);
         }
     });
+    
     
     // Enabling Up navigation
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -208,7 +205,64 @@ public class MapActivity extends ActionBarActivity {
 		 
 		
 	}
+	
+	class TabListener<T extends Fragment> implements ActionBar.TabListener {
+   	 
+    	private Fragment mFragment;
+        private final Activity mActivity;
+        private final String mTag;
+        private final Class<T> mClass;
 
+     
+        public TabListener(Activity activity, String tag, Class<T> clz) {
+            // TODO Auto-generated constructor stub
+        	mActivity = activity;
+            mTag = tag;
+            mClass = clz;
+        }
+     
+        /*
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+            // TODO A	uto-generated method stub
+            ft.replace(R.id.container, fragment);
+        }
+     
+        
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+            // TODO Auto-generated method stub
+            ft.remove(fragment);
+        }
+     
+       
+        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+            // TODO Auto-generated method stub
+     
+        }*/
+        @Override
+    	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
+    		// TODO Auto-generated method stub
+    		//Toast.makeText(MapActivity.appContext, "Reselected!", Toast.LENGTH_LONG).show();
+    	}
+        @Override
+    	public void onTabSelected(Tab arg0, FragmentTransaction arg1) {
+    		// Check if the fragment is already initialized
+            if (mFragment == null) {
+                // If not, instantiate and add it to the activity
+                mFragment = Fragment.instantiate(mActivity, mClass.getName());
+               arg1.add(android.R.id.content, mFragment, mTag);
+            } else {
+                // If it exists, simply attach it in order to show it
+            	arg1.attach(mFragment);
+            }
+    	}
+        @Override
+    	public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
+    		 if (mFragment != null) {
+                 // Detach the fragment, because another one is being attached
+    			 arg1.detach(mFragment);
+             }
+    	}
+    }
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		// Restore the previously serialized current tab position.
@@ -256,7 +310,7 @@ public class MapActivity extends ActionBarActivity {
         LayoutInflater inflator = (LayoutInflater) this
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	View v = inflator.inflate(R.layout.custom, null);
-        	android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        	ActionBar actionBar = getActionBar();
 		    actionBar.setDisplayHomeAsUpEnabled(true);
 		    actionBar.setDisplayShowHomeEnabled (false);
 		    actionBar.setDisplayShowCustomEnabled(true);
@@ -267,6 +321,7 @@ public class MapActivity extends ActionBarActivity {
 	}
 	
 	
+	
 	 
 	 @Override
 	 protected void onPostCreate(Bundle savedInstanceState) {
@@ -275,6 +330,7 @@ public class MapActivity extends ActionBarActivity {
 	 
 	 }
 	 
+	    
 	 /*
 	 public void clearCountOnClick(int position) {
 		 HashMap<String, String> item = mList.get(position);
@@ -301,7 +357,7 @@ public class MapActivity extends ActionBarActivity {
 		 item.put(COUNT, count);
 		 mAdapter.notifyDataSetChanged();
 	}
-		 */
+		 
 		 public void showFragment(int position){
 		 
 		 //Currently selected country
@@ -344,7 +400,7 @@ public class MapActivity extends ActionBarActivity {
 		 if(mPosition!=-1)
 		 getSupportActionBar().setTitle(mOptions[mPosition]);
 		 }
-	
+	*/
 }
 		
 	

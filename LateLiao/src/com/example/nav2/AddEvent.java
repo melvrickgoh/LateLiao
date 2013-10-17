@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetListener, OnFriendsEventListener  {
 	Button dateButton;
@@ -67,7 +66,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		@Override
 		public void onClick(View v) {
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			DialogFragment friendsFragment = new FriendsDialogFragment(AddEvent.this);
+			DialogFragment friendsFragment = new FriendsDialogFragment(AddEvent.this,getListData());
 			friendsFragment.show(ft, "friends_dialog");
 		}
 		
@@ -235,5 +234,17 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	private ArrayList getListData(){
+		ArrayList users = new ArrayList();
+
+		users.add(new User("Leon Lee","leon",1,230,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Janan Tan","janan",2,231,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Wyner Lim","wyner",3,232,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Melvrick Goh","melvrick",4,233,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Benjamin","ben",5,235,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Yeow Leong","lyl",5,235,new Location("SIS",1.29757,103.84944)));
+		
+		return users;
 	}
 }

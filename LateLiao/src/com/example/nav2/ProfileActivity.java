@@ -94,7 +94,6 @@ public class ProfileActivity extends ActionBarActivity {
        // Ids of views in listview_layout
         int[] to = { R.id.imageicon , R.id.tabname};
         
-       // Instantiating an adapter to store each items
         // R.layout.drawer_layout defines the layout of each item
         mAdapter = new SimpleAdapter(this, mList, R.layout.drawer_layout, from, to);
         

@@ -1,8 +1,10 @@
 package com.example.nav2;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +54,16 @@ public class CustomUserListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		holder.usernameView.setText(((User) listData.get(position)).getUsername());
-		holder.levelView.setText(((User) listData.get(position)).getLevel());
-		
-		String imageLocation = ((User) listData.get(position)).getImageLocation();
+		User currentUser = (User) listData.get(position);
 				
-		int imageID = context.getResources().getIdentifier("com.example.nav2:drawable/" + imageLocation, null, null);
-		holder.imageView.setImageResource(imageID);
+		holder.usernameView.setText(currentUser.getUsername());
+		holder.levelView.setText("Level " + String.valueOf(currentUser.getLevel()));
+		
+		String imageLocation = currentUser.getImageLocation();
+				
+		int imageID = context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+		
+		holder.imageView.setImageDrawable(context.getResources().getDrawable(imageID));
 		
 		return convertView;
 	}
@@ -68,5 +73,18 @@ public class CustomUserListAdapter extends BaseAdapter {
 		TextView levelView;
 		TextView currentPointsView;
 		ImageView imageView;
+	}
+	
+	private void getListData(){
+		ArrayList users = new ArrayList();
+
+		users.add(new User("Leon Lee","leon.png",1,230,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Janan Tan","janan.png",2,231,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Wyner Lim","wyner.png",3,232,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Melvrick Goh","melvrick.png",4,233,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Benjamin","ben.jpg",5,235,new Location("SIS",1.29757,103.84944)));
+		users.add(new User("Yeow Leong","lyl.jpg",5,235,new Location("SIS",1.29757,103.84944)));
+		
+		listData = users;
 	}
 }

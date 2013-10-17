@@ -111,7 +111,7 @@ public class UserActivity extends ActionBarActivity  {
                 //Toast.makeText(getBaseContext(), (String) hm.get("txt") + " : " + strStatus, Toast.LENGTH_SHORT).show();
                 /*to send to the next activity*/
                 Intent intent = new Intent(getApplicationContext(),MapActivity.class);
-                intent.putExtra("country", (String)eventItem.getEventName());
+                //intent.putExtra("country", (String)eventItem.getEventName());
                 startActivity(intent);
             }
         };
