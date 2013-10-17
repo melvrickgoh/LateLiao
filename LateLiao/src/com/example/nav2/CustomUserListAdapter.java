@@ -2,6 +2,7 @@ package com.example.nav2;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,19 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class CustomUserListAdapter extends BaseAdapter {
 	
 	private ArrayList listData;
 	private LayoutInflater layoutInflater;
 	private Context context;
+	private ArrayList selection;
 	
 	public CustomUserListAdapter(Context context, ArrayList listData){
 		this.listData = listData;
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
+		selection = new ArrayList();
 	}
 
 	@Override
@@ -38,31 +44,57 @@ public class CustomUserListAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
+	
+	public ArrayList getSelection(){
+		return (ArrayList) selection;
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
+		
+		Object item = getItem(position);
+		boolean selected = selection.contains(item);
+		
 		if (convertView == null){
 			convertView = layoutInflater.inflate(R.layout.friends, null);
 			holder = new ViewHolder();
 			holder.usernameView = (TextView) convertView.findViewById(R.id.username);
 			holder.levelView = (TextView) convertView.findViewById(R.id.user_level);
 			holder.imageView = (ImageView) convertView.findViewById(R.id.user_photo);
+			holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
 			
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();
+			
 		}
 		
-		User currentUser = (User) listData.get(position);
+		final User currentUser = (User) listData.get(position);
 				
 		holder.usernameView.setText(currentUser.getUsername());
 		holder.levelView.setText("Level " + String.valueOf(currentUser.getLevel()));
 		
-		String imageLocation = currentUser.getImageLocation();
-				
-		int imageID = context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+		holder.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (selection != null){
+					if (selection != null) {
+				        if (isChecked && !selection.contains(currentUser))
+				          selection.add(currentUser);
+				        else if (!isChecked)
+				          selection.remove(currentUser);
+				      }
+					Log.d("customUserListAdapter","user changers > " + selection.size() );
+				      notifyDataSetChanged();
+				}
+			}
+			
+		});
 		
+		String imageLocation = currentUser.getImageLocation();
+		int imageID = context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
 		holder.imageView.setImageDrawable(context.getResources().getDrawable(imageID));
 		
 		return convertView;
@@ -73,18 +105,37 @@ public class CustomUserListAdapter extends BaseAdapter {
 		TextView levelView;
 		TextView currentPointsView;
 		ImageView imageView;
+		CheckBox checkBox;
 	}
 	
-	private void getListData(){
-		ArrayList users = new ArrayList();
-
-		users.add(new User("Leon Lee","leon.png",1,230,new Location("SIS",1.29757,103.84944)));
-		users.add(new User("Janan Tan","janan.png",2,231,new Location("SIS",1.29757,103.84944)));
-		users.add(new User("Wyner Lim","wyner.png",3,232,new Location("SIS",1.29757,103.84944)));
-		users.add(new User("Melvrick Goh","melvrick.png",4,233,new Location("SIS",1.29757,103.84944)));
-		users.add(new User("Benjamin","ben.jpg",5,235,new Location("SIS",1.29757,103.84944)));
-		users.add(new User("Yeow Leong","lyl.jpg",5,235,new Location("SIS",1.29757,103.84944)));
+	public class ChoiceView extends CheckBox implements OnCheckedChangeListener {
+		private Object object;
 		
-		listData = users;
+		public ChoiceView (Context context, Object object, boolean selected){
+			super(context);
+			this.object = object;
+			setOnCheckedChangeListener(this);
+			setItem(object,selected);
+		}
+		
+		public void setItem (Object object, boolean selected){
+			this.object = object;
+			setChecked(selected);
+			setText(object.toString());
+		}
+		
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (selection != null){
+				if (selection != null) {
+			        if (isChecked && !selection.contains(object))
+			          selection.add(object);
+			        else if (!isChecked)
+			          selection.remove(object);
+			      }
+				Log.d("customUserListAdapter","user changers > " + selection.size() );
+			      notifyDataSetChanged();
+			}
+		}
 	}
 }

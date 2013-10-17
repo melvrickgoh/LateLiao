@@ -44,5 +44,14 @@
         android:textColor="#343434"
         android:textSize="12sp"
         android:paddingLeft="10dp" />
+    
+    <CheckBox 
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        
+        android:paddingTop="20dp"
+        android:paddingRight="10dp" />
 
 </RelativeLayout>

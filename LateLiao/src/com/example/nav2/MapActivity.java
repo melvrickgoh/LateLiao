@@ -139,13 +139,13 @@ public class MapActivity extends ActionBarActivity {
     
         //** Called when drawer is closed *//*
         public void onDrawerClosed(View view) {
-	        supportInvalidateOptionsMenu();
+	        invalidateOptionsMenu();
         }
     
        //** Called when a drawer is opened *//*
         public void onDrawerOpened(View drawerView) {
-        	getSupportActionBar().setTitle("SideBar");
-        	supportInvalidateOptionsMenu();
+        	getActionBar().setTitle("SideBar");
+        	invalidateOptionsMenu();
         }
     };
     
@@ -188,9 +188,9 @@ public class MapActivity extends ActionBarActivity {
     
     
     // Enabling Up navigation
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getActionBar().setDisplayHomeAsUpEnabled(true);
     
-    getSupportActionBar().setDisplayShowHomeEnabled(true);
+    getActionBar().setDisplayShowHomeEnabled(true);
     
    // Setting the adapter to the listView
     mDrawerList.setAdapter(mAdapter);

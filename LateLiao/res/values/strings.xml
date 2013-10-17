@@ -23,6 +23,8 @@
     <string name="add_activity_form_activityLocation">Activity Location</string>
     <string name="add_activity_form_friends">Friends</string>
     <string name="add_activity_form_submit">Run</string>
+    <string name="add_activity_friend_dialog_positive">Enter</string>
+    <string name="add_activity_friend_dialog_negative">Cancel</string>
     
     <string-array name="options">
         <item>Janan</item>

@@ -12,29 +12,30 @@
 <script>
 	
 	    	var map = L.map('map');
-			map.setView([51.505, -0.09], 53);
+			map.setView([1.3534464, 103.87238], 16);
 		
 			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 	    		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	   			 maxZoom: 18
 			}).addTo(map);
 			
+			
 		
 		<!-- Adding a marker-->
-			var marker = L.marker([51.5, -0.09]).addTo(map);
-			
+			var marker = L.marker([1.3534464, 103.87238]).addTo(map);
+			/*
 			<!-- Adding a circle->
 			var circle = L.circle([51.508, -0.11], 500, {
 		    color: 'red',
 		    fillColor: '#f03',
 		    fillOpacity: 0.5
 		}).addTo(map);
-		
+		*/
 		<!-- Showing a POPup->
-		marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-		circle.bindPopup("I am a circle.");
-		polygon.bindPopup("I am a polygon.");
-		
+		marker.bindPopup("<b>Meeting Place</b><br>Serangoon MRT").openPopup();
+		//circle.bindPopup("I am a circle.");
+		//polygon.bindPopup("I am a polygon.");
+		/*
 		<!-- User of Popup-->
 		var popup = L.popup()
 	    .setLatLng([51.5, -0.09])
@@ -57,5 +58,5 @@
 		
 		// zoom the map to the polyline
 		map.fitBounds(polyline.getBounds());
-		
+		*/
 		</script>
