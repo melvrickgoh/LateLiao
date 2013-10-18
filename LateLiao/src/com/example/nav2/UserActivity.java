@@ -259,11 +259,11 @@ public class UserActivity extends ActionBarActivity  {
 		dummyAttendees.add("Wyner Lim");
 		dummyAttendees.add("Ben Gan");
 		
-		events.add(new Event("IDP Meeting","18 0ct","0800", dummyAttendees, new Location("SIS GSR 2.1",1.29757,103.84944)));
-		events.add(new Event("IDP Lesson","18 0ct","1200", dummyAttendees, new Location("SIS SR 3.4",1.29757,103.84944)));
-		events.add(new Event("Dinner with GF","18 0ct","1900", dummyAttendees, new Location("313 @ Somerset",1.3021,103.8383)));
-		events.add(new Event("Chinatown Brugge","18 0ct","2300", dummyAttendees, new Location("William's Cafe",1.28216,103.8448)));
-		events.add(new Event("The Swansong Feast","13 Nov","0800", dummyAttendees, new Location("Big Steps",1.29757,103.84944)));
+		events.add(new Event("IDP Meeting","Fri, 18 0ct 2013","0800", dummyAttendees, new Location("SIS GSR 2.1",1.29757,103.84944)));
+		events.add(new Event("IDP Lesson","Fri, 18 0ct","1200", dummyAttendees, new Location("SIS SR 3.4",1.29757,103.84944)));
+		events.add(new Event("Dinner with GF","Fri, 18 0ct","1900", dummyAttendees, new Location("313 @ Somerset",1.300386800000000000,103.838803999999980000)));
+		events.add(new Event("Chinatown Brugge","Fri, 18 0ct","2300", dummyAttendees, new Location("William's Cafe",1.28216,103.8448)));
+		events.add(new Event("The Swansong Feast","Fri, 13 Nov","0800", dummyAttendees, new Location("Big Steps",1.29757,103.84944)));
 		
 		return events;
 	}
