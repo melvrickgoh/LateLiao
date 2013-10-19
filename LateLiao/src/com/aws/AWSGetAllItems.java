@@ -8,7 +8,7 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 import android.os.AsyncTask;
 
-public class AWSGetAllUsers extends AsyncTask<Object, Void, ScanResult> {
+public class AWSGetAllItems extends AsyncTask<Object, Void, ScanResult> {
 
 	@Override
 	protected ScanResult doInBackground(Object... params) {

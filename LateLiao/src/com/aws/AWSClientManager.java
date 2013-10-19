@@ -18,10 +18,14 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.DescribeTableRequest;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
+import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
 import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
+import com.amazonaws.services.dynamodbv2.model.QueryRequest;
+import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.dynamodbv2.model.TableDescription;
@@ -65,67 +69,34 @@ public class AWSClientManager {
     public boolean hasCredentials() {
         return PropertyLoader.getInstance().hasCredentials();
     }
-    /*
-    public static void main(String[] args) throws Exception {
-        init();
 
-        try {
-            String tableName = "LateLiaoUser";
-            
-            // Add an item
-            Map<String, AttributeValue> item = newItem("Bill & Ted's Excellent Adventure", 1989, "****", "James", "Sara");
-            PutItemRequest putItemRequest = new PutItemRequest(tableName, item);
-            PutItemResult putItemResult = dynamoDB.putItem(putItemRequest);
-            System.out.println("Result: " + putItemResult);
-
-            // Add another item
-            item = newItem("Airplane", 1980, "*****", "James", "Billy Bob");
-            putItemRequest = new PutItemRequest(tableName, item);
-            putItemResult = dynamoDB.putItem(putItemRequest);
-            System.out.println("Result: " + putItemResult);
-
-            // Scan items for movies with a year attribute greater than 1985
-            HashMap<String, Condition> scanFilter = new HashMap<String, Condition>();
-            Condition condition = new Condition()
-                .withComparisonOperator(ComparisonOperator.GT.toString())
-                .withAttributeValueList(new AttributeValue().withN("1985"));
-            scanFilter.put("year", condition);
-            ScanRequest scanRequest = new ScanRequest(tableName).withScanFilter(scanFilter);
-            ScanResult scanResult = dynamoDB.scan(scanRequest);
-            System.out.println("Result: " + scanResult);
-
-        } catch (AmazonServiceException ase) {
-            System.out.println("Caught an AmazonServiceException, which means your request made it "
-                    + "to AWS, but was rejected with an error response for some reason.");
-            System.out.println("Error Message:    " + ase.getMessage());
-            System.out.println("HTTP Status Code: " + ase.getStatusCode());
-            System.out.println("AWS Error Code:   " + ase.getErrorCode());
-            System.out.println("Error Type:       " + ase.getErrorType());
-            System.out.println("Request ID:       " + ase.getRequestId());
-        } catch (AmazonClientException ace) {
-            System.out.println("Caught an AmazonClientException, which means the client encountered "
-                    + "a serious internal problem while trying to communicate with AWS, "
-                    + "such as not being able to access the network.");
-            System.out.println("Error Message: " + ace.getMessage());
-        }
-    }
-    */
     public void addNewLocation(Location l){
     	Map<String, AttributeValue> newLocationDetails = newLocation(l.getLocationName(),l.getLatitude(),l.getLongitude());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoLocation", newLocationDetails);
-        PutItemResult putItemResult = dynamoDB.putItem(putItemRequest);
+    	addItem(putItemRequest);
     }
 
 	public void addNewUser(User u){    	
-    	Map<String, AttributeValue> newUserDetails = newUser(u.getUsername(),u.getImageLocation(),u.getLevel(),u.getCurrentPoints(),u.getCurrentLocation().getLocationName());
+    	Map<String, AttributeValue> newUserDetails = newUser(u.getUsername(),u.getName(),u.getImageLocation(),u.getLevel(),u.getCurrentPoints(),u.getTotalMeetings(),u.getMeetingsLate(),u.getTotalLateTime(),u.getCurrentLocation().getLocationName());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoUser", newUserDetails);
-        PutItemResult putItemResult = dynamoDB.putItem(putItemRequest);
+    	addItem(putItemRequest);
     }
 	
 	public void addNewEvent(Event e){
-		Map<String, AttributeValue> newEventDetails = newEvent(e.getEventName(),e.getEventDate(),e.getEventTime(),e.getEventAttendees(),e.getEventLocation());
+		Map<String, AttributeValue> newEventDetails = newEvent(e.getEventName(),e.getEventDate(),e.getEventMonth(),e.getEventYear(),e.getEventTime(),e.getEventAttendees(),e.getEventLocation());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoEvent", newEventDetails);
-        PutItemResult putItemResult = dynamoDB.putItem(putItemRequest);
+    	addItem(putItemRequest);
+	}
+	
+	private void addItem(PutItemRequest request){
+		AWSPutItem awsPutItem = new AWSPutItem();
+		HashMap<String,Object> param = new HashMap<String,Object>();
+		PutItemResult result = new PutItemResult();
+		
+        param.put("dynamoDB", dynamoDB);
+        param.put("request", request);
+        
+        awsPutItem.execute(param,null,result);
 	}
 
 	public User getUser(String username){
@@ -134,32 +105,166 @@ public class AWSClientManager {
     
         GetItemRequest getItemRequest = new GetItemRequest().withTableName("LateLiaoUser").withKey(key);
         
-        GetItemResult result = dynamoDB.getItem(getItemRequest);
+        GetItemResult result = getItem(getItemRequest);
         Map<String, AttributeValue> map = result.getItem();
-        Log.d("AWSClientManager_getUser","Username > " + map.get("Username").getS());
     
-        User u = new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),new Location("SIS",1.29757,103.84944));
-        return u;
+        return new User(map.get("Username").getS(),map.get("Name").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),Integer.valueOf(map.get("TotalMeetings").getN()),Integer.valueOf(map.get("MeetingsLate").getN()),Double.valueOf(map.get("TotalLateTime").getN()),getLocation(map.get("Location").getS()));
     }
+	
+	public Location getLocation(String locationName){
+    	HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
+        key.put("LocationName", new AttributeValue().withS(locationName));
     
-    public ArrayList<User> getAllUsers(){
+        GetItemRequest getItemRequest = new GetItemRequest().withTableName("LateLiaoLocation").withKey(key);
+        
+        GetItemResult result = getItem(getItemRequest);
+        Map<String, AttributeValue> map = result.getItem();
+    
+        return new Location(map.get("LocationName").getS(),Double.valueOf(map.get("Latitude").getN()),Double.valueOf(map.get("Longitude").getN()));
+	}
+	
+	public Event getEvent (String eventName){
+		HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
+        key.put("EventName", new AttributeValue().withS(eventName));
+    
+        GetItemRequest getItemRequest = new GetItemRequest().withTableName("LateLiaoEvent").withKey(key);
+        
+        GetItemResult result = getItem(getItemRequest);
+        Map<String, AttributeValue> map = result.getItem();
+    
+        return new Event(map.get("EventName").getS(),Integer.valueOf(map.get("EventDate").getN()),Integer.valueOf(map.get("EventMonth").getN()),Integer.valueOf(map.get("EventYear").getN()),map.get("EventTime").getS(),new ArrayList<String>(map.get("EventAttendees").getSS()),getLocation(map.get("EventLocation").getS()));
+	}
+	
+	private GetItemResult getItem (GetItemRequest request){
+		AWSGetItem awsGetItem = new AWSGetItem();
+		
+		HashMap<String,Object> param = new HashMap<String,Object>();
+		GetItemResult result = new GetItemResult();
+		
+        param.put("dynamoDB", dynamoDB);
+        param.put("request", request);
+        
+        AsyncTask<Object,Void,GetItemResult> asyncResult = awsGetItem.execute(param,null,result);
+        
+        try {
+        	result = asyncResult.get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+        return result;
+	}
+    
+	public ArrayList<User> getAllUsers(){
     	ArrayList<User> users = new ArrayList<User>();
+    	List<Map<String, AttributeValue>> rows = getAllItems("LateLiaoUser");
+    	
+    	for(Map<String, AttributeValue> map : rows){
+            try{
+            	users.add(new User(map.get("Username").getS(),map.get("Name").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),Integer.valueOf(map.get("TotalMeetings").getN()),Integer.valueOf(map.get("MeetingsLate").getN()),Double.valueOf(map.get("TotalLateTime").getN()),getLocation(map.get("Location").getS())));
+            } catch (NumberFormatException e){
+                Log.d("AWSClientManager_getAllUsers",e.getMessage());
+            }
+        }
+    	
+    	return users;
+	}
+	
+	public ArrayList<Location> getAllLocations(){
+    	List<Map<String, AttributeValue>> rows = getAllItems("LateLiaoLocation");
+    	
+    	return convertQueryResultsToLocations(rows);
+	}
+	
+	private ArrayList<Location> convertQueryResultsToLocations(List<Map<String, AttributeValue>> rows){
+		ArrayList<Location> locations = new ArrayList<Location>();
+		
+		for(Map<String, AttributeValue> map : rows){
+            try{
+            	locations.add(new Location(map.get("LocationName").getS(),Double.valueOf(map.get("Latitude").getN()),Double.valueOf(map.get("Longitude").getN())));
+            } catch (NumberFormatException e){
+                Log.d("AWSClientManager_getAllLocations",e.getMessage());
+            }
+        }
+		
+		return locations;
+	}
+	
+	public ArrayList<Event> getAllEvents(){
+    	List<Map<String, AttributeValue>> rows = getAllItems("LateLiaoEvent");
+    	
+    	return convertQueryResultsToEvents(rows);
+	}
+	
+	public ArrayList<Event> getFilteredEvents(String username){
+		Map keyConditions = new HashMap();
+		
+		Condition userCondition = new Condition()
+			.withComparisonOperator(ComparisonOperator.EQ.toString())
+			.withAttributeValueList(new AttributeValue().withS(username));
+		keyConditions.put("EventAttendees", userCondition);
+		
+		List<Map<String, AttributeValue>> rows = getFilteredQueryResult("LateLiaoEvent", keyConditions);
+		
+		return convertQueryResultsToEvents(rows);
+	}
+	
+	private ArrayList<Event> convertQueryResultsToEvents(List<Map<String, AttributeValue>> rows){
+		ArrayList<Event> events = new ArrayList<Event>();
+		
+		for(Map<String, AttributeValue> map : rows){
+            try{
+            	events.add(new Event(map.get("EventName").getS(),Integer.valueOf(map.get("EventDate").getN()),Integer.valueOf(map.get("EventMonth").getN()),Integer.valueOf(map.get("EventYear").getN()),map.get("EventTime").getS(),new ArrayList<String>(map.get("EventAttendees").getSS()),getLocation(map.get("EventLocation").getS())));
+            } catch (NumberFormatException e){
+                Log.d("AWSClientManager_getAllEvents",e.getMessage());
+            }
+        }
+		
+		return events;
+	}
+	
+	private List<Map<String, AttributeValue>> getFilteredQueryResult(String tableName, Map keyConditions){
+		QueryResult result = null;
+    	AsyncTask<Object, Void, QueryResult> asyncResult = null;
+    	
+	        QueryRequest req = new QueryRequest()
+	        	.withTableName(tableName)
+	        	.withKeyConditions(keyConditions);
+	        
+	        AWSQueryFilterResults awsQueryFilterResults = new AWSQueryFilterResults();
+	         
+	        HashMap<String,Object> param = new HashMap<String,Object>();
+	        param.put("dynamoDB", dynamoDB);
+	        param.put("request", req);
+	        asyncResult = awsQueryFilterResults.execute(param,null,result);
+	        try {
+				result = asyncResult.get();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ExecutionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	    List<Map<String, AttributeValue>> rows = result.getItems();
+            
+	    return rows;
+	}
+	
+	public List<Map<String, AttributeValue>> getAllItems(String tableName){
     	ScanResult result = null;
     	AsyncTask<Object, Void, ScanResult> asyncResult = null;
-    	do{
+
             ScanRequest req = new ScanRequest();
-            req.setTableName("LateLiaoUser");
-     
-            if(result != null){
-                req.setExclusiveStartKey(result.getLastEvaluatedKey());
-            }
+            req.setTableName(tableName);
             
-            AWSGetAllUsers awsAllUsers = new AWSGetAllUsers();
+            AWSGetAllItems awsAllItems = new AWSGetAllItems();
              
             HashMap<String,Object> param = new HashMap<String,Object>();
             param.put("dynamoDB", dynamoDB);
             param.put("request", req);
-            asyncResult = awsAllUsers.execute(param,null,result);
+            asyncResult = awsAllItems.execute(param,null,result);
             try {
 				result = asyncResult.get();
 			} catch (InterruptedException e1) {
@@ -171,34 +276,41 @@ public class AWSClientManager {
 			}
      
             List<Map<String, AttributeValue>> rows = result.getItems();
-     
-            for(Map<String, AttributeValue> map : rows){
-                try{
-                    users.add(new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),new Location("SIS",1.29757,103.84944)));
-                } catch (NumberFormatException e){
-                    Log.d("AWSClientManager_getAllUsers",e.getMessage());
-                }
-            }
-        } while(result.getLastEvaluatedKey() != null);
-    	
-    	return users;
+            
+         return rows;
     }
     
-    public boolean checkItemExists(String tableName,String hashKey, String hashKeyValue){
+    public boolean checkUserExists(String username){
+    	return checkItemExists("LateLiaoUser","Username",username);
+    }
+    
+    public boolean checkEventExists(String eventName){
+    	return checkItemExists("LateLiaoEvent","EventName",eventName);
+    }
+    
+    public boolean checkLocationExists(String locationName){
+    	return checkItemExists("LateLiaoLocation","LocationName",locationName);
+    }
+    
+    private boolean checkItemExists(String tableName,String hashKey, String hashKeyValue){
     	HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
         key.put(hashKey, new AttributeValue().withS(hashKeyValue));
     	
-    	GetItemResult result =  dynamoDB.getItem(new GetItemRequest().withTableName(tableName).withKey(key));
+    	GetItemResult result =  getItem(new GetItemRequest().withTableName(tableName).withKey(key));
     		
     	return (result.getItem() != null);
     }
     
-    private Map<String, AttributeValue> newUser(String username, String imageName, int level, int currentPoints, String locationName) {
+    private Map<String, AttributeValue> newUser(String username, String name, String imageName, int level, int currentPoints, int totalMeetings, int meetingsLate, double totalLateTime, String locationName) {
         Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
         item.put("Username", new AttributeValue().withS(username));
+        item.put("Name", new AttributeValue().withS(name));
         item.put("ImageLocation", new AttributeValue().withS(imageName));
         item.put("Level", new AttributeValue().withN(String.valueOf(level)));
         item.put("CurrentPoints", new AttributeValue().withN(String.valueOf(currentPoints)));
+        item.put("TotalMeetings", new AttributeValue().withN(String.valueOf(totalMeetings)));
+        item.put("MeetingsLate", new AttributeValue().withN(String.valueOf(meetingsLate)));
+        item.put("TotalLateTime", new AttributeValue().withN(String.valueOf(totalLateTime)));
         item.put("Location", new AttributeValue().withS(locationName));
         return item;
     }
@@ -211,13 +323,20 @@ public class AWSClientManager {
     	return item;
 	}
     
-    private Map<String, AttributeValue> newEvent(String eventName, String eventDate, String eventTime, ArrayList<String> eventAttendees, Location eventLocation) {
+    private Map<String, AttributeValue> newEvent(String eventName, int eventDate, int eventMonth, int eventYear, String eventTime, ArrayList<String> eventAttendees, Location eventLocation) {
     	Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
-    	
+    	item.put("EventName", new AttributeValue().withS(eventName));
+    	item.put("EventDate", new AttributeValue().withN(String.valueOf(eventDate)));
+    	item.put("EventMonth", new AttributeValue().withN(String.valueOf(eventMonth)));
+    	item.put("EventYear", new AttributeValue().withN(String.valueOf(eventYear)));
+    	item.put("EventTime", new AttributeValue().withS(eventTime));
+    	item.put("EventAttendees", new AttributeValue().withSS(eventAttendees));
+    	item.put("EventLocation", new AttributeValue().withS(eventLocation.getLocationName()));
     	return item;
 	}
     
-    private void waitForTableToBecomeAvailable(String tableName) {
+    @SuppressWarnings("unused")
+	private void waitForTableToBecomeAvailable(String tableName) {
         System.out.println("Waiting for " + tableName + " to become ACTIVE...");
 
         long startTime = System.currentTimeMillis();
