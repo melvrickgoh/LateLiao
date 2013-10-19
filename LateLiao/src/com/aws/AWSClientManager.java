@@ -113,19 +113,30 @@ public class AWSClientManager {
     public void addNewLocation(Location l){
     	Map<String, AttributeValue> newLocationDetails = newLocation(l.getLocationName(),l.getLatitude(),l.getLongitude());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoLocation", newLocationDetails);
-        PutItemResult putItemResult = dynamoDB.putItem(putItemRequest);
+    	addItem(putItemRequest);
     }
 
 	public void addNewUser(User u){    	
     	Map<String, AttributeValue> newUserDetails = newUser(u.getUsername(),u.getImageLocation(),u.getLevel(),u.getCurrentPoints(),u.getCurrentLocation().getLocationName());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoUser", newUserDetails);
-        PutItemResult putItemResult = dynamoDB.putItem(putItemRequest);
+    	addItem(putItemRequest);
     }
 	
 	public void addNewEvent(Event e){
 		Map<String, AttributeValue> newEventDetails = newEvent(e.getEventName(),e.getEventDate(),e.getEventTime(),e.getEventAttendees(),e.getEventLocation());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoEvent", newEventDetails);
-        PutItemResult putItemResult = dynamoDB.putItem(putItemRequest);
+    	addItem(putItemRequest);
+	}
+	
+	private void addItem(PutItemRequest request){
+		AWSPutItem awsPutItem = new AWSPutItem();
+		HashMap<String,Object> param = new HashMap<String,Object>();
+		PutItemResult result = new PutItemResult();
+		
+        param.put("dynamoDB", dynamoDB);
+        param.put("request", request);
+        
+        awsPutItem.execute(param,null,result);
 	}
 
 	public User getUser(String username){
@@ -134,13 +145,56 @@ public class AWSClientManager {
     
         GetItemRequest getItemRequest = new GetItemRequest().withTableName("LateLiaoUser").withKey(key);
         
-        GetItemResult result = dynamoDB.getItem(getItemRequest);
+        GetItemResult result = getItem(getItemRequest);
         Map<String, AttributeValue> map = result.getItem();
-        Log.d("AWSClientManager_getUser","Username > " + map.get("Username").getS());
     
-        User u = new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),new Location("SIS",1.29757,103.84944));
-        return u;
+        return new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),new Location("SIS",1.29757,103.84944));
     }
+	
+	public Location getLocation(String locationName){
+    	HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
+        key.put("LocationName", new AttributeValue().withS(locationName));
+    
+        GetItemRequest getItemRequest = new GetItemRequest().withTableName("LateLiaoLocation").withKey(key);
+        
+        GetItemResult result = getItem(getItemRequest);
+        Map<String, AttributeValue> map = result.getItem();
+    
+        return new Location(map.get("LocationName").getS(),Double.valueOf(map.get("Latitude").getN()),Double.valueOf(map.get("Longitude").getN()));
+	}
+	
+	public Event getEvent (String eventName){
+		HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
+        key.put("EventName", new AttributeValue().withS(eventName));
+    
+        GetItemRequest getItemRequest = new GetItemRequest().withTableName("LateLiaoEvent").withKey(key);
+        
+        GetItemResult result = getItem(getItemRequest);
+        Map<String, AttributeValue> map = result.getItem();
+    
+        return new Event(map.get("EventName").getS(),map.get("EventDate").getS(),map.get("EventTime").getS(),new ArrayList<String>(map.get("EventAttendees").getSS()),getLocation(map.get("EventLocation").getS()));
+	}
+	
+	private GetItemResult getItem (GetItemRequest request){
+		AWSGetItem awsGetItem = new AWSGetItem();
+		
+		HashMap<String,Object> param = new HashMap<String,Object>();
+		GetItemResult result = new GetItemResult();
+		
+        param.put("dynamoDB", dynamoDB);
+        param.put("request", request);
+        
+        AsyncTask<Object,Void,GetItemResult> asyncResult = awsGetItem.execute(param,null,result);
+        
+        try {
+        	result = asyncResult.get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+        return result;
+	}
     
     public ArrayList<User> getAllUsers(){
     	ArrayList<User> users = new ArrayList<User>();
@@ -184,11 +238,23 @@ public class AWSClientManager {
     	return users;
     }
     
-    public boolean checkItemExists(String tableName,String hashKey, String hashKeyValue){
+    public boolean checkUserExists(String username){
+    	return checkItemExists("LateLiaoUser","Username",username);
+    }
+    
+    public boolean checkEventExists(String eventName){
+    	return checkItemExists("LateLiaoEvent","EventName",eventName);
+    }
+    
+    public boolean checkLocationExists(String locationName){
+    	return checkItemExists("LateLiaoLocation","LocationName",locationName);
+    }
+    
+    private boolean checkItemExists(String tableName,String hashKey, String hashKeyValue){
     	HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
         key.put(hashKey, new AttributeValue().withS(hashKeyValue));
     	
-    	GetItemResult result =  dynamoDB.getItem(new GetItemRequest().withTableName(tableName).withKey(key));
+    	GetItemResult result =  getItem(new GetItemRequest().withTableName(tableName).withKey(key));
     		
     	return (result.getItem() != null);
     }
@@ -213,11 +279,16 @@ public class AWSClientManager {
     
     private Map<String, AttributeValue> newEvent(String eventName, String eventDate, String eventTime, ArrayList<String> eventAttendees, Location eventLocation) {
     	Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
-    	
+    	item.put("EventName", new AttributeValue().withS(eventName));
+    	item.put("EventDate", new AttributeValue().withS(eventDate));
+    	item.put("EventTime", new AttributeValue().withS(eventTime));
+    	item.put("EventAttendees", new AttributeValue().withSS(eventAttendees));
+    	item.put("EventLocation", new AttributeValue().withS(eventLocation.getLocationName()));
     	return item;
 	}
     
-    private void waitForTableToBecomeAvailable(String tableName) {
+    @SuppressWarnings("unused")
+	private void waitForTableToBecomeAvailable(String tableName) {
         System.out.println("Waiting for " + tableName + " to become ACTIVE...");
 
         long startTime = System.currentTimeMillis();
