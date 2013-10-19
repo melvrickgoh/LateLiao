@@ -8,7 +8,9 @@ import android.os.Parcelable;
 
 public class Event implements Parcelable {
 	private String eventName;
-	private String eventDate;
+	private int eventDate;
+	private int eventMonth;
+	private int eventYear;
 	private String eventTime;
 	private ArrayList<String> eventAttendees;
 	private Location eventLocation;
@@ -16,17 +18,21 @@ public class Event implements Parcelable {
 	public Event(Parcel p){
 		Bundle values = p.readBundle();
 		eventName = values.getString("eventName");
-		eventDate = values.getString("eventDate");
+		eventDate = values.getInt("eventDate");
+		eventMonth = values.getInt("eventMonth");
+		eventYear = values.getInt("eventYear");
 		eventTime = values.getString("eventTime");
 		eventAttendees = values.getStringArrayList("eventAttendees");
 		eventLocation = new Location(values.getString("locationName"),values.getDouble("locationLatitude"),values.getDouble("locationLongitude"));
 	}
 	
-	public Event(String eventName, String eventDate, String eventTime, ArrayList<String> eventAttendees,
+	public Event(String eventName, int eventDate, int eventMonth, int eventYear, String eventTime, ArrayList<String> eventAttendees,
 			Location eventLocation) {
 		super();
 		this.eventName = eventName;
 		this.eventDate = eventDate;
+		this.eventMonth = eventMonth;
+		this.eventYear = eventYear;
 		this.eventTime = eventTime;
 		this.eventAttendees = eventAttendees;
 		this.eventLocation = eventLocation;
@@ -45,13 +51,28 @@ public class Event implements Parcelable {
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-	
-	public String getEventDate() {
+
+	public int getEventDate() {
 		return eventDate;
 	}
 	
-	public void setEventDate(String eventDate) {
+	public void setEventDate(int eventDate) {
 		this.eventDate = eventDate;
+	}
+	
+	public int getEventMonth() {
+		return eventMonth;
+	}
+	
+	public void setEventMonth(int eventMonth) {
+		this.eventMonth = eventMonth;
+	}
+	public int getEventYear() {
+		return eventYear;
+	}
+	
+	public void setEventYear(int eventYear) {
+		this.eventYear = eventYear;
 	}
 	
 	public String getEventTime() {
@@ -84,7 +105,9 @@ public class Event implements Parcelable {
 	public void writeToParcel(Parcel out, int flags) {
 		Bundle values = new Bundle();
 		values.putString("eventName",eventName);
-		values.putString("eventDate", eventDate);
+		values.putInt("eventDate", eventDate);
+		values.putInt("eventMonth", eventMonth);
+		values.putInt("eventYear", eventYear);
 		values.putString("eventTime", eventTime);
 		values.putStringArrayList("eventAttendees", eventAttendees);
 		values.putString("locationName", eventLocation.getLocationName());

@@ -123,7 +123,7 @@ public class AWSClientManager {
     }
 	
 	public void addNewEvent(Event e){
-		Map<String, AttributeValue> newEventDetails = newEvent(e.getEventName(),e.getEventDate(),e.getEventTime(),e.getEventAttendees(),e.getEventLocation());
+		Map<String, AttributeValue> newEventDetails = newEvent(e.getEventName(),e.getEventDate(),e.getEventMonth(),e.getEventYear(),e.getEventTime(),e.getEventAttendees(),e.getEventLocation());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoEvent", newEventDetails);
     	addItem(putItemRequest);
 	}
@@ -172,7 +172,7 @@ public class AWSClientManager {
         GetItemResult result = getItem(getItemRequest);
         Map<String, AttributeValue> map = result.getItem();
     
-        return new Event(map.get("EventName").getS(),map.get("EventDate").getS(),map.get("EventTime").getS(),new ArrayList<String>(map.get("EventAttendees").getSS()),getLocation(map.get("EventLocation").getS()));
+        return new Event(map.get("EventName").getS(),Integer.valueOf(map.get("EventDate").getN()),Integer.valueOf(map.get("EventMonth").getN()),Integer.valueOf(map.get("EventYear").getN()),map.get("EventTime").getS(),new ArrayList<String>(map.get("EventAttendees").getSS()),getLocation(map.get("EventLocation").getS()));
 	}
 	
 	private GetItemResult getItem (GetItemRequest request){
@@ -196,7 +196,80 @@ public class AWSClientManager {
         return result;
 	}
     
-    public ArrayList<User> getAllUsers(){
+	public ArrayList<User> getAllUsers(){
+    	ArrayList<User> users = new ArrayList<User>();
+    	List<Map<String, AttributeValue>> rows = getAllItems("LateLiaoUser");
+    	
+    	for(Map<String, AttributeValue> map : rows){
+            try{
+            	users.add(new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),getLocation(map.get("Location").getS())));
+            } catch (NumberFormatException e){
+                Log.d("AWSClientManager_getAllUsers",e.getMessage());
+            }
+        }
+    	
+    	return users;
+	}
+	
+	public ArrayList<Location> getAllLocations(){
+    	ArrayList<Location> locations = new ArrayList<Location>();
+    	List<Map<String, AttributeValue>> rows = getAllItems("LateLiaoLocation");
+    	
+    	for(Map<String, AttributeValue> map : rows){
+            try{
+            	locations.add(new Location(map.get("LocationName").getS(),Double.valueOf(map.get("Latitude").getN()),Double.valueOf(map.get("Longitude").getN())));
+            } catch (NumberFormatException e){
+                Log.d("AWSClientManager_getAllLocations",e.getMessage());
+            }
+        }
+    	
+    	return locations;
+	}
+	
+	public ArrayList<Event> getAllEvents(){
+    	ArrayList<Event> events = new ArrayList<Event>();
+    	List<Map<String, AttributeValue>> rows = getAllItems("LateLiaoEvent");
+    	
+    	for(Map<String, AttributeValue> map : rows){
+            try{
+            	events.add(new Event(map.get("EventName").getS(),Integer.valueOf(map.get("EventDate").getN()),Integer.valueOf(map.get("EventMonth").getN()),Integer.valueOf(map.get("EventYear").getN()),map.get("EventTime").getS(),new ArrayList<String>(map.get("EventAttendees").getSS()),getLocation(map.get("EventLocation").getS())));
+            } catch (NumberFormatException e){
+                Log.d("AWSClientManager_getAllEvents",e.getMessage());
+            }
+        }
+    	
+    	return events;
+	}
+	
+	public List<Map<String, AttributeValue>> getAllItems(String tableName){
+    	ScanResult result = null;
+    	AsyncTask<Object, Void, ScanResult> asyncResult = null;
+
+            ScanRequest req = new ScanRequest();
+            req.setTableName(tableName);
+            
+            AWSGetAllItems awsAllItems = new AWSGetAllItems();
+             
+            HashMap<String,Object> param = new HashMap<String,Object>();
+            param.put("dynamoDB", dynamoDB);
+            param.put("request", req);
+            asyncResult = awsAllItems.execute(param,null,result);
+            try {
+				result = asyncResult.get();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ExecutionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+     
+            List<Map<String, AttributeValue>> rows = result.getItems();
+            
+         return rows;
+    }
+	
+    public ArrayList<User> getUsers(){
     	ArrayList<User> users = new ArrayList<User>();
     	ScanResult result = null;
     	AsyncTask<Object, Void, ScanResult> asyncResult = null;
@@ -208,7 +281,7 @@ public class AWSClientManager {
                 req.setExclusiveStartKey(result.getLastEvaluatedKey());
             }
             
-            AWSGetAllUsers awsAllUsers = new AWSGetAllUsers();
+            AWSGetAllItems awsAllUsers = new AWSGetAllItems();
              
             HashMap<String,Object> param = new HashMap<String,Object>();
             param.put("dynamoDB", dynamoDB);
@@ -228,7 +301,7 @@ public class AWSClientManager {
      
             for(Map<String, AttributeValue> map : rows){
                 try{
-                    users.add(new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),new Location("SIS",1.29757,103.84944)));
+                    users.add(new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),getLocation(map.get("EventLocation").getS())));
                 } catch (NumberFormatException e){
                     Log.d("AWSClientManager_getAllUsers",e.getMessage());
                 }
@@ -277,10 +350,12 @@ public class AWSClientManager {
     	return item;
 	}
     
-    private Map<String, AttributeValue> newEvent(String eventName, String eventDate, String eventTime, ArrayList<String> eventAttendees, Location eventLocation) {
+    private Map<String, AttributeValue> newEvent(String eventName, int eventDate, int eventMonth, int eventYear, String eventTime, ArrayList<String> eventAttendees, Location eventLocation) {
     	Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
     	item.put("EventName", new AttributeValue().withS(eventName));
-    	item.put("EventDate", new AttributeValue().withS(eventDate));
+    	item.put("EventDate", new AttributeValue().withN(String.valueOf(eventDate)));
+    	item.put("EventMonth", new AttributeValue().withN(String.valueOf(eventMonth)));
+    	item.put("EventYear", new AttributeValue().withN(String.valueOf(eventYear)));
     	item.put("EventTime", new AttributeValue().withS(eventTime));
     	item.put("EventAttendees", new AttributeValue().withSS(eventAttendees));
     	item.put("EventLocation", new AttributeValue().withS(eventLocation.getLocationName()));
