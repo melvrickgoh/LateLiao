@@ -11,9 +11,9 @@ import java.net.URL;
 
 //delete this if you want the other http client to run
 
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.util.HttpURLConnection;
+//import org.apache.commons.httpclient.HttpStatus;
+//import org.apache.commons.httpclient.methods.GetMethod;
+//import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.apache.http.client.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -308,7 +308,7 @@ public class MainActivity<MotionEvent> extends Activity {
 		br.close();
 		return line;
 	}	*/
-	
+	/*
 	private String connectToServerAndReadData(String username, String pw) {
 		
 		String returnResult = "";
@@ -351,5 +351,5 @@ public class MainActivity<MotionEvent> extends Activity {
 	         return returnResult;
 
 	}
-
+	*/
 }

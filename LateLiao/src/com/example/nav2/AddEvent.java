@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import com.aws.AWSClientManager;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -236,6 +238,8 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		return super.onOptionsItemSelected(item);
 	}
 	private ArrayList getListData(){
+		AWSClientManager aws = AWSClientManager.getInstance();
+		/*
 		ArrayList users = new ArrayList();
 
 		users.add(new User("Leon Lee","leon",1,230,new Location("SIS",1.29757,103.84944)));
@@ -244,7 +248,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		users.add(new User("Melvrick Goh","melvrick",4,233,new Location("SIS",1.29757,103.84944)));
 		users.add(new User("Benjamin","ben",5,235,new Location("SIS",1.29757,103.84944)));
 		users.add(new User("Yeow Leong","lyl",5,235,new Location("SIS",1.29757,103.84944)));
-		
-		return users;
+		*/
+		return aws.getAllUsers();
 	}
 }
