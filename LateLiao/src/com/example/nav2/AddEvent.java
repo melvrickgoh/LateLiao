@@ -36,6 +36,7 @@ import android.widget.TimePicker;
 public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetListener, OnFriendsEventListener  {
 	Button dateButton;
 	Button timeButton;
+	Button locationButton;
 	Button friendsButton;
 	
 	@Override
@@ -57,6 +58,8 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		//Set Time Button Listener
 		timeButton = (Button)findViewById(R.id.buttonSelectTime);
 		timeButton.setOnClickListener(timeButtonListener);
+		
+		//locationButton = (Button)finViewById(R.id.)
 		
 		//Set Friends Button Listener
 		friendsButton = (Button)findViewById(R.id.buttonSelectFriends);
@@ -108,7 +111,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 			DialogFragment dateFragment = new DateDialogFragment(AddEvent.this);
 			dateFragment.show(ft, "date_dialog");
 		}
-		
+	
 	};
 	
 	@Override

@@ -35,9 +35,7 @@ import android.content.Intent;
 
 @SuppressLint("NewApi")
 public class MapActivity extends ActionBarActivity {
-	//public static Context appContext;
-	
-	 //int mPosition = -1;
+
 	 String mTitle = "";
 	 
 	 // Array of strings storing country names
@@ -45,7 +43,7 @@ public class MapActivity extends ActionBarActivity {
 	 
 	 // Array of integers points to images stored in /res/drawable-ldpi/
 	 int[] mLogos = new int[]{
-		 R.drawable.user,
+		R.drawable.user,
 		R.drawable.add_event,
 		R.drawable.logout
 	 };
