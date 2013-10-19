@@ -2,8 +2,9 @@ package com.example.nav2;
 
 import java.util.ArrayList;
 
+import android.support.v4.app.Fragment;
+
 import android.os.Bundle;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;

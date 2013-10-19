@@ -3,24 +3,16 @@ package com.example.nav2;
 
 //import com.google.android.gms.maps.GoogleMap;
 
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.support.v4.app.Fragment;
+
 import android.os.Bundle;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 
 public class MapFragment extends Fragment {
