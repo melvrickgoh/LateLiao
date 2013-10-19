@@ -52,8 +52,8 @@ public class CustomListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        
-        holder.eventDateView.setText(((Event) listData.get(position)).getEventDate());
+
+        holder.eventDateView.setText(((Event) listData.get(position)).getEventDate() + "");
         holder.eventTitleView.setText(((Event) listData.get(position)).getEventName());
         holder.eventTimeView.setText("@ " + ((Event) listData.get(position)).getEventTime());
         holder.eventLocationView.setText(((Event) listData.get(position)).getEventLocationName());

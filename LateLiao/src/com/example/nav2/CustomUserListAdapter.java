@@ -72,7 +72,7 @@ public class CustomUserListAdapter extends BaseAdapter {
 		
 		final User currentUser = (User) listData.get(position);
 				
-		holder.usernameView.setText(currentUser.getUsername());
+		holder.usernameView.setText(currentUser.getName());
 		holder.levelView.setText("Level " + String.valueOf(currentUser.getLevel()));
 		
 		holder.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){

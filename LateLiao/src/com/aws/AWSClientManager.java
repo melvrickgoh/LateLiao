@@ -77,7 +77,7 @@ public class AWSClientManager {
     }
 
 	public void addNewUser(User u){    	
-    	Map<String, AttributeValue> newUserDetails = newUser(u.getUsername(),u.getImageLocation(),u.getLevel(),u.getCurrentPoints(),u.getCurrentLocation().getLocationName());
+    	Map<String, AttributeValue> newUserDetails = newUser(u.getUsername(),u.getName(),u.getImageLocation(),u.getLevel(),u.getCurrentPoints(),u.getTotalMeetings(),u.getMeetingsLate(),u.getTotalLateTime(),u.getCurrentLocation().getLocationName());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoUser", newUserDetails);
     	addItem(putItemRequest);
     }
@@ -108,7 +108,7 @@ public class AWSClientManager {
         GetItemResult result = getItem(getItemRequest);
         Map<String, AttributeValue> map = result.getItem();
     
-        return new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),new Location("SIS",1.29757,103.84944));
+        return new User(map.get("Username").getS(),map.get("Name").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),Integer.valueOf(map.get("TotalMeetings").getN()),Integer.valueOf(map.get("MeetingsLate").getN()),Double.valueOf(map.get("TotalLateTime").getN()),getLocation(map.get("Location").getS()));
     }
 	
 	public Location getLocation(String locationName){
@@ -162,7 +162,7 @@ public class AWSClientManager {
     	
     	for(Map<String, AttributeValue> map : rows){
             try{
-            	users.add(new User(map.get("Username").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),getLocation(map.get("Location").getS())));
+            	users.add(new User(map.get("Username").getS(),map.get("Name").getS(),map.get("ImageLocation").getS(),Integer.valueOf(map.get("Level").getN()),Integer.valueOf(map.get("CurrentPoints").getN()),Integer.valueOf(map.get("TotalMeetings").getN()),Integer.valueOf(map.get("MeetingsLate").getN()),Double.valueOf(map.get("TotalLateTime").getN()),getLocation(map.get("Location").getS())));
             } catch (NumberFormatException e){
                 Log.d("AWSClientManager_getAllUsers",e.getMessage());
             }
@@ -301,12 +301,16 @@ public class AWSClientManager {
     	return (result.getItem() != null);
     }
     
-    private Map<String, AttributeValue> newUser(String username, String imageName, int level, int currentPoints, String locationName) {
+    private Map<String, AttributeValue> newUser(String username, String name, String imageName, int level, int currentPoints, int totalMeetings, int meetingsLate, double totalLateTime, String locationName) {
         Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
         item.put("Username", new AttributeValue().withS(username));
+        item.put("Name", new AttributeValue().withS(name));
         item.put("ImageLocation", new AttributeValue().withS(imageName));
         item.put("Level", new AttributeValue().withN(String.valueOf(level)));
         item.put("CurrentPoints", new AttributeValue().withN(String.valueOf(currentPoints)));
+        item.put("TotalMeetings", new AttributeValue().withN(String.valueOf(totalMeetings)));
+        item.put("MeetingsLate", new AttributeValue().withN(String.valueOf(meetingsLate)));
+        item.put("TotalLateTime", new AttributeValue().withN(String.valueOf(totalLateTime)));
         item.put("Location", new AttributeValue().withS(locationName));
         return item;
     }

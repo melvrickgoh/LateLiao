@@ -46,7 +46,7 @@ public class FriendsDialogFragment extends DialogFragment {
 						Log.d("friendsDialogFragment","users selected size >> " + users.size());
 						String usergroups = "";
 						for (int i = 0; i<users.size(); i++){
-							usergroups+= (users.get(i)).getUsername() + ", ";
+							usergroups+= (users.get(i)).getName() + ", ";
 						}
 						friendsButton.setText(usergroups);
 					}

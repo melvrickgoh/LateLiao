@@ -11,13 +11,14 @@ import java.net.URL;
 
 //delete this if you want the other http client to run
 
+
+
 //import org.apache.commons.httpclient.HttpStatus;
 //import org.apache.commons.httpclient.methods.GetMethod;
 //import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.apache.http.client.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -31,8 +32,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.aws.AWSClientManager;
+
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Parcel;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -128,36 +132,19 @@ public class MainActivity<MotionEvent> extends Activity {
 	    	uName.setVisibility(View.INVISIBLE);
 	    	pw.setVisibility(View.INVISIBLE);
 	    	
-	    	//working json method. uncomment off to run with json
-	    	String returnResult= null;
-	    	JSONArray ja = new JSONArray();
+	    	final User user = validateLoginCredentials(uName.getText().toString(),pw.getText().toString());
 	    	
-	    	/*try {
-				returnResult = connectToServerAndReadData(uName.getText().toString(),pw.getText().toString());
-				//need to get return result
-				 ja =  connectToServerAndReadData(uName.getText().toString(),pw.getText().toString());
-				 String noOfAssignment = ja.get(0);
-				 String assignmentDetails = ja.get(1);
-				Log.v(returnResult, returnResult);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-	    	
-	    	// testing without json. auto login
-            if(uName.getText().toString().equals("abc"))  {
-            	if (pw.getText().toString().equals("abc")) {
-	    	//if( returnResult != null) 
-            		//do something if it is "BYE"
+            if(user!=null)  {
+
             		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            		builder.setTitle("Welcome");
-            		builder.setMessage("Hi "+ uName.getText().toString());
+            		builder.setMessage("Hi "+ user.getName());
             		CharSequence text = "OK";
             		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
             			
             			@Override
             			public void onClick(DialogInterface dialog, int which){
             				Intent intent = new Intent(getApplicationContext(),UserActivity.class);
+            				intent.putExtra("user", user);
             				//sending retrieved information of user to next screen 
             				/*EditText editText = (EditText) findViewById(R.id.edit_message);
             				 String message = editText.getText().toString();
@@ -169,32 +156,8 @@ public class MainActivity<MotionEvent> extends Activity {
 						
             		});
             		builder.show();
-            		
-            		//putting username and pw into json
-            		/*DefaultHttpClient httpClient = new DefaultHttpClient();
-            		ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            		HttpPost postMethod = new HttpPost("http://localhost");
-            		try {
-						postMethod.setEntity(new StringEntity("{\"username\" : uName,\"password\" : pw}"));
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-            		postMethod.setHeader("Content-Type","application/json");
-            		String authorizationString = "Basic " + Base64.encodeToString(("authentication" + ":"+ "authentication").getBytes(),Base64.DEFAULT);
-            		authorizationString.replace("\n", "");
-            		postMethod.setHeader("Authorization", authorizationString);
-            		try {
-						httpClient.execute(postMethod,responseHandler);
-					} catch (ClientProtocolException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
 	    
-            } } else {
+             } else {
                 Context context = getApplicationContext();
             CharSequence text = "Wrong! :(";
             int duration = Toast.LENGTH_SHORT;
@@ -235,10 +198,6 @@ public class MainActivity<MotionEvent> extends Activity {
                     	BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
                     	String jsonResult = reader.readLine();
                     	System.out.println(jsonResult);
-                    	//JSONTokener tokener = new JSONTokener(jsonResult);
-                    	//JSONArray finalResult = new JSONArray(tokener); //Get the data in the entity
-                    	// might need to change here
-                    	//finalAns = finalResult.getString(0);
                     	
                         
                     }
@@ -261,95 +220,19 @@ public class MainActivity<MotionEvent> extends Activity {
         return finalAns;
     }
 	
-	/*public String ygJson(String username, String pw) throws Exception {
-	
-		JSONObject json = new JSONObject();
-		json.put("username", username );
-        json.put("password", pw);
-		String fullQuery = null;
-
-		fullQuery = "?r=" + json.toString();
+	private User validateLoginCredentials(String username, String password){
+		AWSClientManager aws = AWSClientManager.getInstance();
+		boolean userExists = aws.checkUserExists(username);
 		
-		// - Added by ONG Hong Seng
-		// converting the query part into an encoded URL to take care of spaces
-		// and
-		// special characters. The constructor takes in
-		// URI(String scheme, String authority, String path, String query,
-		// String fragment)
-		//
-		String request = new java.net.URI("http", "192.168.0.10:8080",
-				"/nav/login", fullQuery, "").toString();
-		
-	
-		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod(request);
-	
-		// Send GET request
-		int statusCode = client.executeMethod(method);
-		
-		if (statusCode != HttpStatus.SC_OK) {
-			System.err.println("Method failed: " + method.getStatusLine());
+		if (!userExists){
+			return null;
 		}
-		InputStream rstream = null;
 		
-		// Get the response body
-		rstream = method.getResponseBodyAsStream();
-			
-			
-		// Process the response from the service
-		BufferedReader br = new BufferedReader(new InputStreamReader(rstream));
-		String line = br.readLine();
-		Context context = getApplicationContext();
-		 CharSequence text = line;
-	        int duration = Toast.LENGTH_LONG;
-	        Toast toast = Toast.makeText(context, text, duration);
-	        toast.setGravity(Gravity.CENTER, -50,10);
-	        toast.show(); 
-		br.close();
-		return line;
-	}	*/
-	/*
-	private String connectToServerAndReadData(String username, String pw) {
+		User user = aws.getUser(username);
+		if (user.getUsername().equalsIgnoreCase(password)){
+			return user;
+		}
 		
-		String returnResult = "";
-	     HttpURLConnection conn;
-	     boolean result = false;
-	     JSONObject json = new JSONObject();
-	    
-
-	         try{
-	        	 
-	             // Enter any URL here you want to connect
-	        	 json.put("username", username );
-	   	      	json.put("password", pw);
-	             URL url = new URL("http://192.168.0.10:8080/nav/login?r=" + json.toString());
-
-	            // Open a HTTP connection to the URL
-
-	             conn = (HttpURLConnection) url.openConnection();
-	            // conn.connect();
-	              BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	              returnResult = rd.readLine();
-	
-	            rd.close();
-	           
-
-
-	         }catch(MalformedURLException e){
-
-	                 e.printStackTrace();
-	         }
-	         catch(IOException e){
-	                 e.printStackTrace();               
-	         }
-	        catch(Exception e){
-	                 e.printStackTrace();           
-	         }
-
-
-
-	         return returnResult;
-
+		return null;
 	}
-	*/
 }
