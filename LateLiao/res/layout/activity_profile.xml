@@ -30,38 +30,38 @@
 	        android:layout_height="wrap_content"
 	    	android:orientation="vertical"  >
 
-    		<TextView
-    		    android:id="@+id/profile_level"
-    		    android:layout_width="wrap_content"
-    		    android:layout_height="wrap_content"
-    		    android:text="Level 1"
-        		android:paddingBottom="5dp"
-    		    android:textAppearance="?android:attr/textAppearanceLarge" />
+   		<TextView
+   		    android:id="@+id/profile_level"
+   		    android:layout_width="wrap_content"
+   		    android:layout_height="wrap_content"
+   		    android:text="Level 1"
+       		android:paddingBottom="5dp"
+   		    android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
-    		<TextView
-    		    android:id="@+id/profile_level_description"
-    		    android:layout_width="match_parent"
-    		    android:layout_height="wrap_content"
-    		    android:text="New born baby" 
-        		android:paddingBottom="15dp"
-    		    android:textAppearance="?android:attr/textAppearanceMedium" />
-	
-	        <ProgressBar
-	            android:id="@+id/progressbar_Horizontal"
-	            style="?android:attr/progressBarStyleHorizontal"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:padding="5dp"
-	            android:paddingLeft="15dp"
-	            android:max="100" />
+   		<TextView
+   		    android:id="@+id/profile_level_description"
+   		    android:layout_width="match_parent"
+   		    android:layout_height="wrap_content"
+   		    android:text="New born baby" 
+       		android:paddingBottom="15dp"
+   		    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-	        <TextView
-	            android:id="@+id/profile_level_details"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-    		    android:text="50/100"
-    		    android:textAlignment="center" />
+        <ProgressBar
+            android:id="@+id/progressbar_Horizontal"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:paddingLeft="15dp"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/profile_level_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+   		    android:text="50/100"
+   		    android:textAlignment="center" />
 
     	</LinearLayout>
     </LinearLayout>
@@ -106,6 +106,7 @@
             android:gravity="center"
             android:textSize="20sp"
             android:text="SideBar"
+            android:textColor="@android:color/white"
             android:editable="false"
             android:background="@drawable/drawer_title_shape" />
  
@@ -113,10 +114,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:choiceMode="singleChoice"
-            android:divider="@android:color/white"
+            android:divider="@color/dark_knight"
             android:dividerHeight="0.1dp"
-            android:textColor="@android:color/white"
-            android:background="@color/dark_knight" />
+            android:background="@color/white" />
  
     </LinearLayout>
 

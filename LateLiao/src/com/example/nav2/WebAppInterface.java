@@ -1,7 +1,7 @@
 package com.example.nav2;
 
-import android.app.Fragment;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
