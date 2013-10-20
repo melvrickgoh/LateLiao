@@ -31,8 +31,8 @@ public class MapFragment extends Fragment {
 			webView.setWebViewClient(new WebViewClient());
 			webView.setWebChromeClient(new WebChromeClient());
 			webView.requestFocusFromTouch();
+			WebAppInterface wb = new WebAppInterface();
 			//webView.loadUrl("file:///android_asset/www/track.html");
-			WebAppInterface wb = new WebAppInterface(this);
 			webView.addJavascriptInterface(wb, "Android");
 			webView.getSettings().setGeolocationEnabled(true);
 		

@@ -34,11 +34,7 @@ public class MapActivity extends ActionBarActivity {
 	 String[] mOptions ;
 	 
 	 // Array of integers points to images stored in /res/drawable-ldpi/
-	 int[] mLogos = new int[]{
-		R.drawable.user,
-		R.drawable.add_event,
-		R.drawable.logout
-	 };
+	 int[] mLogos = new int[3];
 	 
 	 private DrawerLayout mDrawerLayout;
 	 private ListView mDrawerList;
@@ -71,10 +67,17 @@ public class MapActivity extends ActionBarActivity {
 				
 		actionBar.addTab(actionBar.newTab().setText(R.string.title_details)
 			.setTabListener( new TabListener<DetailsFragment>(this, "Details", DetailsFragment.class)));
-	
+		
+		User currentUser = (User) getIntent().getParcelableExtra("user");
+		
+		mLogos[0] = getUserIcon(this,currentUser);
+		mLogos[1] = R.drawable.add_event;
+		mLogos[2] =	R.drawable.logout;
+		
 		/* Side bar creation */
 	    // Getting an array of country names
 	    mOptions = getResources().getStringArray(R.array.options);
+	    mOptions[0] = currentUser.getName();
 	    
 	    // Getting a reference to the drawer listview
 	    mDrawerList = (ListView) findViewById(R.id.drawer_list);
@@ -133,7 +136,7 @@ public class MapActivity extends ActionBarActivity {
 		
 	}
 	
-	class TabListener<T extends Fragment> implements ActionBar.TabListener {
+	private class TabListener<T extends Fragment> implements ActionBar.TabListener {
    	 
     	private Fragment mFragment;
         private final Activity mActivity;
@@ -179,7 +182,7 @@ public class MapActivity extends ActionBarActivity {
 		}
     }
 	
-	OnItemClickListener drawerListener = new OnItemClickListener() {
+	private OnItemClickListener drawerListener = new OnItemClickListener() {
 	    
 	       @Override
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -247,6 +250,13 @@ public class MapActivity extends ActionBarActivity {
 		return false;
 	}
 	
+	 @Override
+	 protected void onPostCreate(Bundle savedInstanceState) {
+		 super.onPostCreate(savedInstanceState);
+		 mDrawerToggle.syncState();
+	 
+	 }
+	 
 	private ActionBar showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -258,15 +268,12 @@ public class MapActivity extends ActionBarActivity {
 		    actionBar.setDisplayShowTitleEnabled(false);
 		    actionBar.setCustomView(v);
 		    return actionBar;
-		    
 	}
 	
-	 @Override
-	 protected void onPostCreate(Bundle savedInstanceState) {
-	 super.onPostCreate(savedInstanceState);
-	 mDrawerToggle.syncState();
-	 
-	 }
+	private int getUserIcon(Context context, User user){
+		 String imageLocation = user.getImageLocation();
+		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+	}
 }
 		
 	

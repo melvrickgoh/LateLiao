@@ -23,16 +23,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
-
 
 public class UserActivity extends ActionBarActivity  {
-
+	
+	 User currentUser = null;
+	 
 	 // Array of strings storing tab names
 	 String[] mOptions ;
-	 
-	 
-	 
+
 	 // Array of integers points to images stored in /res/drawable-ldpi/
 	 int[] mLogos = new int[3];
 	 
@@ -49,7 +47,7 @@ public class UserActivity extends ActionBarActivity  {
 	 final private String TABNAME = "tabname";
 		
 	 //Populate list view of assignments
-	 ArrayList events;
+	 ArrayList<Event> events;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +57,7 @@ public class UserActivity extends ActionBarActivity  {
 		showActionBar();
 		
 		Intent intent = getIntent();
-		User currentUser = (User) intent.getParcelableExtra("user");
+		currentUser = (User) intent.getParcelableExtra("user");
 		
 		if (currentUser!=null){
 			events = getListData(currentUser.getUsername());
@@ -77,34 +75,6 @@ public class UserActivity extends ActionBarActivity  {
         /* to create list view for assignments*/
         final ListView lvAssignments = (ListView) findViewById(R.id.lv);
         lvAssignments.setAdapter(new CustomListAdapter(this,events));
-        
-        /*to create the listener var that does the function when the assignments are clicked*/
-        OnItemClickListener itemClickListener = new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> lv, View item, int position, long id) {
-            	
-            	Object o = lvAssignments.getItemAtPosition(position);
-            	Event event = (Event) o;
-            	Toast.makeText(UserActivity.this," " + event.getEventName() + " ",Toast.LENGTH_LONG);
-
-            	CustomListAdapter adapter = (CustomListAdapter) lvAssignments.getAdapter();
-                
-            	Event eventItem = (Event) adapter.getItem(position);
- 
-                /** The clicked Item in the ListView */
-                //RelativeLayout rLayout = (RelativeLayout) item;
- 
-                /** Getting the toggle button corresponding to the clicked item */
-
-                
-                /*pop up box to show that the respective assignment is clicked*/
-                //Toast.makeText(getBaseContext(), (String) hm.get("txt") + " : " + strStatus, Toast.LENGTH_SHORT).show();
-                /*to send to the next activity*/
-                Intent intent = new Intent(getApplicationContext(),MapActivity.class);
-                intent.putExtra("event", eventItem);
-                startActivity(intent);
-            }
-        };
         
         /*set the created assignmentList to the listener*/
         lvAssignments.setOnItemClickListener(itemClickListener);
@@ -170,7 +140,7 @@ public class UserActivity extends ActionBarActivity  {
     }
 	
 	//to create the listener that does the function when the events are clicked
-    OnItemClickListener itemClickListener = new OnItemClickListener() {
+	private OnItemClickListener itemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> lv, View item, int position, long id) {
 
@@ -179,6 +149,7 @@ public class UserActivity extends ActionBarActivity  {
         
             /*to send to the next activity*/
             Intent intent = new Intent(getApplicationContext(),MapActivity.class);
+            intent.putExtra("user", currentUser);
             intent.putExtra("eventName", (String)eventItem.getEventName());
             intent.putExtra("eventLocation", (Location)eventItem.getEventLocation());
             intent.putExtra("eventDate", eventItem.getEventDate() + "-" + eventItem.getEventMonth() + "-" + eventItem.getEventYear() + " " + eventItem.getEventTime());
@@ -189,7 +160,7 @@ public class UserActivity extends ActionBarActivity  {
     };
     
 	// Item click listen for drawer layout
-	OnItemClickListener drawerListener = new OnItemClickListener() {
+    private OnItemClickListener drawerListener = new OnItemClickListener() {
         
 	       @Override
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -231,7 +202,7 @@ public class UserActivity extends ActionBarActivity  {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	private ArrayList getListData(String username){		
+	private ArrayList<Event> getListData(String username){		
 		AWSClientManager aws = AWSClientManager.getInstance();
 		
 		return aws.getAllEvents();//aws.getFilteredEvents(username);
@@ -273,35 +244,9 @@ public class UserActivity extends ActionBarActivity  {
 	    actionBar.setDisplayShowTitleEnabled(false);
 	    actionBar.setCustomView(v);    
 	}
-	
-	 public void showFragment(int position){
-		// Creating a fragment object
-		 CountryFragment cFragment = new CountryFragment();
-		 
-		// Creating a Bundle object
-		 Bundle data = new Bundle();
-		 
-		// Setting the index of the currently selected item of mDrawerList
-		 data.putInt("position", position);
-		 
-		// Setting the position to the fragment
-		 cFragment.setArguments(data);
-		 
-		// Getting reference to the FragmentManager
-		 android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-		 
-		// Creating a fragment transaction
-		 android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
-		 
-		// Adding a fragment to the fragment transaction
-		 ft.replace(R.id.content_frame, cFragment);
-		 
-		// Committing the transaction
-		 ft.commit();
-		 }
 	 
-		 private int getUserIcon(Context context, User user){
-			 String imageLocation = user.getImageLocation();
-			 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
-		 }
+	 private int getUserIcon(Context context, User user){
+		 String imageLocation = user.getImageLocation();
+		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+	 }
 }

@@ -21,6 +21,7 @@
     <string name="add_activity_form_activityDate">Activity Date</string>
     <string name="add_activity_form_activityTime">Activity Time</string>
     <string name="add_activity_form_activityLocation">Activity Location</string>
+    <string name="activityLocation_Name">Location Name</string>
     <string name="add_activity_form_friends">Friends</string>
     <string name="add_activity_form_submit">Run</string>
     <string name="add_activity_friend_dialog_positive">Enter</string>

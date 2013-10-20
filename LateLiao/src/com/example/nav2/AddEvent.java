@@ -38,7 +38,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 	Button timeButton;
 	Button locationButton;
 	Button friendsButton;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,7 +59,8 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		timeButton = (Button)findViewById(R.id.buttonSelectTime);
 		timeButton.setOnClickListener(timeButtonListener);
 		
-		//locationButton = (Button)finViewById(R.id.)
+		locationButton = (Button)findViewById(R.id.buttonSelectLocation);
+		locationButton.setOnClickListener(locationButtonListener);
 		
 		//Set Friends Button Listener
 		friendsButton = (Button)findViewById(R.id.buttonSelectFriends);
@@ -112,6 +113,17 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 			dateFragment.show(ft, "date_dialog");
 		}
 	
+	};
+	
+	private OnClickListener locationButtonListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			DialogFragment locationFragment = new LocationDialogFragment();
+			locationFragment.show(ft, "location_dialog");
+		}
+		
 	};
 	
 	@Override

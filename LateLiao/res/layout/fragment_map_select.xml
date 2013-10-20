@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_activity_map_select"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".LocationDialogFragment" >
+
+    <EditText
+        android:id="@+id/locationName"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/activityLocation_Name" >
+
+        <requestFocus />
+    </EditText>
+    
+    
+    <WebView
+	    android:id="@+id/mapview_select"
+	    android:layout_width="fill_parent"
+	    android:layout_height="350dp"   />
+
+    <TextView
+        android:id="@+id/coordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:paddingBottom="5dp"
+        android:textSize="8sp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+</LinearLayout>
