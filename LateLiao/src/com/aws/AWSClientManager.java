@@ -238,8 +238,10 @@ public class AWSClientManager {
 	        param.put("dynamoDB", dynamoDB);
 	        param.put("request", req);
 	        asyncResult = awsQueryFilterResults.execute(param,null,result);
+	        Log.d("filteredQueries",asyncResult.toString());
 	        try {
 				result = asyncResult.get();
+				Log.d("filteredQueries",result.getItems().toString());
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

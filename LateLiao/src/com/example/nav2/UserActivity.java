@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.aws.AWSClientManager;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -46,12 +48,10 @@ public class UserActivity extends ActionBarActivity  {
 	 // Array of strings storing country names
 	 String[] mOptions ;
 	 
+	 
+	 
 	 // Array of integers points to images stored in /res/drawable-ldpi/
-	 int[] mLogos = new int[]{
-		R.drawable.user,
-		R.drawable.add_event,
-		R.drawable.logout
-	 };
+	 int[] mLogos = new int[3];
 	 
 	// Array of strings to initial counts
 	 String[] mCount = new String[]{
@@ -68,7 +68,7 @@ public class UserActivity extends ActionBarActivity  {
 	 //final private String COUNT = "count";
 		
 	 //Populate list view of assignments
-	 	ArrayList events = getListData();
+	 ArrayList events;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,16 @@ public class UserActivity extends ActionBarActivity  {
 		showActionBar();
 		//ImageButton sidebar = (ImageButton)getSupportActionBar().getCustomView().findViewById(R.id.sidebar);
 		
+		Intent intent = getIntent();
+		User currentUser = (User) intent.getParcelableExtra("user");
+		
+		if (currentUser!=null){
+			events = getListData(currentUser.getUsername());
+		}
+		
+		mLogos[0] = getUserIcon(this,currentUser);
+		mLogos[1] = R.drawable.add_event;
+		mLogos[2] =	R.drawable.logout;
 		
 		
 		/** Restore from the previous state if exists */
@@ -111,7 +121,7 @@ public class UserActivity extends ActionBarActivity  {
                 //Toast.makeText(getBaseContext(), (String) hm.get("txt") + " : " + strStatus, Toast.LENGTH_SHORT).show();
                 /*to send to the next activity*/
                 Intent intent = new Intent(getApplicationContext(),MapActivity.class);
-                //intent.putExtra("country", (String)eventItem.getEventName());
+                intent.putExtra("event", eventItem);
                 startActivity(intent);
             }
         };
@@ -126,6 +136,7 @@ public class UserActivity extends ActionBarActivity  {
         /*here onwards will be for the sidebar*/
         // Getting an array of country names
         mOptions = getResources().getStringArray(R.array.options);
+        mOptions[0] = currentUser.getName();
         
         // Title of the activity
         mTitle = (String)getTitle();
@@ -250,22 +261,10 @@ public class UserActivity extends ActionBarActivity  {
 		
 	}
 	
-	private ArrayList getListData(){
-		ArrayList events = new ArrayList();
-		ArrayList<String> dummyAttendees = new ArrayList<String>();
-		dummyAttendees.add("Leon Lee");
-		dummyAttendees.add("Melvrick Goh");
-		dummyAttendees.add("Janan Tan");
-		dummyAttendees.add("Wyner Lim");
-		dummyAttendees.add("Ben Gan");
+	private ArrayList getListData(String username){		
+		AWSClientManager aws = AWSClientManager.getInstance();
 		
-		events.add(new Event("IDP Meeting",18,10,2013,"0800", dummyAttendees, new Location("SIS GSR 2.1",1.29757,103.84944)));
-		events.add(new Event("IDP Lesson",18,10,2013, "1200", dummyAttendees, new Location("SIS SR 3.4",1.29757,103.84944)));
-		events.add(new Event("Dinner with GF",18,10,2013,"1900", dummyAttendees, new Location("313 @ Somerset",1.300386800000000000,103.838803999999980000)));
-		events.add(new Event("Chinatown Brugge",18,10,2013,"2300", dummyAttendees, new Location("William's Cafe",1.28216,103.8448)));
-		events.add(new Event("The Swansong Feast",18,10,2013,"0800", dummyAttendees, new Location("Big Steps",1.29757,103.84944)));
-		
-		return events;
+		return aws.getAllEvents();//aws.getFilteredEvents(username);
 	}
 	
 	private void showActionBar() {
@@ -383,5 +382,8 @@ public class UserActivity extends ActionBarActivity  {
 		 getSupportActionBar().setTitle(mOptions[mPosition]);
 		 }
 
-		 
+		 private int getUserIcon(Context context, User user){
+			 String imageLocation = user.getImageLocation();
+			 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+		 }
 }

@@ -43,7 +43,6 @@ public class FriendsDialogFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int id) {
 						Button friendsButton = (Button) getActivity().findViewById(R.id.buttonSelectFriends);
 						ArrayList<User> users = (ArrayList<User>) cula.getSelection();
-						Log.d("friendsDialogFragment","users selected size >> " + users.size());
 						String usergroups = "";
 						for (int i = 0; i<users.size(); i++){
 							usergroups+= (users.get(i)).getName() + ", ";

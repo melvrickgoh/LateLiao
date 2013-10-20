@@ -1,6 +1,9 @@
 package com.example.nav2;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -52,17 +55,25 @@ public class CustomListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
-        holder.eventDateView.setText(((Event) listData.get(position)).getEventDate() + "");
-        holder.eventTitleView.setText(((Event) listData.get(position)).getEventName());
-        holder.eventTimeView.setText("@ " + ((Event) listData.get(position)).getEventTime());
-        holder.eventLocationView.setText(((Event) listData.get(position)).getEventLocationName());
         
+        Event event = (Event) listData.get(position);
+        Calendar cal = new GregorianCalendar().getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, event.getEventDate());
+        cal.set(Calendar.MONTH, event.getEventMonth());
+        cal.set(Calendar.YEAR, event.getEventYear());
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM, yyyy");
+        
+        holder.eventDateView.setText(sdf.format(cal.getTime()));
+        holder.eventTitleView.setText(event.getEventName());
+        holder.eventTimeView.setText("@ " + event.getEventTime());
+        holder.eventLocationView.setText(event.getEventLocationName());
+        /*
         holder.eventDateView.setTypeface(agencyRegTF);
         holder.eventTitleView.setTypeface(agencyBoldTF);
         holder.eventTimeView.setTypeface(agencyBoldTF);
         holder.eventLocationView.setTypeface(agencyRegTF);
-        
+        */
         return convertView;
 	}
 	
