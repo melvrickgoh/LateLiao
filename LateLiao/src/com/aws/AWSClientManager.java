@@ -85,6 +85,7 @@ public class AWSClientManager {
 	public void addNewEvent(Event e){
 		Map<String, AttributeValue> newEventDetails = newEvent(e.getEventName(),e.getEventDate(),e.getEventMonth(),e.getEventYear(),e.getEventTime(),e.getEventAttendees(),e.getEventLocation());
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoEvent", newEventDetails);
+    	addNewLocation(e.getEventLocation());
     	addItem(putItemRequest);
 	}
 	

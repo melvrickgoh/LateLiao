@@ -18,15 +18,22 @@ import android.widget.ListView;
 public class FriendsDialogFragment extends DialogFragment {
 	private OnFriendsEventListener setFriendsListener;
 	private ArrayList userData;
+	private ArrayList<String> friendsSelected;
+	private Bundle savedInstanceState;
+	private User currentUser;
 	
-	public FriendsDialogFragment(OnFriendsEventListener callback, ArrayList userData){
+	public FriendsDialogFragment(OnFriendsEventListener callback, ArrayList userData, Bundle savedInstanceState){
 		setFriendsListener = (OnFriendsEventListener) callback;
 		this.userData = userData;
+		this.savedInstanceState = savedInstanceState;
+		this.currentUser = (User) this.savedInstanceState.get("user");
 	}
 	
 	public Dialog onCreateDialog (Bundle savedInstanceState){
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.fragment_friends,null);
+		
+		this.friendsSelected = this.savedInstanceState.getStringArrayList("AddFriend");
 		
 		final CustomUserListAdapter cula = new CustomUserListAdapter(getActivity(),userData);
 		ListView friendsAssignment = (ListView) view.findViewById(R.id.friends_list_view);
@@ -43,10 +50,15 @@ public class FriendsDialogFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int id) {
 						Button friendsButton = (Button) getActivity().findViewById(R.id.buttonSelectFriends);
 						ArrayList<User> users = (ArrayList<User>) cula.getSelection();
+						
 						String usergroups = "";
 						for (int i = 0; i<users.size(); i++){
-							usergroups+= (users.get(i)).getName() + ", ";
+							User u = users.get(i);
+							friendsSelected.add(u.getUsername());
+							usergroups+= u.getName() + ", ";
 						}
+						usergroups += currentUser.getUsername();
+						friendsSelected.add(currentUser.getUsername());
 						friendsButton.setText(usergroups);
 					}
 				});

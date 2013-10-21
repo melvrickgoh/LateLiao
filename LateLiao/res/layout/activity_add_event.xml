@@ -11,6 +11,7 @@
 
     <EditText
         android:id="@+id/eventName"
+    	android:singleLine="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -70,6 +71,7 @@
         android:background="@drawable/add_activity_custom_button" />
 
     <TextView
+    	android:singleLine="true"
         android:id="@+id/coordinates_lon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,6 +86,7 @@
 
     <TextView
         android:id="@+id/coordinates_lat"
+    	android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonSelectFriends"

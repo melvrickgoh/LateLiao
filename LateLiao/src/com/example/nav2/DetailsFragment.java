@@ -32,24 +32,16 @@ public class DetailsFragment extends Fragment {
 		// Inflate event detail fragment onto tab 2
 		View rootView = (RelativeLayout) inflater.inflate(R.layout.activity_details_fragment, container, false);
 		
-		// Define usage of fonts
-		Typeface agencyRegTF = Typeface.createFromAsset(getActivity().getAssets(),"fonts/AGENCYR.TTF");
-		Typeface agencyBoldTF = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AGENCYR.TTF");
-		
 		// Populate name of the event
 		EditText eventName = (EditText) rootView.findViewById(R.id.eventName);
 		TextView eventName_edit = (TextView) rootView.findViewById(R.id.eventName_edit);
 		
-		eventName.setTypeface(agencyBoldTF);
-		eventName_edit.setTypeface(agencyRegTF);
 		eventName_edit.setText(strEventName);
 		
 		// Populate location of the event
 		EditText location = (EditText) rootView.findViewById(R.id.location);
 		TextView location_edit = (TextView) rootView.findViewById(R.id.location_edit);
 		
-		location.setTypeface(agencyBoldTF);
-		location_edit.setTypeface(agencyRegTF);
 		location_edit.setText(strEventLocation.getLocationName());
 		
 		// Populate date and time of the event
@@ -57,15 +49,11 @@ public class DetailsFragment extends Fragment {
 		EditText date = (EditText) rootView.findViewById(R.id.date_from);
 		EditText time = (EditText) rootView.findViewById(R.id.time_from);
 		
-		dateTime.setTypeface(agencyBoldTF);
-		date.setTypeface(agencyRegTF);
 		date.setText(strEventDate);
-		time.setTypeface(agencyRegTF);
 		time.setText(strEventTime);
 		
 		// Populate list of friends
 		TextView friendTitle = (TextView) rootView.findViewById(R.id.friends);
-		friendTitle.setTypeface(agencyBoldTF);
 		
 		ListView lv = (ListView) rootView.findViewById(R.id.friendList);
 
@@ -99,9 +87,6 @@ public class DetailsFragment extends Fragment {
 			View view =super.getView(position, convertView, parent);
 
             TextView textView=(TextView) view.findViewById(android.R.id.text1);
-
-            /*YOUR CHOICE OF COLOR*/
-            textView.setTypeface(agencyRegTF);;
 
             return view;
 	    }

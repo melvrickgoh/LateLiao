@@ -2,9 +2,6 @@ package com.example.nav2;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -21,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,14 +36,30 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 	Button timeButton;
 	Button locationButton;
 	Button friendsButton;
+	
+	private static User currentUser;
+	
+	private int eventDate = 0;
+	private int eventMonth = 0;
+	private int eventYear = 0;
+	private static Bundle savedInstanceState = new Bundle();
+	private String eventTime = "";
+	private final Location eventLocation = new Location("", 0, 0);
+	private final ArrayList<String> eventFriends = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(this.savedInstanceState);
 		setContentView(R.layout.activity_add_event);
 		
-		//Set UI for Hiding Soft Keyboard
+		Bundle intentBundle = getIntent().getExtras();
+		this.currentUser = (User) intentBundle.get("user");
+		this.savedInstanceState.putParcelable("user", this.currentUser);
+		
 		setupUI(findViewById(R.id.addEventActivity));
+		Log.d("add event","saved instance state > " + savedInstanceState + "eventlocation > " + this.eventLocation + "eventFriends > " + eventFriends);
+		this.savedInstanceState.putParcelable("AddLocation", this.eventLocation);
+		this.savedInstanceState.putStringArrayList("AddFriend", this.eventFriends);
 		
 		//Set Submit Button Listener
 		Button submitButton = (Button)findViewById(R.id.addActivitySubmit);
@@ -72,8 +86,22 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		@Override
 		public void onClick(View v) {
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			DialogFragment friendsFragment = new FriendsDialogFragment(AddEvent.this,getListData());
+			ArrayList<User> users = getListData();
+			users = filterCurrentUser(users,currentUser);
+			DialogFragment friendsFragment = new FriendsDialogFragment(AddEvent.this,users,savedInstanceState);
+			
 			friendsFragment.show(ft, "friends_dialog");
+		}
+
+		private ArrayList<User> filterCurrentUser(ArrayList<User> users, User currentUser) {
+			User toRemove = currentUser;
+			for (User u : users){
+				if (u.getUsername().equalsIgnoreCase(currentUser.getUsername())){
+					toRemove = u;
+				}
+			}
+			users.remove(toRemove);
+			return users;
 		}
 		
 	};
@@ -100,6 +128,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		Calendar cal = new GregorianCalendar().getInstance();
 		cal.set(Calendar.HOUR, hours);
 		cal.set(Calendar.MINUTE, minutes);
+		eventTime = hours + "" +minutes;
 		SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
 		timeButton.setText(sdf.format(cal.getTime()));
 	}
@@ -120,7 +149,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		@Override
 		public void onClick(View v) {
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			DialogFragment locationFragment = new LocationDialogFragment();
+			DialogFragment locationFragment = new LocationDialogFragment(savedInstanceState);
 			locationFragment.show(ft, "location_dialog");
 		}
 		
@@ -130,53 +159,45 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 		Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
 		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM, yyyy");
+		eventDate = dayOfMonth;
+		eventMonth = monthOfYear;
+		eventYear = year;
 		dateButton.setText(sdf.format(cal.getTime()));
 	}		
 			
 	private OnClickListener submitButtonListener = new OnClickListener() {
 	    @Override
 		public void onClick(View v) {
-			
 	    	// do something when the button is clicked
 	    	EditText eventName = (EditText) findViewById(R.id.eventName);
 	    	String eventNameString = eventName.getText().toString();
 	    	
 	    	eventName.setVisibility(View.INVISIBLE);
-
-
+	    	final Event newEvent = new Event(eventNameString,eventDate,eventMonth,eventYear,eventTime,eventFriends,eventLocation);
+	    	
             AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
             
             builder.setTitle(eventNameString);
             builder.setMessage(eventNameString + " has been submitted");
-            
-            /**
-	    	 * Creating a Dummy Event
-	    	 * 
-	    	 */
-	    	ArrayList<String> attendees = new ArrayList<String>();
-	    	attendees.add("Leon Lee");
-	    	attendees.add("Melvrick Goh");
-	    	attendees.add("Janan Tan");
-	    	attendees.add("Wyner Lim");
-	    	attendees.add("Ben Gan");
-	    	
-	    	final Event event = new Event(eventNameString,18,10,2013,"time here",attendees,new Location("location details here",1.29757,103.84944));
 	    	
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             			
             	@Override
             	public void onClick(DialogInterface dialog, int which){
             		Intent intent = new Intent(getApplicationContext(),UserActivity.class);
-            		intent.putExtra("event", event);//eventually we should be dealing with the object separately
+            		intent.putExtra("event", newEvent);//eventually we should be dealing with the object separately
+            		intent.putExtra("user", currentUser);
+            		sendToDatabase(newEvent);
             		startActivity(intent);
-            	}	
+            	}
+            	
+            	public void sendToDatabase(Event event){
+            		AWSClientManager aws = new AWSClientManager().getInstance();
+            		aws.addNewEvent(event);
+            	}
             });
             builder.show();
-	    
-            
-            
             eventName.setVisibility(View.VISIBLE);
-	    	
 	    }
 	};
 
@@ -253,8 +274,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		return super.onOptionsItemSelected(item);
 	}
 	private ArrayList getListData(){
-		AWSClientManager aws = AWSClientManager.getInstance();
-
+		AWSClientManager aws = AWSClientManager.getInstance();		
 		return aws.getAllUsers();
 	}
 }

@@ -172,6 +172,7 @@ public class UserActivity extends ActionBarActivity  {
 	    	   	}
 	    	   	else if (position == 1) {
 	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
 	    	   	} else {	
@@ -204,10 +205,23 @@ public class UserActivity extends ActionBarActivity  {
 
 	private ArrayList<Event> getListData(String username){		
 		AWSClientManager aws = AWSClientManager.getInstance();
+		ArrayList<Event> events = filterEvents(username,aws.getAllEvents());
 		
-		return aws.getAllEvents();//aws.getFilteredEvents(username);
+		return events;//aws.getFilteredEvents(username);
 	}
 	
+	private ArrayList<Event> filterEvents(String username,ArrayList<Event> allEvents) {
+		ArrayList<Event> toRemove = new ArrayList<Event>();
+		for (Event e:allEvents){
+			if (!e.getEventAttendees().contains(username)){
+				toRemove.add(e);
+			}
+		}
+		
+		allEvents.removeAll(toRemove);
+ 		return allEvents;
+	}
+
 	@Override
 	 public boolean onOptionsItemSelected(MenuItem item) {
 			if (mDrawerToggle.onOptionsItemSelected(item)) {

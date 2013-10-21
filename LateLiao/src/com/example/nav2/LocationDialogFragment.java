@@ -22,15 +22,17 @@ import android.content.DialogInterface;
 public class LocationDialogFragment extends DialogFragment implements OnTouchListener, Handler.Callback {
 	private final Handler handler = new Handler(this);
 	private WebView webView;
+	private Location location;
 	@SuppressWarnings("unused")
 	private WebViewClient client;
 	private WebAppInterface wb;
+	private static Bundle savedInstanceStateLocationDialog;
 	
 	private LayoutInflater inflater;
 	private View view;
 
-	public LocationDialogFragment() {
-		
+	public LocationDialogFragment(Bundle savedInstanceState) {
+		this.savedInstanceStateLocationDialog = savedInstanceState;
 	}
 	
 	public Dialog onCreateDialog (Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 		webView.addJavascriptInterface(wb, "Android");
 		webView.getSettings().setGeolocationEnabled(true);
 		
+		location = (Location) this.savedInstanceStateLocationDialog.getParcelable("AddLocation");
+		
 		GPSTracker tracker = new GPSTracker(getActivity());
 	    if (tracker.canGetLocation() == false) {
 	        tracker.showSettingsAlert();
@@ -56,8 +60,12 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	    	tracker.getLocation();
 	    	
 	    	wb.setData(tracker.getLatitude(), tracker.getLongitude(), 14);
+	    	
+	    	double latitude = wb.getLat();
+	    	double longitude = wb.getLon();
+	    	
 	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
-	        textView.setText("lat:" + wb.getLat() + " lon:" + wb.getLon());
+	        textView.setText("lat:" + latitude + " lon:" + longitude);
 	    }
 
 		client = new WebViewClient(){ 
@@ -84,11 +92,20 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 			Button locationButton = (Button) getActivity().findViewById(R.id.buttonSelectLocation);
 			EditText location_name = (EditText) view.findViewById(R.id.locationName);
 			locationButton.setText(location_name.getText());
-			
+
+	    	double latitude = wb.getLat();
+	    	double longitude = wb.getLon();
+	    	
+	    	location.setLocationName(location_name.getText().toString());
+	    	location.setLatitude(latitude);
+	    	location.setLongitude(longitude);
+	    	
+	    	savedInstanceStateLocationDialog.putParcelable("AddLocation", location);
+	    	
 			TextView lat = (TextView) getActivity().findViewById(R.id.coordinates_lat);
-			lat.setText(String.valueOf(wb.getLat()));
+			lat.setText(String.valueOf(latitude));
 			TextView lon = (TextView) getActivity().findViewById(R.id.coordinates_lon);
-			lon.setText(String.valueOf(wb.getLon()));
+			lon.setText(String.valueOf(longitude));
 		}
 	};
 	
