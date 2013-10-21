@@ -13,10 +13,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,6 +27,9 @@ import android.widget.TextView;
 
 public class ProfileActivity extends ActionBarActivity {
 
+	User currentUser = null;
+	User profileUser = null;
+	 
 	ProgressBar myProgressBar; 
 	int myProgress = 50;
 	
@@ -59,14 +64,59 @@ public class ProfileActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
-		showActionBar();
+		Intent intent = getIntent();
+		currentUser = (User) intent.getParcelableExtra("user");
+		profileUser = (User) intent.getParcelableExtra("profileUser");
+		
+		if(profileUser == null) {
+			profileUser = currentUser;
+		}
+		
+		mLogos[0] = getUserIcon(this,currentUser);
+		showActionBar(profileUser.getName());
+		
 		
 		myProgressBar=(ProgressBar)findViewById(R.id.progressbar_Horizontal); 
-		myProgressBar.setProgress(myProgress);
+		myProgressBar.setProgress(profileUser.getCurrentPoints());
+
+		TextView profileLevel = (TextView)findViewById(R.id.profile_level);
+		profileLevel.append(String.valueOf(profileUser.getLevel()));
+
+
+		TextView profileLevelDescription = (TextView)findViewById(R.id.profile_level_description);
+		switch(profileUser.getLevel()) {
+			case 0: case 1:
+				profileLevelDescription.setText("New Born Baby");
+				break;
+				
+			case 2:
+				profileLevelDescription.setText("Baby in diapers");
+				break;
+				
+			default:
+				profileLevelDescription.setText("King of LateLiao");
+				break;
+		}
+
+		TextView profileLevelDetails = (TextView)findViewById(R.id.profile_level_details);
+		profileLevelDetails.append(String.valueOf(profileUser.getCurrentPoints() + "/100"));
+		
+		ImageView profileImage = (ImageView)findViewById(R.id.imageView1);
+		profileImage.setImageResource(getUserIcon(this, profileUser));
+
+		TextView profileTotalMeeting = (TextView)findViewById(R.id.profile_total_meeting);
+		profileTotalMeeting.append(String.valueOf(profileUser.getTotalMeetings()));
+
+		TextView profileTotalMeetingLate = (TextView)findViewById(R.id.profile_total_meeting_late);
+		profileTotalMeetingLate.append(String.valueOf(profileUser.getMeetingsLate()));
+
+		TextView profileTotalLateTime = (TextView)findViewById(R.id.profile_total_late_time);
+		profileTotalLateTime.append(String.valueOf(profileUser.getMeetingsLate() + " mins"));
 		
 		/*here onwards will be for the sidebar*/
         // Getting an array of country names
         mOptions = getResources().getStringArray(R.array.options);
+        mOptions[0] = currentUser.getName();
         
         // Title of the activity
         mTitle = (String)getTitle();
@@ -125,13 +175,15 @@ public class ProfileActivity extends ActionBarActivity {
 	       @Override
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
-	    	   	if (position == 0) {
+	    	   	if (position == 0 && profileUser != currentUser) {
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
-	                startActivity(intent);
+	    	   		intent.putExtra("user", currentUser);
+	    	   		startActivity(intent);
 	    	   		
 	    	   	}
 	    	   	else if (position == 1) {
 	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
 	    	   	} else {	
@@ -173,12 +225,13 @@ public class ProfileActivity extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.notification, menu);
-		return true;
+				MenuInflater inflater = getMenuInflater();
+				inflater.inflate(R.menu.user, menu);
+				return super.onCreateOptionsMenu(menu);
 	}
 	
 	
-	private void showActionBar() {
+	private void showActionBar(String name) {
         LayoutInflater inflator = (LayoutInflater) this
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	View v = inflator.inflate(R.layout.custom, null);
@@ -189,7 +242,7 @@ public class ProfileActivity extends ActionBarActivity {
 		    actionBar.setDisplayShowTitleEnabled(false);
 		    actionBar.setCustomView(v);
 		    TextView temp = (TextView)findViewById(R.id.homeScreen);
-		    temp.setText("Tan Janan");
+		    temp.setText(name);
 		    
 	}
 	
@@ -239,5 +292,11 @@ public class ProfileActivity extends ActionBarActivity {
 	 
 	 if(mPosition!=-1)
 	 getSupportActionBar().setTitle(mOptions[mPosition]);
+	 }
+	 
+	 
+	 private int getUserIcon(Context context, User user){
+		 String imageLocation = user.getImageLocation();
+		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
 	 }
 }
