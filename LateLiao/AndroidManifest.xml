@@ -47,6 +47,11 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
+            android:name="com.example.nav2.FriendsActivity"
+            android:label="@string/title_activity_friends"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
             android:name="com.example.nav2.NotificationActivity"
             android:label="@string/title_activity_notification" >
         </activity>

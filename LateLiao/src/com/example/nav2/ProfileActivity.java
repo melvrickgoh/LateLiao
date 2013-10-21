@@ -43,6 +43,7 @@ public class ProfileActivity extends ActionBarActivity {
 	 int[] mLogos = new int[]{
 	R.drawable.user,
 	R.drawable.add_event,
+	R.drawable.friends,
 	R.drawable.logout
 	 };
 	 
@@ -130,7 +131,7 @@ public class ProfileActivity extends ActionBarActivity {
 
         // Each row in the list stores country name, count and flag
         mList = new ArrayList<HashMap<String,String>>();
-        for(int i=0;i<3;i++){
+        for(int i=0;i<4;i++){
 	        HashMap<String, String> hm = new HashMap<String,String>();
 	        hm.put(TABNAME, mOptions[i]);
 	        hm.put(IMAGEICON, Integer.toString(mLogos[i]) );
@@ -186,6 +187,10 @@ public class ProfileActivity extends ActionBarActivity {
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
+	    	   	} else if(position == 2){	
+	    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
+	    	   		intent.putExtra("user", currentUser);
+	                startActivity(intent);
 	    	   	} else {	
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
 		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
