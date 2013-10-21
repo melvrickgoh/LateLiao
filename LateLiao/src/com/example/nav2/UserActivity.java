@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.aws.AWSClientManager;
+import com.plugins.SwipeDismissListViewTouchListener;
 
 import android.os.Bundle;
 import android.content.Context;
@@ -72,9 +73,11 @@ public class UserActivity extends ActionBarActivity  {
             //status = savedInstanceState.getBooleanArray("status");
         }
         
+        final CustomListAdapter listAdapter = new CustomListAdapter(this,events);
+        
         /* to create list view for assignments*/
         final ListView lvAssignments = (ListView) findViewById(R.id.lv);
-        lvAssignments.setAdapter(new CustomListAdapter(this,events));
+        lvAssignments.setAdapter(listAdapter);
         
         /*set the created assignmentList to the listener*/
         lvAssignments.setOnItemClickListener(itemClickListener);
@@ -137,7 +140,30 @@ public class UserActivity extends ActionBarActivity  {
         // Enabling Up navigation
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                		lvAssignments,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    listAdapter.remove(listAdapter.getItem(position));
+                                }
+                                listAdapter.notifyDataSetChanged();
+                            }
+                        });
+        lvAssignments.setOnTouchListener(touchListener);
+        // Setting this scroll listener is required to ensure that during ListView scrolling,
+        // we don't look for swipes.
+        lvAssignments.setOnScrollListener(touchListener.makeScrollListener());
     }
+    
 	
 	//to create the listener that does the function when the events are clicked
 	private OnItemClickListener itemClickListener = new OnItemClickListener() {

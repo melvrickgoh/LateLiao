@@ -25,6 +25,10 @@ public class CustomListAdapter extends BaseAdapter {
 		layoutInflater = LayoutInflater.from(context);
 	}
 	
+	public void remove(Object position){
+		listData.remove(position);
+	}
+	
 	@Override
 	public int getCount() {
 		return listData.size();
