@@ -1,6 +1,7 @@
 var EXPORTED_SYMBOLS = ["Put all functions for export here"];
 var map;
 var marker; 
+var loc_marker;
 
 function initializeMap(lat, long, zoomarea){
 	
@@ -102,4 +103,17 @@ function setMarker(lat, long) {
     
     var greenIcon = new LeafIcon({iconUrl: '../images/icon.png'});    
     marker = L.marker([lat, long], {icon: greenIcon}).addTo(map);
+}
+
+function setCurrentLocation(current_Lat, current_long) {
+	 var currentLocIcon = L.Icon.extend({
+        options: {
+            iconSize:     [35, 35],
+            iconAnchor:   [22, 40],
+            popupAnchor:  [-3, -76]
+        }
+    });
+    
+    var loc_Icon = new currentLocIcon({iconUrl: '../images/loc_icon.png'});    
+    loc_marker = L.marker([current_Lat, current_long], {icon: loc_Icon}).addTo(map);
 }

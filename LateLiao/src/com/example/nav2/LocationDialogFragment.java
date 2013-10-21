@@ -52,8 +52,9 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 		GPSTracker tracker = new GPSTracker(getActivity());
 	    if (tracker.canGetLocation() == false) {
 	        tracker.showSettingsAlert();
-	        //wb.setData(1.38333,103.75000,14);
 	    } else {
+	    	tracker.getLocation();
+	    	
 	    	wb.setData(tracker.getLatitude(), tracker.getLongitude(), 14);
 	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
 	        textView.setText("lat:" + wb.getLat() + " lon:" + wb.getLon());
@@ -75,6 +76,7 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 		
 	}
 	
+	// Listener for web view on click
 	private DialogInterface.OnClickListener locationOnClickListener = new DialogInterface.OnClickListener() {
 		
 		@Override
@@ -90,6 +92,7 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 		}
 	};
 	
+	// If map view is clicked or touched
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
@@ -98,7 +101,9 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	    }
 		return false;
 	}
-
+	
+	
+	// Handle message passed when web view is clicked
 	@Override
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
