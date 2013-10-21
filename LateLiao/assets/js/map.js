@@ -32,9 +32,11 @@ function initializeMap(lat, long, zoomarea){
 		setSearchFunction(e.name,map,searchEngine);
 	});
     
+   	setMarker(lat, long);
+    Android.pinLocation(lat, long);
     return map;
 }
-
+ 
 function setSearchFunction(serviceProvider,map,searchEngine){
 	if (searchEngine!=null){
 		searchEngine.removeFrom(map);
@@ -73,27 +75,31 @@ function setSearchFunction(serviceProvider,map,searchEngine){
 function activatePinning(pinning) {
 
 	if (pinning) {
-	  var LeafIcon = L.Icon.extend({
-	        options: {
-	            iconSize:     [35, 35],
-	            iconAnchor:   [22, 40],
-	            popupAnchor:  [-3, -76]
-	        }
-	    });
-	    
-	    var greenIcon = new LeafIcon({iconUrl: '../images/icon.png'});
 	    
 	    map.on('click', function(e) {
 			
 	    	if (marker != undefined) {
 				map.removeLayer(marker);
 			}
-	        marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: greenIcon}).addTo(map);
-	        
+			
+	        setMarker(e.latlng.lat, e.latlng.lng);
 	        Android.pinLocation(e.latlng.lat, e.latlng.lng);
       
 	    });
 	} else {
 		map.off('click');
 	}
+}
+
+function setMarker(lat, long) {
+	 var LeafIcon = L.Icon.extend({
+        options: {
+            iconSize:     [35, 35],
+            iconAnchor:   [22, 40],
+            popupAnchor:  [-3, -76]
+        }
+    });
+    
+    var greenIcon = new LeafIcon({iconUrl: '../images/icon.png'});    
+    marker = L.marker([lat, long], {icon: greenIcon}).addTo(map);
 }

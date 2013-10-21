@@ -22,6 +22,9 @@ public class MapFragment extends Fragment {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			
+			// Retrieve location object
+			Location eventLocation = (Location) getActivity().getIntent().getParcelableExtra("eventLocation");
+			
 			WebView webView;
 			//RelativeLayout rootView =(RelativeLayout)inflater.inflate(R.layout.activity_map, container, false);
 			RelativeLayout rootView =(RelativeLayout)inflater.inflate(R.layout.map, container, false);
@@ -36,7 +39,8 @@ public class MapFragment extends Fragment {
 			webView.addJavascriptInterface(wb, "Android");
 			webView.getSettings().setGeolocationEnabled(true);
 		
-				wb.setData(1.3,103.8,14);
+			wb.setData(eventLocation.getLatitude(),eventLocation.getLongitude(),14);
+			
 			webView.loadUrl("file:///android_asset/www/index1.html");
 			WebViewClient wvc = new WebViewClient();
 			wvc.onPageFinished(webView,"file:///android_asset/www/index1.html");

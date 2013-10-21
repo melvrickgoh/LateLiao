@@ -1,7 +1,5 @@
 package com.example.nav2;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -24,6 +22,7 @@ import android.content.DialogInterface;
 public class LocationDialogFragment extends DialogFragment implements OnTouchListener, Handler.Callback {
 	private final Handler handler = new Handler(this);
 	private WebView webView;
+	@SuppressWarnings("unused")
 	private WebViewClient client;
 	private WebAppInterface wb;
 	
@@ -53,9 +52,11 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 		GPSTracker tracker = new GPSTracker(getActivity());
 	    if (tracker.canGetLocation() == false) {
 	        tracker.showSettingsAlert();
-	        wb.setData(1.38333,103.75000,14);
+	        //wb.setData(1.38333,103.75000,14);
 	    } else {
 	    	wb.setData(tracker.getLatitude(), tracker.getLongitude(), 14);
+	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
+	        textView.setText("lat:" + wb.getLat() + " lon:" + wb.getLon());
 	    }
 
 		client = new WebViewClient(){ 
@@ -66,8 +67,6 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	    }; 
 			
 		webView.loadUrl("file:///android_asset/www/index.html");
-		WebViewClient wvc = new WebViewClient();
-		wvc.onPageFinished(webView,"file:///android_asset/www/index.html");
         
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
 			.setPositiveButton(getResources().getString(R.string.add_activity_friend_dialog_positive), locationOnClickListener);
