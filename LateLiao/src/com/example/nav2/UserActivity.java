@@ -8,7 +8,9 @@ import com.aws.AWSClientManager;
 import com.plugins.SwipeDismissListViewTouchListener;
 
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -151,14 +154,48 @@ public class UserActivity extends ActionBarActivity  {
                             }
 
                             @Override
-                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    listAdapter.remove(listAdapter.getItem(position));
-                                }
-                                listAdapter.notifyDataSetChanged();
-                            }
+                            public void onDismiss(ListView listView, final int[] reverseSortedPositions) {
+                            	
+                            	AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                        		builder.setMessage("Delete event?");
+                        		
+                        		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										for (int position : reverseSortedPositions) {
+		                                    listAdapter.remove(listAdapter.getItem(position));
+		                                	listAdapter.notifyDataSetChanged();
+		                                }
+									}
+								});
+                            	builder.show();
+                            }                           
                         });
         lvAssignments.setOnTouchListener(touchListener);
+        
+        lvAssignments.setOnItemLongClickListener(new OnItemLongClickListener(){
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+        		builder.setMessage("Edit event?");
+        		
+        		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Event e = (Event) listAdapter.getItem(position);
+						Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+        				intent.putExtra("user", currentUser);
+        				intent.putExtra("editEvent", e);
+        				startActivity(intent);
+					}
+				});
+            	builder.show();
+            	
+				return false;
+			}
+        	
+        });
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         lvAssignments.setOnScrollListener(touchListener.makeScrollListener());
