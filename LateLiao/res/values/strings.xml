@@ -8,7 +8,7 @@
     <string name="button_send">Login</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_user">Home</string>
-    <string name="homescreen">Home</string>
+    <string name="homescreen">LateLiao</string>
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="title_activity_friends">Friends</string>
     <string name="dummy_button">Dummy Button</string>
@@ -27,6 +27,9 @@
     <string name="add_activity_form_submit">Run</string>
     <string name="add_activity_friend_dialog_positive">Enter</string>
     <string name="add_activity_friend_dialog_negative">Cancel</string>
+    <string name="map_event_name">Event Name :</string>
+    <string name="map_location">Location :</string>
+    <string name="add_activity_run">Run</string>
     
     <string-array name="options">
         <item>Janan</item>
@@ -44,7 +47,7 @@
     <string name="title_activity_notification">NotificationActivity</string>
 
     <color name="white">#FFFFFF</color>
-    <color name="loginbutton">#A9E2F3</color>
+    <color name="loginbutton">#B1EBEC</color>
 
     <string-array name="array01"></string-array>
 

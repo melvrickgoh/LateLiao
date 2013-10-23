@@ -20,14 +20,13 @@
 
     <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="android:icon">@android:color/transparent</item>
-       y
+        <item name="android:icon">@drawable/lateliaoicon</item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
     <!-- ActionBar styles -->
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse"> 
         <item name="android:background">@drawable/home2</item>
         <item name="android:gravity">left</item>
 
@@ -47,7 +46,7 @@
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingRight">2dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:background">@android:drawable/bottom_bar</item>
+        <item name="android:background">@color/black</item>
     </style>
 
     <style name="ButtonBarButton" />

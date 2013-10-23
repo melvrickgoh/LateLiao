@@ -247,8 +247,8 @@ public class ProfileActivity extends ActionBarActivity {
 		    actionBar.setDisplayShowCustomEnabled(true);
 		    actionBar.setDisplayShowTitleEnabled(false);
 		    actionBar.setCustomView(v);
-		    TextView temp = (TextView)findViewById(R.id.homeScreen);
-		    temp.setText(name);
+		    //TextView temp = (TextView)findViewById(R.id.homeScreen);
+		    //temp.setText(name);
 		    
 	}
 	

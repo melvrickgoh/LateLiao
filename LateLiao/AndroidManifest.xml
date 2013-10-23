@@ -25,18 +25,21 @@
         <activity
             android:name="com.example.nav2.UserActivity"
             android:label="@string/title_activity_user"
-            android:theme="@style/CustomActionBarTheme" >
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/lateliaoicon" >
         </activity>
         <activity
             android:name="com.example.nav2.FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fullscreen"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/FullscreenTheme"
+            android:icon="@drawable/lateliaoicon" >
         </activity>
         <activity
             android:name="com.example.nav2.AssignmentActivity"
             android:label="@string/title_activity_assignment"
-            android:parentActivityName="com.example.nav2.UserActivity" >
+            android:parentActivityName="com.example.nav2.UserActivity"
+            android:icon="@drawable/lateliaoicon" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nav2.UserActivity" />
@@ -44,7 +47,8 @@
         <activity
             android:name="com.example.nav2.ProfileActivity"
             android:label="@string/title_activity_notification"
-            android:theme="@style/CustomActionBarTheme" >
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/lateliaoicon" >
         </activity>
         <activity
             android:name="com.example.nav2.FriendsActivity"
@@ -53,16 +57,20 @@
         </activity>
         <activity
             android:name="com.example.nav2.NotificationActivity"
-            android:label="@string/title_activity_notification" >
+            android:label="@string/title_activity_notification"
+            android:icon="@drawable/lateliaoicon" >
         </activity>
         <activity
             android:name="com.example.nav2.MapActivity"
             android:label="Map"
-            android:theme="@style/CustomActionBarTheme" >
+            android:theme="@style/CustomActionBarTheme"
+            android:icon="@drawable/lateliaoicon" >
         </activity>
         <activity
             android:name="com.example.nav2.AddEvent"
-            android:label="@string/title_activity_add_event" >
+            android:label="@string/title_activity_add_event" 
+             android:theme="@style/CustomActionBarTheme"
+             android:icon="@drawable/lateliaoicon" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nav2.AddEvent" />

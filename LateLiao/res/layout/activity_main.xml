@@ -22,7 +22,8 @@
         android:adjustViewBounds="true"
         android:gravity="center_vertical"
         android:scaleType="centerCrop"
-        android:src="@drawable/loginpage3" />
+        android:src="@drawable/loginpage3"
+        android:fontFamily="sans-serif-thin"  />
 
     <EditText
         android:id="@+id/uName"
@@ -31,7 +32,8 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="40dp"
         android:hint="@string/username"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:fontFamily="sans-serif-thin"  />
 
     <EditText
         android:id="@+id/pw"
@@ -41,7 +43,8 @@
         android:layout_marginLeft="40dp"
         android:hint="@string/password"
         android:password="true"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:fontFamily="sans-serif-thin"  />
 
     <Button
         android:id="@+id/send"
@@ -51,6 +54,7 @@
         android:layout_marginLeft="40dp"
         android:background="@color/loginbutton"
    		android:textColor="@android:color/black"
-        android:text="@string/button_send" />
+        android:text="@string/button_send"
+        android:fontFamily="sans-serif-light"  />
 
 </LinearLayout>

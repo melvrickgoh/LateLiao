@@ -42,7 +42,7 @@ public class MapActivity extends ActionBarActivity {
 	 private LinearLayout mDrawer ;
 	 private List<HashMap<String,String>> mList ;
 	 private SimpleAdapter mAdapter;
-	 
+	 private User currentUser;
 	 final private String IMAGEICON = "imageicon";
 	 final private String TABNAME = "tabname";
 	
@@ -68,7 +68,7 @@ public class MapActivity extends ActionBarActivity {
 		actionBar.addTab(actionBar.newTab().setText(R.string.title_details)
 			.setTabListener( new TabListener<DetailsFragment>(this, "Details", DetailsFragment.class)));
 		
-		User currentUser = (User) getIntent().getParcelableExtra("user");
+		currentUser = (User) getIntent().getParcelableExtra("user");
 		
 		mLogos[0] = getUserIcon(this,currentUser);
 		mLogos[1] = R.drawable.add_event;
@@ -188,19 +188,21 @@ public class MapActivity extends ActionBarActivity {
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
 	    	   if (position == 0) {
-		   	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
-		               startActivity(intent);
-		   	   		
-		   	   	}
-		   	   	else if (position == 1) {
-		   	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
-		               startActivity(intent);
-		   	   		//do something
-		   	   	} else {	
-		   	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-			        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		               startActivity(intent);
-		   	   	}
+	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+	                intent.putExtra("user", currentUser);
+	                startActivity(intent);
+	    	   		
+	    	   	}
+	    	   	else if (position == 1) {
+	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	    	   		intent.putExtra("user", currentUser);
+	                startActivity(intent);
+	    	   		//do something
+	    	   	} else {	
+	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	                startActivity(intent);
+	    	   	}
 	        
 		        // Closing the drawer
 		        mDrawerLayout.closeDrawer(mDrawer);
