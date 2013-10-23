@@ -176,11 +176,12 @@ public class ProfileActivity extends ActionBarActivity {
 	       @Override
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
-	    	   	if (position == 0 && profileUser != currentUser) {
+	    	   if (position == 0) {
+	    		   if(profileUser != currentUser) {
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
 	    	   		intent.putExtra("user", currentUser);
 	    	   		startActivity(intent);
-	    	   		
+	    		   }
 	    	   	}
 	    	   	else if (position == 1) {
 	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);

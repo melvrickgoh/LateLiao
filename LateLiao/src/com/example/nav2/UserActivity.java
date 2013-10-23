@@ -69,7 +69,6 @@ public class UserActivity extends ActionBarActivity  {
 		
 		mLogos[0] = getUserIcon(this,currentUser);
 		mLogos[1] = R.drawable.add_event;
-		mLogos[2] =	R.drawable.logout;
 		mLogos[2] = R.drawable.friends;
 		mLogos[3] =	R.drawable.logout;
 
