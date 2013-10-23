@@ -38,14 +38,16 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 	Button friendsButton;
 	
 	private static User currentUser;
+	private static Event editEvent;
+	private boolean editEventStatus = false;
 	
 	private int eventDate = 0;
 	private int eventMonth = 0;
 	private int eventYear = 0;
 	private static Bundle savedInstanceState = new Bundle();
 	private String eventTime = "";
-	private final Location eventLocation = new Location("", 0, 0);
-	private final ArrayList<String> eventFriends = new ArrayList<String>();
+	private Location eventLocation = new Location("", 0, 0);
+	private ArrayList<String> eventFriends = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +56,18 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		
 		Bundle intentBundle = getIntent().getExtras();
 		this.currentUser = (User) intentBundle.get("user");
+		Object editEvent = intentBundle.get("editEvent");
+		
+		if (editEvent != null){
+			editEventStatus = true;
+			this.editEvent = (Event) editEvent;
+			this.savedInstanceState.putParcelable("editEvent", this.editEvent);
+		}
+		
 		this.savedInstanceState.putParcelable("user", this.currentUser);
 		
 		setupUI(findViewById(R.id.addEventActivity));
-		Log.d("add event","saved instance state > " + savedInstanceState + "eventlocation > " + this.eventLocation + "eventFriends > " + eventFriends);
+
 		this.savedInstanceState.putParcelable("AddLocation", this.eventLocation);
 		this.savedInstanceState.putStringArrayList("AddFriend", this.eventFriends);
 		
@@ -79,8 +89,45 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		//Set Friends Button Listener
 		friendsButton = (Button)findViewById(R.id.buttonSelectFriends);
 		friendsButton.setOnClickListener(friendsButtonListener);
+		
+		if (editEventStatus){
+			this.setTitle(this.editEvent.getEventName());
+			updateButtonValues(this.editEvent,this.currentUser,dateButton,timeButton,locationButton,friendsButton);
+		}
 	}
 	
+	private void updateButtonValues(Event editEvent, User currentUser, Button dateButton, Button timeButton, Button locationButton,
+			Button friendsButton) {
+		EditText eventName = (EditText) findViewById(R.id.eventName);
+    	eventName.setText(editEvent.getEventName());
+    	eventName.setEnabled(false);
+
+		eventDate = editEvent.getEventYear();
+		eventMonth = editEvent.getEventMonth();
+		eventYear = editEvent.getEventDate();
+    	Calendar cal = new GregorianCalendar(eventDate, eventMonth, eventYear);
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM, yyyy");
+		dateButton.setText(sdf.format(cal.getTime()));
+		
+		eventTime = editEvent.getEventTime();
+		int eventTimeInt = Integer.parseInt(eventTime);
+		cal.set(Calendar.HOUR, eventTimeInt/100);
+		cal.set(Calendar.MINUTE, eventTimeInt%100);
+		timeButton.setText(editEvent.getEventTime());
+		SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm a");
+		timeButton.setText(sdf1.format(cal.getTime()));
+		
+		eventLocation = editEvent.getEventLocation();
+		locationButton.setText(eventLocation.getLocationName());
+		
+		eventFriends = editEvent.getEventAttendees();
+		String friends = "";
+		for (String s : eventFriends){
+			friends += s + ",";
+		}
+		friendsButton.setText(friends.substring(0, friends.length()-1));
+	}
+
 	private OnClickListener friendsButtonListener = new OnClickListener(){
 
 		@Override
@@ -89,7 +136,6 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 			ArrayList<User> users = getListData();
 			users = filterCurrentUser(users,currentUser);
 			DialogFragment friendsFragment = new FriendsDialogFragment(AddEvent.this,users,savedInstanceState);
-			
 			friendsFragment.show(ft, "friends_dialog");
 		}
 
@@ -129,7 +175,7 @@ public class AddEvent extends Activity implements OnDateSetListener, OnTimeSetLi
 		cal.set(Calendar.HOUR, hours);
 		cal.set(Calendar.MINUTE, minutes);
 		eventTime = hours + "" +minutes;
-		SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 		timeButton.setText(sdf.format(cal.getTime()));
 	}
 	

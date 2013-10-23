@@ -28,6 +28,11 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	private WebAppInterface wb;
 	private static Bundle savedInstanceStateLocationDialog;
 	
+	private Event editEvent;
+	private boolean editEventStatus = false;
+	private static double latitude;
+	private static double longitude;
+	
 	private LayoutInflater inflater;
 	private View view;
 
@@ -52,17 +57,34 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 		webView.getSettings().setGeolocationEnabled(true);
 		
 		location = (Location) this.savedInstanceStateLocationDialog.getParcelable("AddLocation");
+		Object editEvent = this.savedInstanceStateLocationDialog.getParcelable("editEvent");
+		if (editEvent != null){
+			editEventStatus = true;
+			this.editEvent = (Event) editEvent;
+		}
 		
 		GPSTracker tracker = new GPSTracker(getActivity());
-	    if (tracker.canGetLocation() == false) {
+	    if (editEventStatus){
+	    	Location selectedLocation = this.editEvent.getEventLocation();
+	    	
+	    	latitude = selectedLocation.getLatitude();
+	    	longitude = selectedLocation.getLongitude();
+	    	
+	    	wb.setData(latitude, longitude, 14);
+	    	
+	    	EditText location_name = (EditText) view.findViewById(R.id.locationName);
+	    	location_name.setText(selectedLocation.getLocationName());
+	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
+	        textView.setText("lat:" + latitude + " lon:" + longitude);
+	    } else if (tracker.canGetLocation() == false) {
 	        tracker.showSettingsAlert();
 	    } else {
 	    	tracker.getLocation();
 	    	
 	    	wb.setData(tracker.getLatitude(), tracker.getLongitude(), 14);
 	    	
-	    	double latitude = wb.getLat();
-	    	double longitude = wb.getLon();
+	    	latitude = wb.getLat();
+	    	longitude = wb.getLon();
 	    	
 	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
 	        textView.setText("lat:" + latitude + " lon:" + longitude);
@@ -92,9 +114,6 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 			Button locationButton = (Button) getActivity().findViewById(R.id.buttonSelectLocation);
 			EditText location_name = (EditText) view.findViewById(R.id.locationName);
 			locationButton.setText(location_name.getText());
-
-	    	double latitude = wb.getLat();
-	    	double longitude = wb.getLon();
 	    	
 	    	location.setLocationName(location_name.getText().toString());
 	    	location.setLatitude(latitude);
@@ -103,9 +122,12 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	    	savedInstanceStateLocationDialog.putParcelable("AddLocation", location);
 	    	
 			TextView lat = (TextView) getActivity().findViewById(R.id.coordinates_lat);
-			lat.setText(String.valueOf(latitude));
+			lat.setText("" + latitude);
 			TextView lon = (TextView) getActivity().findViewById(R.id.coordinates_lon);
-			lon.setText(String.valueOf(longitude));
+			lon.setText("" + longitude);
+			
+	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
+	        textView.setText("lat:" + latitude + " lon:" + longitude);
 		}
 	};
 	
