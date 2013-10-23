@@ -34,7 +34,7 @@ public class MapActivity extends ActionBarActivity {
 	 String[] mOptions ;
 	 
 	 // Array of integers points to images stored in /res/drawable-ldpi/
-	 int[] mLogos = new int[3];
+	 int[] mLogos = new int[4];
 	 
 	 private DrawerLayout mDrawerLayout;
 	 private ListView mDrawerList;
@@ -72,7 +72,8 @@ public class MapActivity extends ActionBarActivity {
 		
 		mLogos[0] = getUserIcon(this,currentUser);
 		mLogos[1] = R.drawable.add_event;
-		mLogos[2] =	R.drawable.logout;
+		mLogos[2] =	R.drawable.friends;
+		mLogos[3] =	R.drawable.logout;
 		
 		/* Side bar creation */
 	    // Getting an array of country names
@@ -87,7 +88,7 @@ public class MapActivity extends ActionBarActivity {
 	    
 	    // Each row in the list stores country name, count and flag
 	    mList = new ArrayList<HashMap<String,String>>();
-	    for(int i=0;i<3;i++){
+	    for(int i=0;i<4;i++){
 	        HashMap<String, String> hm = new HashMap<String,String>();
 	        hm.put(TABNAME, mOptions[i]);
 	        hm.put(IMAGEICON, Integer.toString(mLogos[i]) );
@@ -195,6 +196,11 @@ public class MapActivity extends ActionBarActivity {
 	    	   	}
 	    	   	else if (position == 1) {
 	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+	    	   		intent.putExtra("user", currentUser);
+	                startActivity(intent);
+	    	   		//do something
+	    	   	} else if (position == 2) {
+	    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something

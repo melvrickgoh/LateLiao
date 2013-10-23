@@ -71,9 +71,6 @@
             android:label="@string/title_activity_add_event" 
              android:theme="@style/CustomActionBarTheme"
              android:icon="@drawable/lateliaoicon" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.nav2.AddEvent" />
         </activity>
     </application>
 
