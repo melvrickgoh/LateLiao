@@ -34,7 +34,7 @@
    		    android:id="@+id/profile_level"
    		    android:layout_width="wrap_content"
    		    android:layout_height="wrap_content"
-   		    android:text="Level 1"
+   		    android:text="Level "
        		android:paddingBottom="5dp"
    		    android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -60,7 +60,7 @@
             android:id="@+id/profile_level_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-   		    android:text="50/100"
+   		    android:text=""
    		    android:textAlignment="center" />
 
     	</LinearLayout>
@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.00"
-        android:text="Total meetings: 1"
+        android:text="Total meetings: "
         android:paddingBottom="25dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -79,7 +79,7 @@
         android:id="@+id/profile_total_meeting_late"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Meetings Late for: 1"
+        android:text="Meetings Late for: "
         android:paddingBottom="25dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -87,7 +87,7 @@
         android:id="@+id/profile_total_late_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lateness : 30mins"
+        android:text="Lateness : "
         android:paddingBottom="25dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

@@ -230,6 +230,7 @@ public class UserActivity extends ActionBarActivity  {
 	        
 	    	   	if (position == 0) {
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+	                intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		
 	    	   	}
@@ -321,7 +322,7 @@ public class UserActivity extends ActionBarActivity  {
 	    actionBar.setDisplayShowTitleEnabled(false);
 	    actionBar.setCustomView(v);    
 	}
-	 
+
 	 private int getUserIcon(Context context, User user){
 		 String imageLocation = user.getImageLocation();
 		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
