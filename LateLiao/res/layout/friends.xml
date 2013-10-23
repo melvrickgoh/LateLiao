@@ -29,7 +29,8 @@
         android:textSize="20sp"
         
         android:paddingTop="10dp"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="10dp"
+        android:fontFamily="sans-serif-thin"  />
  
     <TextView
         android:id="@+id/user_level"
@@ -43,7 +44,8 @@
         
         android:textColor="#343434"
         android:textSize="12sp"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="10dp"
+        android:fontFamily="sans-serif-thin"  />
     
     <CheckBox 
         android:id="@+id/checkbox"
@@ -52,6 +54,7 @@
         android:layout_alignParentRight="true"
         
         android:paddingTop="20dp"
-        android:paddingRight="10dp" />
+        android:paddingRight="10dp"
+        android:fontFamily="sans-serif-thin"  />
 
 </RelativeLayout>

@@ -41,7 +41,8 @@
             android:text="SideBar"
             android:textColor="@android:color/white"
             android:editable="false"
-            android:background="@drawable/drawer_title_shape" />
+            android:background="@drawable/drawer_title_shape"
+            android:fontFamily="sans-serif-thin"  />
  
         <ListView android:id="@+id/drawer_list"
             android:layout_width="match_parent"
@@ -49,7 +50,8 @@
             android:choiceMode="singleChoice"
             android:divider="@color/dark_knight"
             android:dividerHeight="0.1dp"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:fontFamily="sans-serif-thin"  />
  
     </LinearLayout>
 	 

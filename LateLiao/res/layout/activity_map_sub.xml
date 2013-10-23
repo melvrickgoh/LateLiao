@@ -17,7 +17,7 @@
         android:text="Region"
         android:textColor="#000000"
         android:textSize="15dp"
-        android:typeface="monospace" />
+        android:fontFamily="sans-serif-light"  />
 
     <TextView
         android:id="@+id/enddate"
@@ -31,7 +31,7 @@
         android:text="End Date"
         android:textColor="#000000"
         android:textSize="15dp"
-        android:typeface="monospace" />
+        android:fontFamily="sans-serif-light"  />
 
     <TextView
         android:id="@+id/startdate"
@@ -45,7 +45,7 @@
         android:text="Start Date"
         android:textColor="#000000"
         android:textSize="15dp"
-        android:typeface="monospace" />
+        android:fontFamily="sans-serif-light"  />
 
     <EditText
         android:id="@+id/editText1"
@@ -55,7 +55,8 @@
         android:layout_alignBottom="@+id/enddate"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/enddate"
-        android:ems="10" />
+        android:ems="10"
+        android:fontFamily="sans-serif-light"  />
 
     <EditText
         android:id="@+id/EditText01"
@@ -65,7 +66,8 @@
         android:layout_alignBottom="@+id/region"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/region"
-        android:ems="9" >
+        android:ems="9"
+        android:fontFamily="sans-serif-thin"  >
 
         <requestFocus />
     </EditText>
@@ -77,7 +79,8 @@
         android:layout_alignBaseline="@+id/startdate"
         android:layout_alignBottom="@+id/startdate"
         android:layout_alignLeft="@+id/EditText03"
-        android:ems="10" />
+        android:ems="10"
+        android:fontFamily="sans-serif-thin"  />
 
     <TextView
         android:id="@+id/date"
@@ -92,7 +95,7 @@
         android:text="Date"
         android:textColor="#000000"
         android:textSize="15dp"
-        android:typeface="monospace" />
+        android:fontFamily="sans-serif-light"  />
 
     <TextView
         android:id="@+id/TextView01"
@@ -107,7 +110,7 @@
         android:text="Assignment"
         android:textColor="#000000"
         android:textSize="15dp"
-        android:typeface="monospace" />
+        android:fontFamily="sans-serif-thin"  />
 
     <EditText
         android:id="@+id/EditText03"
@@ -115,6 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/date"
         android:layout_toRightOf="@+id/enddate"
-        android:ems="10" />
+        android:ems="10"
+        android:fontFamily="sans-serif-thin"  />
    
 </RelativeLayout>

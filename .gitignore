@@ -13,3 +13,4 @@ Sample/Nav2/bin/
 Sample/Nav2/gen/
 Sample/Nav2/project.properties
 LateLiao/LateLiao/src/com/aws/AwsCredentials.properties
+LateLiao/src/com/example/nav2/AwsCredentials.properties

@@ -14,7 +14,9 @@
         android:paddingBottom="10dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:contentDescription="@string/hello" />
+        android:contentDescription="@string/hello"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold" />
  
     <TextView
         android:id="@+id/tabname"
@@ -23,6 +25,8 @@
         android:layout_toRightOf="@id/imageicon"
         android:layout_centerVertical="true"
         android:background="@color/white1"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"  />
  
 </RelativeLayout>

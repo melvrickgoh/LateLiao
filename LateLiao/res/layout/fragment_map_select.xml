@@ -16,7 +16,8 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/activityLocation_Name" >
+        android:hint="@string/activityLocation_Name"
+        android:fontFamily="sans-serif-thin"  >
 
         <requestFocus />
     </EditText>
@@ -34,6 +35,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:paddingBottom="5dp"
         android:textSize="8sp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:fontFamily="sans-serif-thin"  />
     
 </LinearLayout>
