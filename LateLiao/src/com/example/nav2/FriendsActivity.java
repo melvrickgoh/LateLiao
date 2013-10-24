@@ -209,23 +209,6 @@ public class FriendsActivity extends ActionBarActivity {
 				inflater.inflate(R.menu.user, menu);
 				return super.onCreateOptionsMenu(menu);
 	}
-	
-	
-	private void showActionBar(String name) {
-        LayoutInflater inflator = (LayoutInflater) this
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        	View v = inflator.inflate(R.layout.custom, null);
-		    ActionBar actionBar = getSupportActionBar();
-		    actionBar.setDisplayHomeAsUpEnabled(true);
-		    actionBar.setDisplayShowHomeEnabled (false);
-		    actionBar.setDisplayShowCustomEnabled(true);
-		    actionBar.setDisplayShowTitleEnabled(false);
-		    actionBar.setCustomView(v);
-		    TextView temp = (TextView)findViewById(R.id.homeScreen);
-		    temp.setText(name);
-		    
-	}
-	
 
 	@Override
 	 public boolean onOptionsItemSelected(MenuItem item) {

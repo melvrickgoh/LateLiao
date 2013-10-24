@@ -10,14 +10,16 @@
 	    xmlns:tools="http://schemas.android.com/tools"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:orientation="vertical">
+	    android:orientation="vertical"
+	    android:fontFamily="sans-serif-light">
 	    <ListView
 	      android:id="@+id/list"
 	      android:layout_width="fill_parent"
 	      android:layout_height="wrap_content"
 	      android:divider="#b5b5b5"
 	      android:dividerHeight="1dp"
-	      android:listSelector="@drawable/list_selector">
+	      android:listSelector="@drawable/list_selector"
+	      android:fontFamily="sans-serif-light">
 	    </ListView>
 	</LinearLayout>
 	

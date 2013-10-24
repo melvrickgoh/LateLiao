@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:background="@drawable/list_selector"
     android:orientation="horizontal"
-    android:padding="5dip" >
+	android:paddingLeft="5dip"
+	android:paddingRight="5dip"
+	android:paddingTop="5dip" >
     <!-- ListRow Left side Thumbnail image -->
     <LinearLayout
         android:id="@+id/thumbnail"
@@ -40,7 +42,7 @@
         android:textColor="#040404"
         android:textSize="25dip"
         android:textStyle="bold"
-        android:typeface="sans" />
+        android:fontFamily="sans-serif-light" />
     <!-- Weather Information-->
     <TextView
         android:id="@+id/friend_level"
@@ -51,5 +53,6 @@
         android:paddingTop="5dip"
         android:layout_centerHorizontal="true"
         android:textColor="#343434"
-        android:textSize="15dip" />
+        android:textSize="15dip"
+        android:fontFamily="sans-serif-thin" />
 </RelativeLayout>  
