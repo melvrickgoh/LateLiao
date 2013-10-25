@@ -27,12 +27,12 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	@SuppressWarnings("unused")
 	private WebViewClient client;
 	private WebAppInterface wb;
-	private static Bundle savedInstanceStateLocationDialog;
+	private Bundle savedInstanceStateLocationDialog;
 	
 	private Event editEvent;
 	private boolean editEventStatus = false;
-	private static double latitude;
-	private static double longitude;
+	private double latitude;
+	private double longitude;
 	
 	private LayoutInflater inflater;
 	private View view;
@@ -69,6 +69,7 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	    	Location selectedLocation = this.editEvent.getEventLocation();
 	    	
 	    	this.latitude = selectedLocation.getLatitude();
+	    	Log.d("long", "" + this.longitude);
 	    	this.longitude = selectedLocation.getLongitude();
 	    	
 	    	wb.setData(this.latitude, this.longitude, 14);

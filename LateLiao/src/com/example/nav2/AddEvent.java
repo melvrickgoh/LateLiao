@@ -51,14 +51,14 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
 	Button locationButton;
 	Button friendsButton;
 	
-	private static User currentUser;
-	private static Event editEvent;
+	private User currentUser;
+	private Event editEvent;
 	private boolean editEventStatus = false;
 	
 	private int eventDate = 0;
 	private int eventMonth = 0;
 	private int eventYear = 0;
-	private static Bundle savedInstanceState = new Bundle();
+	private Bundle savedInstanceState = new Bundle();
 	private String eventTime = "";
 	private Location eventLocation = new Location("", 0, 0);
 	private ArrayList<String> eventFriends = new ArrayList<String>();
@@ -94,6 +94,8 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
 		if (editEvent != null){
 			editEventStatus = true;
 			this.editEvent = (Event) editEvent;
+			Log.d("event", "" + this.editEvent.getEventLocation().getLatitude());
+			Log.d("event", "" + this.editEvent.getEventLocation().getLongitude());
 			this.savedInstanceState.putParcelable("editEvent", this.editEvent);
 		}
 		

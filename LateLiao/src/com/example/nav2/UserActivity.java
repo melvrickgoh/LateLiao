@@ -19,6 +19,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,6 +90,7 @@ public class UserActivity extends ActionBarActivity  {
         
         /*set the created assignmentList to the listener*/
         lvAssignments.setOnItemClickListener(itemClickListener);
+        lvAssignments.setOnItemLongClickListener(longItemClickListener);
         
         // Getting an array of tab names
         mOptions = getResources().getStringArray(R.array.options);
@@ -177,7 +179,7 @@ public class UserActivity extends ActionBarActivity  {
                             }                           
                         });
         lvAssignments.setOnTouchListener(touchListener);
-        
+        /*
         lvAssignments.setOnItemLongClickListener(new OnItemLongClickListener(){
 
 			@Override
@@ -191,6 +193,8 @@ public class UserActivity extends ActionBarActivity  {
 						Event e = (Event) listAdapter.getItem(position);
 						Intent intent = new Intent(getApplicationContext(),AddEvent.class);
         				intent.putExtra("user", currentUser);
+        				Log.d("UserActivity", "" + e.getEventLocation().getLatitude());
+        				Log.d("UserActivity", "" + e.getEventLocation().getLongitude());
         				intent.putExtra("editEvent", e);
         				startActivity(intent);
 					}
@@ -200,12 +204,39 @@ public class UserActivity extends ActionBarActivity  {
 				return false;
 			}
         	
-        });
+        });*/
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         lvAssignments.setOnScrollListener(touchListener.makeScrollListener());
     }
     
+	private OnItemLongClickListener longItemClickListener = new OnItemLongClickListener(){
+
+		@Override
+		public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+    		builder.setMessage("Edit event?");
+    		
+    		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					CustomListAdapter adapter = (CustomListAdapter) parent.getAdapter();
+					
+					Event e = (Event) adapter.getItem(position);
+					Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+    				intent.putExtra("user", currentUser);
+    				Log.d("UserActivity", "" + e.getEventLocation().getLatitude());
+    				Log.d("UserActivity", "" + e.getEventLocation().getLongitude());
+    				intent.putExtra("editEvent", e);
+    				startActivity(intent);
+				}
+			});
+        	builder.show();
+        	
+			return false;
+		}
+    	
+    };
 	
 	//to create the listener that does the function when the events are clicked
 	private OnItemClickListener itemClickListener = new OnItemClickListener() {

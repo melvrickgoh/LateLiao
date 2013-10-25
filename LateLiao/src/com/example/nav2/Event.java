@@ -112,7 +112,7 @@ public class Event implements Parcelable {
 		values.putStringArrayList("eventAttendees", eventAttendees);
 		values.putString("locationName", eventLocation.getLocationName());
 		values.putDouble("locationLatitude", eventLocation.getLatitude());
-		values.putDouble("locationLogitude", eventLocation.getLongitude());
+		values.putDouble("locationLongitude", eventLocation.getLongitude());
 		
 		out.writeBundle(values);
 	}
