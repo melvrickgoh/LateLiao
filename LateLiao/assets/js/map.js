@@ -85,11 +85,15 @@ function activatePinning(pinning) {
 			
 	        setMarker(e.latlng.lat, e.latlng.lng);
 	        Android.pinLocation(e.latlng.lat, e.latlng.lng);
-      
+	        Android.callFriendsLocation();
 	    });
 	} else {
 		map.off('click');
 	}
+}
+
+function setFriendsLocation(friendsList){
+	
 }
 
 function setMarker(lat, long) {

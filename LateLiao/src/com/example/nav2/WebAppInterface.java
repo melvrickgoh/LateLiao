@@ -1,5 +1,9 @@
 package com.example.nav2;
 
+import java.util.ArrayList;
+
+import com.aws.AWSClientManager;
+
 import android.webkit.JavascriptInterface;
 
 public class WebAppInterface {
@@ -16,6 +20,8 @@ public class WebAppInterface {
     public double current_long=0;
     
     public int zoomarea=0;
+    
+    public String eventName;
     
     /** Show a toast from the web page 
      * @return */
@@ -51,7 +57,15 @@ public class WebAppInterface {
     	this.current_long = current_long;
     }
     
-    @JavascriptInterface
+    public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	@JavascriptInterface
     public void setData(double lat, double lon,int area) {
 		this.lat = lat;
 		this.lon = lon;
@@ -62,5 +76,10 @@ public class WebAppInterface {
 	public void pinLocation(double lat, double lon) {
 		this.lat = lat;
 		this.lon = lon;
+	}
+	
+	public String passEvent(String eventName) {
+		return eventName;
+		
 	}
 }
