@@ -70,7 +70,12 @@ public class CustomListAdapter extends BaseAdapter {
         
         holder.eventDateView.setText(sdf.format(cal.getTime()));
         holder.eventTitleView.setText(event.getEventName());
-        holder.eventTimeView.setText("@ " + event.getEventTime());
+        
+        String eventTime = event.getEventTime();
+        if (eventTime.length()==3){
+        	eventTime = "0" + eventTime;
+        }
+        holder.eventTimeView.setText("@ " + eventTime);
         holder.eventLocationView.setText(event.getEventLocationName());
         /*
         holder.eventDateView.setTypeface(agencyRegTF);

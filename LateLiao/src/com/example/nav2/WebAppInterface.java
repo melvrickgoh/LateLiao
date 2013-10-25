@@ -56,11 +56,11 @@ public class WebAppInterface {
     	this.current_lat = current_lat;
     	this.current_long = current_long;
     }
-    
+    @JavascriptInterface
     public String getEventName() {
 		return eventName;
 	}
-
+    @JavascriptInterface
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
@@ -77,7 +77,7 @@ public class WebAppInterface {
 		this.lat = lat;
 		this.lon = lon;
 	}
-	
+	@JavascriptInterface
 	public String passEvent(String eventName) {
 		return eventName;
 		

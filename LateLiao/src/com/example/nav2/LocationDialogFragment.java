@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -67,15 +68,17 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	    if (editEventStatus){
 	    	Location selectedLocation = this.editEvent.getEventLocation();
 	    	
-	    	latitude = selectedLocation.getLatitude();
-	    	longitude = selectedLocation.getLongitude();
+	    	this.latitude = selectedLocation.getLatitude();
+	    	this.longitude = selectedLocation.getLongitude();
 	    	
-	    	wb.setData(latitude, longitude, 14);
+	    	wb.setData(this.latitude, this.longitude, 14);
 	    	
 	    	EditText location_name = (EditText) view.findViewById(R.id.locationName);
 	    	location_name.setText(selectedLocation.getLocationName());
 	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
 	        textView.setText("lat:" + latitude + " lon:" + longitude);
+	        
+	        
 	    } else if (tracker.canGetLocation() == false) {
 	        tracker.showSettingsAlert();
 	    } else {
@@ -151,6 +154,10 @@ public class LocationDialogFragment extends DialogFragment implements OnTouchLis
 	        return true;
 	    }
 	    if (msg.what == 2){
+	    	
+	    	latitude = wb.getLat();
+	    	longitude = wb.getLon();
+	    	
 	    	TextView textView = (TextView) view.findViewById(R.id.coordinates);
 	        textView.setText("lat:" + wb.getLat() + " lon:" + wb.getLon());
 	        return true;

@@ -1,18 +1,27 @@
 package com.example.nav2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import com.aws.AWSClientManager;
+import com.plugins.LevelComparator;
+import com.plugins.NameComparator;
+import com.plugins.ShakeDetector;
+import com.plugins.ShakeDetector.OnShakeListener;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +37,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class FriendsActivity extends ActionBarActivity {
-
+	
+	// The following are used for the shake detection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+	
 	User currentUser = null;
 	 
 	ProgressBar myProgressBar; 
@@ -58,6 +72,9 @@ public class FriendsActivity extends ActionBarActivity {
 	 private LinearLayout mDrawer ;
 	 private List<HashMap<String,String>> mList ;
 	 private SimpleAdapter mAdapter;
+	 private Comparator nameComparator = new NameComparator();
+	 private Comparator levelComparator = new LevelComparator();
+	 private boolean isNameComparator = true;
 
 	 final private String IMAGEICON = "imageicon";
 	 final private String TABNAME = "tabname";
@@ -75,18 +92,19 @@ public class FriendsActivity extends ActionBarActivity {
         mOptions[0] = currentUser.getName();
 
 		mLogos[0] = getUserIcon(this,currentUser);
-
-        AWSClientManager aws = AWSClientManager.getInstance();
-        ArrayList<User> allUsers =  aws.getAllUsers();
+		
+		ArrayList<User> friends = null;
+        boolean useLevelComparator = intent.getBooleanExtra("IsLevelComparator", true);
         
-        
-        for(int i = 0; i < allUsers.size(); i++) {
-        	if(allUsers.get(i).getName().equals(currentUser.getName())) {
-        		allUsers.remove(i--);
-        	}
+        if (useLevelComparator){
+        	friends =  getFriends(levelComparator);
+            intent.putExtra("IsLevelComparator",false);
+        }else{
+        	friends =  getFriends(nameComparator);
+            intent.putExtra("IsLevelComparator",true);
         }
         
-        final CustomFriendAdapter friendAdapter = new CustomFriendAdapter(this,allUsers,currentUser);
+        final CustomFriendAdapter friendAdapter = new CustomFriendAdapter(this,friends,currentUser);
         
         final ListView lvAssignments = (ListView) findViewById(R.id.list);
         lvAssignments.setAdapter(friendAdapter);
@@ -193,14 +211,35 @@ public class FriendsActivity extends ActionBarActivity {
        // Setting the adapter to the listView
         mDrawerList.setAdapter(mAdapter);
         
-       /* sidebar.setOnClickListener(new View.OnClickListener() {
-	        @Override
-	        public void onClick(View v) {
-	        	 mDrawerLayout.openDrawer(mDrawer);
-	        }
-	    });*/
+     // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new OnShakeListener() {
+ 
+            @Override
+            public void onShake(int count) {
+            	finish();
+				startActivity(getIntent());
+            }
+        });
 		
 	}
+	
+	@Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,    SensorManager.SENSOR_DELAY_UI);
+    }
+ 
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -277,5 +316,19 @@ public class FriendsActivity extends ActionBarActivity {
 	 private int getUserIcon(Context context, User user){
 		 String imageLocation = user.getImageLocation();
 		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+	private ArrayList<User> getFriends(Comparator comparator){
+		 AWSClientManager aws = AWSClientManager.getInstance();
+		 ArrayList<User> friends =  aws.getAllUsers(); 
+	        
+	     for(int i = 0; i < friends.size(); i++) {
+	    	 if(friends.get(i).getName().equals(currentUser.getName())) {
+	        		friends.remove(i--);
+	    	 }
+	     }
+	     Collections.sort(friends,comparator);
+		return friends;
 	 }
 }

@@ -1,10 +1,13 @@
 package com.example.nav2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import com.aws.AWSClientManager;
+import com.plugins.EventComparator;
 import com.plugins.SwipeDismissListViewTouchListener;
 
 import android.os.Bundle;
@@ -45,6 +48,7 @@ public class UserActivity extends ActionBarActivity  {
 	 private LinearLayout mDrawer ;
 	 private List<HashMap<String,String>> mList ;
 	 private SimpleAdapter mAdapter;
+	 private Comparator eventComparator = new EventComparator();
 	 
 	 // input of values into the interface
 	 final private String IMAGEICON = "imageicon";
@@ -275,7 +279,7 @@ public class UserActivity extends ActionBarActivity  {
 	private ArrayList<Event> getListData(String username){		
 		AWSClientManager aws = AWSClientManager.getInstance();
 		ArrayList<Event> events = filterEvents(username,aws.getAllEvents());
-		
+		Collections.sort(events,eventComparator);
 		return events;//aws.getFilteredEvents(username);
 	}
 	

@@ -478,4 +478,8 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
 		AWSClientManager aws = AWSClientManager.getInstance();		
 		return aws.getAllUsers();
 	}
+	
+	public void setEventLocation(Location locale){
+		this.eventLocation = locale;
+	}
 }
