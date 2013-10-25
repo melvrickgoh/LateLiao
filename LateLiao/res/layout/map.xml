@@ -21,6 +21,7 @@
  	    android:layout_height="60dp"
  	    android:layout_below="@+id/mapview"
  	    android:layout_centerHorizontal="true"
- 	    android:text="Direction" />
+ 	    android:text="Direction"
+ 	    android:fontFamily="sans-serif-thin"  />
 
 </RelativeLayout>

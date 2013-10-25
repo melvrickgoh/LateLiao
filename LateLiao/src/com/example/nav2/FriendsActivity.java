@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.aws.AWSClientManager;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,10 +27,9 @@ import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-public class ProfileActivity extends ActionBarActivity {
+public class FriendsActivity extends ActionBarActivity {
 
 	User currentUser = null;
-	User profileUser = null;
 	 
 	ProgressBar myProgressBar; 
 	int myProgress = 50;
@@ -64,60 +65,35 @@ public class ProfileActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_profile);
+		setContentView(R.layout.activity_friends);
+		
 		Intent intent = getIntent();
 		currentUser = (User) intent.getParcelableExtra("user");
-		profileUser = (User) intent.getParcelableExtra("profileUser");
-		
-		if(profileUser == null) {
-			profileUser = currentUser;
-		}
-		
-		mLogos[0] = getUserIcon(this,currentUser);
-		showActionBar(profileUser.getName());
-		
-		
-		myProgressBar=(ProgressBar)findViewById(R.id.progressbar_Horizontal); 
-		myProgressBar.setProgress(profileUser.getCurrentPoints());
-
-		TextView profileLevel = (TextView)findViewById(R.id.profile_level);
-		profileLevel.append(String.valueOf(profileUser.getLevel()));
-
-
-		TextView profileLevelDescription = (TextView)findViewById(R.id.profile_level_description);
-		switch(profileUser.getLevel()) {
-			case 0: case 1:
-				profileLevelDescription.setText("New Born Baby");
-				break;
-				
-			case 2:
-				profileLevelDescription.setText("Baby in diapers");
-				break;
-				
-			default:
-				profileLevelDescription.setText("King of LateLiao");
-				break;
-		}
-
-		TextView profileLevelDetails = (TextView)findViewById(R.id.profile_level_details);
-		profileLevelDetails.append(String.valueOf(profileUser.getCurrentPoints() + "/100"));
-		
-		ImageView profileImage = (ImageView)findViewById(R.id.imageView1);
-		profileImage.setImageResource(getUserIcon(this, profileUser));
-
-		TextView profileTotalMeeting = (TextView)findViewById(R.id.profile_total_meeting);
-		profileTotalMeeting.append(String.valueOf(profileUser.getTotalMeetings()));
-
-		TextView profileTotalMeetingLate = (TextView)findViewById(R.id.profile_total_meeting_late);
-		profileTotalMeetingLate.append(String.valueOf(profileUser.getMeetingsLate()));
-
-		TextView profileTotalLateTime = (TextView)findViewById(R.id.profile_total_late_time);
-		profileTotalLateTime.append(String.valueOf(profileUser.getMeetingsLate() + " mins"));
-		
 		/*here onwards will be for the sidebar*/
         // Getting an array of country names
         mOptions = getResources().getStringArray(R.array.options);
         mOptions[0] = currentUser.getName();
+
+		mLogos[0] = getUserIcon(this,currentUser);
+
+        AWSClientManager aws = AWSClientManager.getInstance();
+        ArrayList<User> allUsers =  aws.getAllUsers();
+        
+        
+        for(int i = 0; i < allUsers.size(); i++) {
+        	if(allUsers.get(i).getName().equals(currentUser.getName())) {
+        		allUsers.remove(i--);
+        	}
+        }
+        
+        final CustomFriendAdapter friendAdapter = new CustomFriendAdapter(this,allUsers,currentUser);
+        
+        final ListView lvAssignments = (ListView) findViewById(R.id.list);
+        lvAssignments.setAdapter(friendAdapter);
+        
+        /*set the created assignmentList to the listener*/
+        lvAssignments.setOnItemClickListener(itemClickListener);
+		
         
         // Title of the activity
         mTitle = (String)getTitle();
@@ -176,22 +152,20 @@ public class ProfileActivity extends ActionBarActivity {
 	       @Override
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
-	    	   if (position == 0) {
-	    		   if(profileUser != currentUser) {
+	    	   	if (position == 0) {
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
 	    	   		intent.putExtra("user", currentUser);
 	    	   		startActivity(intent);
-	    		   }
+	    	   		
 	    	   	}
 	    	   	else if (position == 1) {
 	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
-	    	   	} else if(position == 2){	
-	    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
-	    	   		intent.putExtra("user", currentUser);
-	                startActivity(intent);
+	    	   	} 
+	    	   	else if (position == 2) {
+	    	   		
 	    	   	} else {	
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
 		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -235,23 +209,6 @@ public class ProfileActivity extends ActionBarActivity {
 				inflater.inflate(R.menu.user, menu);
 				return super.onCreateOptionsMenu(menu);
 	}
-	
-	
-	private void showActionBar(String name) {
-        LayoutInflater inflator = (LayoutInflater) this
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        	View v = inflator.inflate(R.layout.custom, null);
-		    ActionBar actionBar = getSupportActionBar();
-		    actionBar.setDisplayHomeAsUpEnabled(true);
-		    actionBar.setDisplayShowHomeEnabled (false);
-		    actionBar.setDisplayShowCustomEnabled(true);
-		    actionBar.setDisplayShowTitleEnabled(false);
-		    actionBar.setCustomView(v);
-		    //TextView temp = (TextView)findViewById(R.id.homeScreen);
-		    //temp.setText(name);
-		    
-	}
-	
 
 	@Override
 	 public boolean onOptionsItemSelected(MenuItem item) {
@@ -299,7 +256,23 @@ public class ProfileActivity extends ActionBarActivity {
 	 if(mPosition!=-1)
 	 getSupportActionBar().setTitle(mOptions[mPosition]);
 	 }
-	 
+
+ 
+	//to create the listener that does the function when the events are clicked
+	private OnItemClickListener itemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> lv, View item, int position, long id) {
+
+        	CustomFriendAdapter adapter = (CustomFriendAdapter) lv.getAdapter();  
+        	User user = (User) adapter.getItem(position);
+        
+            /*to send to the next activity*/
+            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+            intent.putExtra("user", currentUser);
+            intent.putExtra("profileUser", user);
+            startActivity(intent);
+        }
+    };
 	 
 	 private int getUserIcon(Context context, User user){
 		 String imageLocation = user.getImageLocation();

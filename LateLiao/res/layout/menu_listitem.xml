@@ -17,5 +17,6 @@ android:layout_width="fill_parent" >
         android:textColor="@color/black_overlay"
         android:textSize="24dp"
         android:layout_marginTop="10dip"
-        android:layout_marginBottom="10dip" />
+        android:layout_marginBottom="10dip"
+        android:fontFamily="sans-serif-thin"  />
 </LinearLayout>
