@@ -20,6 +20,8 @@ import com.amazonaws.services.dynamodbv2.model.DescribeTableRequest;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.amazonaws.services.dynamodbv2.model.DeleteItemRequest;
+import com.amazonaws.services.dynamodbv2.model.DeleteItemResult;
 import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
 import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
@@ -69,6 +71,14 @@ public class AWSClientManager {
     public boolean hasCredentials() {
         return PropertyLoader.getInstance().hasCredentials();
     }
+    
+    public void deleteEvent(String eventName){
+    	 HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
+         key.put("EventName", new AttributeValue().withS(eventName));
+         
+         DeleteItemRequest deleteItemRequest = new DeleteItemRequest().withTableName("LateLiaoEvent").withKey(key);
+         deleteItem(deleteItemRequest);
+    }
 
     public void addNewLocation(Location l){
     	Map<String, AttributeValue> newLocationDetails = newLocation(l.getLocationName(),l.getLatitude(),l.getLongitude());
@@ -87,6 +97,17 @@ public class AWSClientManager {
     	PutItemRequest putItemRequest = new PutItemRequest("LateLiaoEvent", newEventDetails);
     	addNewLocation(e.getEventLocation());
     	addItem(putItemRequest);
+	}
+	
+	private void deleteItem(DeleteItemRequest request){
+		AWSDeleteItem awsDeleteItem = new AWSDeleteItem();
+		HashMap<String,Object> param = new HashMap<String,Object>();
+		DeleteItemResult result = new DeleteItemResult();
+		
+        param.put("dynamoDB", dynamoDB);
+        param.put("request", request);
+        
+        awsDeleteItem.execute(param,null,result);
 	}
 	
 	private void addItem(PutItemRequest request){

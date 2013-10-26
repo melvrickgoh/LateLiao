@@ -170,44 +170,28 @@ public class UserActivity extends ActionBarActivity  {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
 										for (int position : reverseSortedPositions) {
+											Event selectedEvent = (Event) listAdapter.getItem(position);
+											deleteEvent(selectedEvent.getEventName());
 		                                    listAdapter.remove(listAdapter.getItem(position));
 		                                	listAdapter.notifyDataSetChanged();
 		                                }
+									}
+									
+									private void deleteEvent(String eventName){
+										AWSClientManager aws = AWSClientManager.getInstance();
+										aws.deleteEvent(eventName);
 									}
 								});
                             	builder.show();
                             }                           
                         });
         lvAssignments.setOnTouchListener(touchListener);
-        /*
-        lvAssignments.setOnItemLongClickListener(new OnItemLongClickListener(){
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
-        		builder.setMessage("Edit event?");
-        		
-        		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Event e = (Event) listAdapter.getItem(position);
-						Intent intent = new Intent(getApplicationContext(),AddEvent.class);
-        				intent.putExtra("user", currentUser);
-        				Log.d("UserActivity", "" + e.getEventLocation().getLatitude());
-        				Log.d("UserActivity", "" + e.getEventLocation().getLongitude());
-        				intent.putExtra("editEvent", e);
-        				startActivity(intent);
-					}
-				});
-            	builder.show();
-            	
-				return false;
-			}
-        	
-        });*/
+        
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
         lvAssignments.setOnScrollListener(touchListener.makeScrollListener());
+        
+        //updateLocation();
     }
     
 	private OnItemLongClickListener longItemClickListener = new OnItemLongClickListener(){
@@ -312,6 +296,19 @@ public class UserActivity extends ActionBarActivity  {
 		ArrayList<Event> events = filterEvents(username,aws.getAllEvents());
 		Collections.sort(events,eventComparator);
 		return events;//aws.getFilteredEvents(username);
+	}
+	
+	private void updateLocation(){
+		AWSClientManager aws = AWSClientManager.getInstance();
+		GPSTracker tracker = new GPSTracker(this);
+	    if (tracker.canGetLocation() == false) {
+	        tracker.showSettingsAlert();
+	    } else {
+	    	tracker.getLocation();
+	    	Location currentLocation = new Location(currentUser.getUsername(),tracker.getLatitude(),tracker.getLongitude());
+	    	currentUser.setCurrentLocation(currentLocation);
+	    	aws.addNewUser(currentUser);
+	    }
 	}
 	
 	private ArrayList<Event> filterEvents(String username,ArrayList<Event> allEvents) {
