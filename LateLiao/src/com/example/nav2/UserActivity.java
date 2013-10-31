@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.aws.AWSClientManager;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.plugins.EventComparator;
 import com.plugins.SwipeDismissListViewTouchListener;
 
@@ -33,7 +35,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class UserActivity extends ActionBarActivity  {
-	
+	 private EasyTracker tracker;
+	 
 	 User currentUser = null;
 	 
 	 // Array of strings storing tab names
@@ -159,9 +162,10 @@ public class UserActivity extends ActionBarActivity  {
                             public boolean canDismiss(int position) {
                                 return true;
                             }
-
+                            
                             @Override
                             public void onDismiss(ListView listView, final int[] reverseSortedPositions) {
+                            	submitTrackerMessage("User Activity","Attempt Delete Activity Event Button Swiped","Swipe Activity for Deletion",null);
                             	
                             	AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
                         		builder.setMessage("Delete event?");
@@ -169,6 +173,8 @@ public class UserActivity extends ActionBarActivity  {
                         		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
+										submitTrackerMessage("User Activity","Confirm Delete Button Confirmed","Press Okay to Delete",null);
+
 										for (int position : reverseSortedPositions) {
 											Event selectedEvent = (Event) listAdapter.getItem(position);
 											deleteEvent(selectedEvent.getEventName());
@@ -198,6 +204,8 @@ public class UserActivity extends ActionBarActivity  {
 
 		@Override
 		public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+			submitTrackerMessage("User Activity","Edit Event Button Long Clicked","Select Add Activity to go to for Editing",null);
+			
 			AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
     		builder.setMessage("Edit event?");
     		
@@ -226,7 +234,8 @@ public class UserActivity extends ActionBarActivity  {
 	private OnItemClickListener itemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> lv, View item, int position, long id) {
-
+        	submitTrackerMessage("User Activity","Event Button Clicked","Select Map Activity to go to",null);
+        	
         	CustomListAdapter adapter = (CustomListAdapter) lv.getAdapter();  
         	Event eventItem = (Event) adapter.getItem(position);
         
@@ -249,21 +258,25 @@ public class UserActivity extends ActionBarActivity  {
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
 	    	   	if (position == 0) {
+	    	   		submitTrackerMessage("User Activity","Drawer: Select Profile","Go to Profile Activity",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
 	                intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		
 	    	   	}
 	    	   	else if (position == 1) {
+	    	   		submitTrackerMessage("User Activity","Drawer: Select Add Event","Go to Add Event",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
 	    	   	} else if(position == 2){	
+	    	   		submitTrackerMessage("User Activity","Drawer: View Friends","Go to View Friends",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   	} else {	
+	    	   		submitTrackerMessage("User Activity","Drawer: Main Activity","Go to Main Activity",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
 		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	                startActivity(intent);
@@ -363,5 +376,20 @@ public class UserActivity extends ActionBarActivity  {
 	 private int getUserIcon(Context context, User user){
 		 String imageLocation = user.getImageLocation();
 		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+	 }
+	 
+	 public void onStart() {
+		 super.onStart();
+		 tracker = EasyTracker.getInstance(this);
+		 tracker.activityStart(this);  // Add this method.
+	 }
+		 
+	 public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+     }
+	 
+	 private void submitTrackerMessage(String category, String action, String label, Long value){
+		 tracker.send(MapBuilder.createEvent(category,action,label,value).build());
 	 }
 }

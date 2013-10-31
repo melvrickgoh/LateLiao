@@ -36,7 +36,11 @@ import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+
 public class FriendsActivity extends ActionBarActivity {
+	private EasyTracker tracker;
 	
 	// The following are used for the shake detection
     private SensorManager mSensorManager;
@@ -171,6 +175,7 @@ public class FriendsActivity extends ActionBarActivity {
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
 	    	   	if (position == 0) {
+	    	   		submitTrackerMessage("Friends Activity","Drawer: Select Profile","Go to Profile Activity",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
 	    	   		intent.putExtra("user", currentUser);
 	    	   		startActivity(intent);
@@ -301,7 +306,7 @@ public class FriendsActivity extends ActionBarActivity {
 	private OnItemClickListener itemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> lv, View item, int position, long id) {
-
+        	submitTrackerMessage("Friends Activity","Select Profile to view","Custom friends view of profile",null);
         	CustomFriendAdapter adapter = (CustomFriendAdapter) lv.getAdapter();  
         	User user = (User) adapter.getItem(position);
         
@@ -330,5 +335,20 @@ public class FriendsActivity extends ActionBarActivity {
 	     }
 	     Collections.sort(friends,comparator);
 		return friends;
+	 }
+	 
+	 public void onStart() {
+		 super.onStart();
+		 tracker = EasyTracker.getInstance(this);
+		 tracker.activityStart(this);  // Add this method.
+	 }
+		 
+	 public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+     }
+	 
+	 private void submitTrackerMessage(String category, String action, String label, Long value){
+		 tracker.send(MapBuilder.createEvent(category,action,label,value).build());
 	 }
 }

@@ -1,5 +1,8 @@
 package com.example.nav2;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -7,7 +10,7 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 public class AssignmentActivity extends Activity {
-
+	private EasyTracker tracker;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,5 +51,19 @@ public class AssignmentActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+	public void onStart() {
+		 super.onStart();
+		 tracker = EasyTracker.getInstance(this);
+		 tracker.activityStart(this);  // Add this method.
+	 }
+		 
+	 public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
+	 
+	 private void submitTrackerMessage(String category, String action, String label, Long value){
+		 tracker.send(MapBuilder.createEvent(category,action,label,value).build());
+	 }
 }

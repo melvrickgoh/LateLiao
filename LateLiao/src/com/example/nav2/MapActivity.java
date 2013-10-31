@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -13,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +31,7 @@ import android.content.Intent;
 
 @SuppressLint("NewApi")
 public class MapActivity extends ActionBarActivity {
-	 
+	 private EasyTracker tracker;
 	 // Array of strings storing country names
 	 String[] mOptions ;
 	 
@@ -163,12 +165,14 @@ public class MapActivity extends ActionBarActivity {
 			// TODO Auto-generated method stub
 			// Check if the fragment is already initialized
             if (mFragment == null) {
-                // If not, instantiate and add it to the activity
+            	submitTrackerMessage("Map Activity","Fragment " + mClass.getName() + " selected!","fragment tabbing",null);
+    			// If not, instantiate and add it to the activity
                 mFragment = Fragment.instantiate(mActivity, mClass.getName());
    			 	arg1.replace(R.id.container, mFragment);
             } else {
                 // If it exists, simply attach it in order to show it
-            	arg1.replace(R.id.container, mFragment);
+            	submitTrackerMessage("Map Activity","Fragment Tag " + mFragment.getTag() + " selected!","fragment tabbing",null);
+    			arg1.replace(R.id.container, mFragment);
             }
 			
 		}
@@ -189,22 +193,26 @@ public class MapActivity extends ActionBarActivity {
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
 	    	   if (position == 0) {
+	    		    submitTrackerMessage("Map Activity","Drawer: Select Profile","Go to Profile Activity",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
 	                intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		
 	    	   	}
 	    	   	else if (position == 1) {
+	    	   		submitTrackerMessage("Map Activity","Drawer: Select Add Event","Go to Add Event",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
 	    	   	} else if (position == 2) {
+	    	   		submitTrackerMessage("Map Activity","Drawer: View Friends","Go to View Friends",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
 	    	   	} else {	
+	    	   		submitTrackerMessage("Map Activity","Drawer: Main Activity","Go to Main Activity",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
 		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	                startActivity(intent);
@@ -282,6 +290,21 @@ public class MapActivity extends ActionBarActivity {
 		 String imageLocation = user.getImageLocation();
 		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
 	}
+	
+	public void onStart() {
+		 super.onStart();
+		 tracker = EasyTracker.getInstance(this);
+		 tracker.activityStart(this);  // Add this method.
+	 }
+		 
+	 public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
+	 
+	 private void submitTrackerMessage(String category, String action, String label, Long value){
+		 tracker.send(MapBuilder.createEvent(category,action,label,value).build());
+	 }
 }
 		
 	
