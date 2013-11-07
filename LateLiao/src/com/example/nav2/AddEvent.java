@@ -198,6 +198,8 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
     
 	   // Setting the adapter to the listView
 	    mDrawerList.setAdapter(mAdapter);
+	    Calendar cal = Calendar.getInstance();
+	    onLoad(cal.getTimeInMillis());
 	}
 	
 	public void onLoad(long loadTime) {
@@ -349,6 +351,8 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
             		intent.putExtra("user", currentUser);
             		sendToDatabase(newEvent);
             		startActivity(intent);
+            		Calendar cal = Calendar.getInstance();
+            		onLoad(cal.getTimeInMillis());
             	}
             	
             	public void sendToDatabase(Event event){

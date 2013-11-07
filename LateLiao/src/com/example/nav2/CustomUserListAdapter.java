@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -74,6 +76,18 @@ public class CustomUserListAdapter extends BaseAdapter {
 				
 		holder.usernameView.setText(currentUser.getName());
 		holder.levelView.setText("Level " + String.valueOf(currentUser.getLevel()));
+		
+		holder.usernameView.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Context cxt = v.getContext();
+				Intent intent = new Intent(cxt,ProfileActivity.class);
+                intent.putExtra("user", currentUser);
+                cxt.startActivity(intent);
+			}
+			
+		});
 		
 		holder.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
