@@ -94,8 +94,6 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
 		if (editEvent != null){
 			editEventStatus = true;
 			this.editEvent = (Event) editEvent;
-			Log.d("event", "" + this.editEvent.getEventLocation().getLatitude());
-			Log.d("event", "" + this.editEvent.getEventLocation().getLongitude());
 			this.savedInstanceState.putParcelable("editEvent", this.editEvent);
 		}
 		

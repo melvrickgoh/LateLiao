@@ -23,6 +23,8 @@ public class WebAppInterface {
     
     public String eventName;
     
+    ArrayList<String> friendList = new ArrayList<String>();
+    
     /** Show a toast from the web page 
      * @return */
     @JavascriptInterface
@@ -77,9 +79,20 @@ public class WebAppInterface {
 		this.lat = lat;
 		this.lon = lon;
 	}
+	
 	@JavascriptInterface
 	public String passEvent(String eventName) {
 		return eventName;
 		
+	}
+	
+	@JavascriptInterface
+	public void setFriendList(ArrayList<String> friendList) {
+		this.friendList = friendList;
+	}
+	
+	@JavascriptInterface
+	public ArrayList<String> getFriendList() {
+		return this.friendList;
 	}
 }
