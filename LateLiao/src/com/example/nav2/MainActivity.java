@@ -13,6 +13,8 @@ import java.net.URL;
 
 
 
+
+
 //import org.apache.commons.httpclient.HttpStatus;
 //import org.apache.commons.httpclient.methods.GetMethod;
 //import org.apache.commons.httpclient.util.HttpURLConnection;
@@ -33,6 +35,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.aws.AWSClientManager;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 import android.os.Bundle;
 import android.os.Looper;
@@ -60,7 +64,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity<MotionEvent> extends Activity {
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
@@ -151,9 +154,7 @@ public class MainActivity<MotionEvent> extends Activity {
             				 Intent.putExtra(EXTRA_MESSAGE, message);*/
             				//user intent.putExtra(name,message) to pass message to next activity
             				startActivity(intent);
-            			}
-
-						
+            			}				
             		});
             		builder.show();
 	    

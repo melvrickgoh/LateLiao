@@ -43,8 +43,9 @@ public class FriendsDialogFragment extends DialogFragment {
 		 * Standard Alert Dialog
 		 */
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-				.setPositiveButton(getResources().getString(R.string.add_activity_friend_dialog_positive), new DialogInterface.OnClickListener() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
+		builder.setPositiveButton(getResources().getString(R.string.add_activity_friend_dialog_positive), new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
@@ -62,6 +63,7 @@ public class FriendsDialogFragment extends DialogFragment {
 						friendsButton.setText(usergroups);
 					}
 				});
+		
 			    //.setNegativeButton(getResources().getString(R.string.add_activity_friend_dialog_negative), null);
 		
 		builder.setView(view);

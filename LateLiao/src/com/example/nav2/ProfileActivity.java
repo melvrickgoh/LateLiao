@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +29,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class ProfileActivity extends ActionBarActivity {
-
+	private EasyTracker tracker;
+	
 	User currentUser = null;
 	User profileUser = null;
 	 
@@ -178,35 +182,29 @@ public class ProfileActivity extends ActionBarActivity {
 	        
 	    	   if (position == 0) {
 	    		   if(profileUser != currentUser) {
-	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
-	    	   		intent.putExtra("user", currentUser);
-	    	   		startActivity(intent);
+	    			    submitTrackerMessage("Profile Activity","Drawer: Select Profile","Go to Profile Activity",null);
+		    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+		    	   		intent.putExtra("user", currentUser);
+		    	   		startActivity(intent);
 	    		   }
 	    	   	}
 	    	   	else if (position == 1) {
-	    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
-	    	   		intent.putExtra("user", currentUser);
-	                startActivity(intent);
-	    	   		//do something
+		    	   		submitTrackerMessage("User Activity","Drawer: Select Add Event","Go to Add Event",null);
+		    	   		Intent intent = new Intent(getApplicationContext(),AddEvent.class);
+		    	   		intent.putExtra("user", currentUser);
+		                startActivity(intent);
+		    	   		//do something
 	    	   	} else if(position == 2){	
-	    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
-	    	   		intent.putExtra("user", currentUser);
-	                startActivity(intent);
+		    	   		submitTrackerMessage("User Activity","Drawer: View Friends","Go to View Friends",null);
+		    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
+		    	   		intent.putExtra("user", currentUser);
+		                startActivity(intent);
 	    	   	} else {	
-	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	                startActivity(intent);
+		    	   		submitTrackerMessage("User Activity","Drawer: Main Activity","Go to Main Activity",null);
+		    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+			        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		                startActivity(intent);
 	    	   	}
-		        // Increment hit count of the drawer list item
-		        /*incrementHitCount(position);
-		        
-		        if(position < 5) { // Show fragment for options : 0 to 4
-		        	showFragment(position);
-		        }else{ // Show message box for options : 5 to 9
-		        	Toast.makeText(getApplicationContext(), mOptions[position], Toast.LENGTH_LONG).show();
-		        }*/
-	        
-		        // Closing the drawer
 		        mDrawerLayout.closeDrawer(mDrawer);
 	        }
         });
@@ -289,20 +287,35 @@ public class ProfileActivity extends ActionBarActivity {
 	
 	// Highlight the selected country : 0 to 4
 	 public void highlightSelectedCountry(){
-	 int selectedItem = mDrawerList.getCheckedItemPosition();
+		 int selectedItem = mDrawerList.getCheckedItemPosition();
 	 
-	 if(selectedItem > 4)
-	 mDrawerList.setItemChecked(mPosition, true);
-	 else
-	 mPosition = selectedItem;
-	 
-	 if(mPosition!=-1)
-	 getSupportActionBar().setTitle(mOptions[mPosition]);
+		 if(selectedItem > 4)
+		 mDrawerList.setItemChecked(mPosition, true);
+		 else
+		 mPosition = selectedItem;
+		 
+		 if(mPosition!=-1)
+		 getSupportActionBar().setTitle(mOptions[mPosition]);
 	 }
 	 
 	 
 	 private int getUserIcon(Context context, User user){
 		 String imageLocation = user.getImageLocation();
 		 return context.getResources().getIdentifier(imageLocation.toLowerCase(), "drawable", context.getPackageName());
+	 }
+	 
+	 public void onStart() {
+		super.onStart();
+		tracker = EasyTracker.getInstance(this);
+		tracker.activityStart(this);  // Add this method.
+	 }
+		 
+	 public void onStop() {
+			super.onStop();
+			EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+	 }
+		 
+	 private void submitTrackerMessage(String category, String action, String label, Long value){
+			tracker.send(MapBuilder.createEvent(category,action,label,value).build());
 	 }
 }

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.aws.AWSClientManager;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -46,6 +48,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 @SuppressLint("NewApi")
 public class AddEvent extends ActionBarActivity implements OnDateSetListener, OnTimeSetListener, OnFriendsEventListener  {
+	private EasyTracker tracker;
+	
 	Button dateButton;
 	Button timeButton;
 	Button locationButton;
@@ -192,8 +196,19 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
     
 	   // Setting the adapter to the listView
 	    mDrawerList.setAdapter(mAdapter);
-	    
+	    Calendar cal = Calendar.getInstance();
+	    onLoad(cal.getTimeInMillis());
 	}
+	
+	public void onLoad(long loadTime) {
+		  tracker.send(MapBuilder
+		      .createTiming("resources",    // Timing category (required)
+		                    loadTime,       // Timing interval in milliseconds (required)
+		                    "Add Event Begin",  // Timing name
+		                    null)           // Timing label
+		      .build()
+		  );
+		}
 	
 	private void updateButtonValues(Event editEvent, User currentUser, Button dateButton, Button timeButton, Button locationButton,
 			Button friendsButton) {
@@ -334,13 +349,26 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
             		intent.putExtra("user", currentUser);
             		sendToDatabase(newEvent);
             		startActivity(intent);
+            		Calendar cal = Calendar.getInstance();
+            		onLoad(cal.getTimeInMillis());
             	}
             	
             	public void sendToDatabase(Event event){
             		AWSClientManager aws = new AWSClientManager().getInstance();
             		aws.addNewEvent(event);
             	}
+            	
+            	public void onLoad(long loadTime){
+              	  tracker.send(MapBuilder
+              	      .createTiming("resources",    // Timing category (required)
+              	                    loadTime,       // Timing interval in milliseconds (required)
+              	                    "Add Event Completed",  // Timing name
+              	                    null)           // Timing label
+              	      .build()
+              	  );
+              	}
             });
+
             builder.show();
             eventName.setVisibility(View.VISIBLE);
 	    }
@@ -352,6 +380,7 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
 	        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	        
 	    	   if (position == 0) {
+	    		   	submitTrackerMessage("User Activity","Drawer: Select Profile","Go to Profile Activity",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
 	                intent.putExtra("user", currentUser);
 	                startActivity(intent);
@@ -361,11 +390,13 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
 	    	   		//do something
 	    	   	}
 	    	   	else if (position == 2) {
+	    	   		submitTrackerMessage("User Activity","Drawer: View Friends","Go to View Friends",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),FriendsActivity.class);
 	    	   		intent.putExtra("user", currentUser);
 	                startActivity(intent);
 	    	   		//do something
 	    	   	} else {	
+	    	   		submitTrackerMessage("User Activity","Drawer: Main Activity","Go to Main Activity",null);
 	    	   		Intent intent = new Intent(getApplicationContext(),MainActivity.class);
 		        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	                startActivity(intent);
@@ -482,4 +513,19 @@ public class AddEvent extends ActionBarActivity implements OnDateSetListener, On
 	public void setEventLocation(Location locale){
 		this.eventLocation = locale;
 	}
+	
+	public void onStart() {
+		 super.onStart();
+		 tracker = EasyTracker.getInstance(this);
+		 tracker.activityStart(this);  // Add this method.
+	 }
+		 
+	 public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
+	 
+	 private void submitTrackerMessage(String category, String action, String label, Long value){
+		 tracker.send(MapBuilder.createEvent(category,action,label,value).build());
+	 }
 }
